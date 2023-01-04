@@ -8,6 +8,16 @@ public class TestController {
 
     @GetMapping("/coupon")
     public String retrieveCoupons() {
-        return "coupon 123";
+        return "this is coupon 1";
+    }
+
+    @GetMapping("/coupon2")
+    public String retrieveCoupons2() {
+        return "this is coupon 2";
+    }
+
+    @GetMapping("/coupon2")
+    public String retrieveCoupons3() {
+        return "this is coupon 3";
     }
 }
