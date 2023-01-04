@@ -16,7 +16,7 @@ public class TestController {
         return "this is coupon 2";
     }
 
-    @GetMapping("/coupon2")
+    @GetMapping("/coupon3")
     public String retrieveCoupons3() {
         return "this is coupon 3";
     }
