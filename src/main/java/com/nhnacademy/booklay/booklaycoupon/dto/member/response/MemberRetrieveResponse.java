@@ -1,0 +1,70 @@
+package com.nhnacademy.booklay.booklaycoupon.dto.member.response;
+
+import com.nhnacademy.booklay.booklaycoupon.entity.Gender;
+import com.nhnacademy.booklay.booklaycoupon.entity.Member;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+public class MemberRetrieveResponse {
+    private Long memberId;
+    private String gender;
+    private String id;
+    private String nickname;
+    private String name;
+    private LocalDate birthday;
+    private String phoneNo;
+    private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
+    private Boolean isBlocked;
+
+    /**
+     * dto projection을 위한 생성자
+     *
+     * @author 양승아
+     */
+    public MemberRetrieveResponse(Long memberId, Gender gender, String id,
+                                  String nickname, String name, LocalDate birthday, String phoneNo,
+                                  String email, LocalDateTime createdAt, LocalDateTime updatedAt,
+                                  LocalDateTime deletedAt, Boolean isBlocked) {
+        this.memberId = memberId;
+        this.gender = gender.getName();
+        this.id = id;
+        this.nickname = nickname;
+        this.name = name;
+        this.birthday = birthday;
+        this.phoneNo = phoneNo;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.isBlocked = isBlocked;
+    }
+
+    public static MemberRetrieveResponse fromEntity(Member member) {
+        return MemberRetrieveResponse.builder()
+            .memberId(member.getMemberNo())
+            .id(member.getMemberId())
+            .name(member.getName())
+            .nickname(member.getNickname())
+            .birthday(member.getBirthday())
+            .email(member.getEmail())
+            .createdAt(member.getCreatedAt())
+            .updatedAt(member.getUpdatedAt())
+            .deletedAt(member.getDeletedAt())
+            .gender(member.getGender().getName())
+            .phoneNo(member.getPhoneNo())
+            .isBlocked(member.getIsBlocked())
+            .build();
+    }
+}
