@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CouponTypeRetrieveResponse {
 
-    private final Long code;
+    private final Long id;
 
     private final String name;
 
