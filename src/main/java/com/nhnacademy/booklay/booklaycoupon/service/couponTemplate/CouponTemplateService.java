@@ -3,7 +3,6 @@ package com.nhnacademy.booklay.booklaycoupon.service.couponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCU;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
