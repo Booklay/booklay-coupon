@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### spy log ignore ###
+spy.log
