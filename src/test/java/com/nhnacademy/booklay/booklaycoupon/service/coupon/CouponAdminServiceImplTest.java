@@ -1,4 +1,4 @@
-package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
+package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

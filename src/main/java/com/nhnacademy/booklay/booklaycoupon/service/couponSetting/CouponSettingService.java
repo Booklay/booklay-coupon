@@ -1,4 +1,4 @@
-package com.nhnacademy.booklay.booklaycoupon.service.couponTemplate;
+package com.nhnacademy.booklay.booklaycoupon.service.couponSetting;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
