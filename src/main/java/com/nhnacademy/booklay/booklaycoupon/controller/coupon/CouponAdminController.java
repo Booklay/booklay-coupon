@@ -95,4 +95,17 @@ public class CouponAdminController {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    // 쿠폰 발급 내역
+    @GetMapping("/issue")
+    public ResponseEntity<Void> retrieveCouponIssueHistory() {
+
+        return null;
+    }
+
+    // 쿠폰 사용 내역
+    @GetMapping("/history")
+    public ResponseEntity<Void> retrieveCouponHistory() {
+        return null;
+    }
 }
