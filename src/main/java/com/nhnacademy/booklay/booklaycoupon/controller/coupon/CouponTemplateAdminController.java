@@ -5,7 +5,6 @@ import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCU;
 import com.nhnacademy.booklay.booklaycoupon.service.couponTemplate.CouponTemplateService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class CouponTemplateAdminController {
     }
 
     @GetMapping("/pages")
-    public ResponseEntity<PageResponse<CouponTemplateRetrieveResponse>> retrieveAllCouponTypes(@PageableDefault
+    public ResponseEntity<PageResponse<CouponTemplateRetrieveResponse>> retrieveAllCouponTemplates(@PageableDefault
                                                                                                Pageable pageable) {
         Page<CouponTemplateRetrieveResponse> couponTemplatePage = couponTemplateService.retrieveAllCouponTemplate(pageable);
         PageResponse<CouponTemplateRetrieveResponse> couponTemplatePageResponse = new PageResponse<>(couponTemplatePage);
@@ -53,7 +52,7 @@ public class CouponTemplateAdminController {
     }
 
     @GetMapping("/{couponTemplateId}")
-    public ResponseEntity<CouponTemplateDetailRetrieveResponse> retrieveCouponDetail(
+    public ResponseEntity<CouponTemplateDetailRetrieveResponse> retrieveCouponTemplate(
         @PathVariable Long couponTemplateId) {
         CouponTemplateDetailRetrieveResponse couponTemplateDetailRetrieveResponse =
             couponTemplateService.retrieveCouponTemplateDetailResponse(couponTemplateId);
@@ -63,7 +62,7 @@ public class CouponTemplateAdminController {
     }
 
     @PutMapping("/{couponTemplateId}")
-    public ResponseEntity<Void> updateCoupon(@Valid @RequestBody
+    public ResponseEntity<Void> updateCouponTemplate(@Valid @RequestBody
                                                  CouponTemplateCURequest couponTemplateCURequest,
                                              @PathVariable Long couponTemplateId) {
         couponTemplateService.updateCouponTemplate(couponTemplateId, couponTemplateCURequest);
@@ -72,7 +71,7 @@ public class CouponTemplateAdminController {
     }
 
     @DeleteMapping("/{couponTemplateId}")
-    public ResponseEntity<Void> deleteCoupon(@PathVariable Long couponTemplateId) {
+    public ResponseEntity<Void> deleteCouponTemplate(@PathVariable Long couponTemplateId) {
         couponTemplateService.deleteCouponTemplate(couponTemplateId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

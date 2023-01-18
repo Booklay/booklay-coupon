@@ -1,4 +1,4 @@
-package com.nhnacademy.booklay.booklaycoupon.service.couponTemplate;
+package com.nhnacademy.booklay.booklaycoupon.service;
 
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;

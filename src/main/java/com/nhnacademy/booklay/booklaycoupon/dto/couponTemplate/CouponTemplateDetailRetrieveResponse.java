@@ -1,6 +1,7 @@
 package com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate;
 
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +16,7 @@ public class CouponTemplateDetailRetrieveResponse {
     private final int amount;
     private final int minimumUseAmount;
     private final int maximumDiscountAmount;
+    private final LocalDateTime issuanceDeadlineAt;
     private final Integer validateTerm;
     private final Boolean isDuplicatable;
 
@@ -22,6 +24,7 @@ public class CouponTemplateDetailRetrieveResponse {
     public CouponTemplateDetailRetrieveResponse(Long id, Long imageNo, Long typeCode, String name,
                                                 Boolean isOrderCoupon, Long applyItemId, int amount,
                                                 int minimumUseAmount, int maximumDiscountAmount,
+                                                LocalDateTime issuanceDeadlineAt,
                                                 Integer validateTerm, Boolean isDuplicatable) {
         this.id = id;
         this.imageNo = imageNo;
@@ -32,6 +35,7 @@ public class CouponTemplateDetailRetrieveResponse {
         this.amount = amount;
         this.minimumUseAmount = minimumUseAmount;
         this.maximumDiscountAmount = maximumDiscountAmount;
+        this.issuanceDeadlineAt = issuanceDeadlineAt;
         this.validateTerm = validateTerm;
         this.isDuplicatable = isDuplicatable;
     }

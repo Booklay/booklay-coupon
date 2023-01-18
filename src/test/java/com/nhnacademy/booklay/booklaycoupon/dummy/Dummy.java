@@ -2,12 +2,16 @@ package com.nhnacademy.booklay.booklaycoupon.dummy;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponType.request.CouponTypeCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Authority;
 import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
+import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.DeliveryDetail;
 import com.nhnacademy.booklay.booklaycoupon.entity.DeliveryStatusCode;
@@ -24,6 +28,7 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.validation.constraints.NotNull;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class Dummy {
@@ -292,5 +297,46 @@ public class Dummy {
             .address("dummy address")
             .build();
         return image;
+    }
+
+    public static CouponSetting getCouponSetting(){
+        CouponSetting couponSetting = CouponSetting.builder()
+            .couponTemplateNo(1L)
+            .settingType(1)
+            .memberGrade(1L)
+            .build();
+        ReflectionTestUtils.setField(couponSetting, "id", 1L);
+        return couponSetting;
+    }
+
+    public static CouponTemplate getCouponTemplate(){
+        CouponTemplate couponTemplate = CouponTemplate.builder()
+            .imageNo(1L)
+            .typeCode(1L)
+            .isOrderCoupon(true)
+            .applyItemId(1L)
+            .name("더미 주문쿠폰")
+            .amount(100)
+            .minimumUseAmount(100)
+            .maximumDiscountAmount(100)
+            .issuingDeadLine(LocalDateTime.now())
+            .validateTerm(7)
+            .isDuplicatable(false)
+            .build();
+        ReflectionTestUtils.setField(couponTemplate, "id", 1L);
+        return couponTemplate;
+
+    }
+
+    public static CouponSettingCURequest getCouponSettingCURequest(){
+        return new CouponSettingCURequest(1, 1L, 1L);
+    }
+
+    public static CouponTemplateCURequest getCouponTemplateCURequest(){
+        CouponTemplateCURequest couponTemplateCURequest = new CouponTemplateCURequest("더미상품쿠폰", 1L, 100
+            , true, 1L, 100, 100
+            , LocalDateTime.now(), 7, false, "default");
+
+        return couponTemplateCURequest;
     }
 }
