@@ -52,7 +52,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService{
         CouponTemplateCURequest couponTemplateCURequest){
         CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
             .orElseThrow(() -> new NotFoundException("CouponTemplate", couponTemplateId));
-        couponTypeService.retrieveCouponType(couponTemplateCURequest.getTypeCode());
+//        couponTypeService.retrieveCouponType(couponTemplateCURequest.getTypeCode());
         //todo imageService 완성시 변경
         couponTemplate.update(couponTemplateCURequest, 0L);
         return couponTemplateRepository.save(couponTemplate);
@@ -60,9 +60,6 @@ public class CouponTemplateServiceImpl implements CouponTemplateService{
 
     @Override
     public void deleteCouponTemplate(Long couponTemplateId) {
-        if(!couponTemplateRepository.existsById(couponTemplateId)) {
-            throw new NotFoundException("CouponTemplate", couponTemplateId);
-        }
         couponTemplateRepository.deleteById(couponTemplateId);
     }
 }

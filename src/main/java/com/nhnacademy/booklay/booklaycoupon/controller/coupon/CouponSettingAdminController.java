@@ -3,7 +3,7 @@ package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
-import com.nhnacademy.booklay.booklaycoupon.service.couponTemplate.CouponSettingService;
+import com.nhnacademy.booklay.booklaycoupon.service.couponSetting.CouponSettingService;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/couponSetting")
+@RequestMapping("/admin/couponSettings")
 public class CouponSettingAdminController {
     private final CouponSettingService couponSettingService;
 
@@ -37,9 +37,20 @@ public class CouponSettingAdminController {
 
 
     @GetMapping("/pages")
-    public ResponseEntity<PageResponse<CouponSetting>> retrieveAllCouponSetting(@PageableDefault
+    public ResponseEntity<PageResponse<CouponSetting>> retrieveAllCouponSettingByPage(@PageableDefault
                                                                                                Pageable pageable) {
         Page<CouponSetting> couponSettingPage = couponSettingService.retrieveAllSettingPage(pageable);
+        PageResponse<CouponSetting> couponSettingPageResponse = new PageResponse<>(couponSettingPage);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(couponSettingPageResponse);
+    }
+
+    @GetMapping("/pages/{settingType}")
+    public ResponseEntity<PageResponse<CouponSetting>> retrieveAllCouponSettingByPageAndSettingType(
+        @PageableDefault Pageable pageable, @PathVariable Integer settingType) {
+        Page<CouponSetting> couponSettingPage = couponSettingService.retrieveSettingsPage(settingType, pageable);
         PageResponse<CouponSetting> couponSettingPageResponse = new PageResponse<>(couponSettingPage);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -53,7 +64,15 @@ public class CouponSettingAdminController {
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
             .body(couponSettingList);
+    }
 
+    @GetMapping("type/{settingType}")
+    public ResponseEntity<List<CouponSetting>> retrieveAllCouponSettingBySettingType(
+        @PathVariable Integer settingType){
+        List<CouponSetting> couponSettingList = couponSettingService.retrieveSettings(settingType);
+        return ResponseEntity.status(HttpStatus.OK)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(couponSettingList);
     }
 
     @GetMapping("/{couponSettingId}")
