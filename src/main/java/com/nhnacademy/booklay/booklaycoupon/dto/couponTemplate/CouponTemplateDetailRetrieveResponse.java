@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class CouponTemplateDetailRetrieveResponse {
     private final Long id;
-    private final Long imageNo;
+    private final String imagePath;
     private final Long typeCode;
     private final String name;
     private final Boolean isOrderCoupon;
@@ -21,13 +21,13 @@ public class CouponTemplateDetailRetrieveResponse {
     private final Boolean isDuplicatable;
 
     @Builder
-    public CouponTemplateDetailRetrieveResponse(Long id, Long imageNo, Long typeCode, String name,
+    public CouponTemplateDetailRetrieveResponse(Long id, String imagePath, Long typeCode, String name,
                                                 Boolean isOrderCoupon, Long applyItemId, int amount,
                                                 int minimumUseAmount, int maximumDiscountAmount,
                                                 LocalDateTime issuanceDeadlineAt,
                                                 Integer validateTerm, Boolean isDuplicatable) {
         this.id = id;
-        this.imageNo = imageNo;
+        this.imagePath = imagePath;
         this.typeCode = typeCode;
         this.name = name;
         this.isOrderCoupon = isOrderCoupon;
@@ -45,14 +45,15 @@ public class CouponTemplateDetailRetrieveResponse {
     public static CouponTemplateDetailRetrieveResponse fromEntity(CouponTemplate couponTemplate) {
         return CouponTemplateDetailRetrieveResponse.builder()
             .id(couponTemplate.getId())
-            .imageNo(couponTemplate.getImageNo())
+            .imagePath(couponTemplate.getImage().getAddress())
             .typeCode(couponTemplate.getTypeCode())
             .name(couponTemplate.getName())
             .isOrderCoupon(couponTemplate.getIsOrderCoupon())
             .applyItemId(couponTemplate.getApplyItemId())
             .amount(couponTemplate.getAmount())
             .minimumUseAmount(couponTemplate.getMinimumUseAmount())
-            .minimumUseAmount(couponTemplate.getMaximumDiscountAmount())
+            .maximumDiscountAmount(couponTemplate.getMaximumDiscountAmount())
+            .issuanceDeadlineAt(couponTemplate.getIssuingDeadLine())
             .isDuplicatable(couponTemplate.getIsDuplicatable())
             .validateTerm(couponTemplate.getValidateTerm())
             .build();

@@ -81,6 +81,8 @@ drop table if exists gender cascade;
 drop table if exists product cascade;
 
 drop table if exists image cascade;
+drop table if exists coupon_template cascade;
+drop table if exists coupon_birthday_setting cascade;
 
 create table access_log
 (
@@ -629,3 +631,31 @@ create table object_file
     file_name varchar(255) not null
 );
 
+create table coupon_template
+(
+    coupon_template_no bigint not null
+        primary key auto_increment,
+    image_no bigint not null,
+    code tinyint not null,
+    is_order_coupon tinyint(1) not null,
+    apply_item_id bigint not null,
+    name varchar(100) not null,
+    amount int not null,
+    minimum_use_amount int not null,
+    maximum_discount_amount int null,
+    issuing_dead_line datetime NULL,
+    validate_term int not null,
+    is_duplicatable tinyint(1) not null,
+    constraint FK_coupon_type_TO_coupon_template_1
+        foreign key (code) references coupon_type (code),
+    constraint FK_image_TO_coupon_template_1
+        foreign key (image_no) references image (image_no)
+);
+
+CREATE TABLE `coupon_birthday_setting` (
+    `setting_no` int NOT NULL AUTO_INCREMENT,
+    `setting_type` int NOT NULL,
+    `coupon_template_no` int NOT NULL,
+    `member_grade` int NOT NULL,
+    PRIMARY KEY (`setting_no`)
+)
