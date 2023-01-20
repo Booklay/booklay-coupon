@@ -37,7 +37,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final ImageRepository imageRepository;
 
     @Override
-    public void createCoupon(CouponCURequest couponRequest) {
+    public Coupon createCoupon(CouponCURequest couponRequest) {
         Long typeCode = couponRequest.getTypeCode();
         Long imageId = couponRequest.getImageId();
 
@@ -50,7 +50,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         Coupon coupon = CouponCURequest.toEntity(couponRequest, couponType, image);
         setCategoryOrProduct(coupon, couponRequest);
 
-        couponRepository.save(coupon);
+        return couponRepository.save(coupon);
     }
 
     @Override
