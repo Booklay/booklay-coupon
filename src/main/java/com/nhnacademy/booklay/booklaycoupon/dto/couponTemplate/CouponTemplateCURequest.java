@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,8 +37,9 @@ public class CouponTemplateCURequest {
     private Integer minimumUseAmount;
     private Integer maximumDiscountAmount;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime issuingDeadLine;
     private Integer validateTerm;
     @NotNull
@@ -44,7 +47,7 @@ public class CouponTemplateCURequest {
 
     private String imagePath;
 
-    public CouponTemplate toEntity(Long imageNo) {
+    public CouponTemplate toEntity(Image image) {
         return CouponTemplate.builder()
             .name(name)
             .typeCode(typeCode)
@@ -53,9 +56,10 @@ public class CouponTemplateCURequest {
             .applyItemId(applyItemId)
             .minimumUseAmount(minimumUseAmount)
             .maximumDiscountAmount(maximumDiscountAmount)
+            .issuingDeadLine(issuingDeadLine)
             .validateTerm(validateTerm)
             .isDuplicatable(isDuplicatable)
-            .imageNo(imageNo)
+            .image(image)
             .build();
     }
 }

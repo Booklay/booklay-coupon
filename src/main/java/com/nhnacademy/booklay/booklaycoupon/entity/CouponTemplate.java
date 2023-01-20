@@ -3,12 +3,8 @@ package com.nhnacademy.booklay.booklaycoupon.entity;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,12 +17,13 @@ import lombok.NoArgsConstructor;
 public class CouponTemplate {
 
     @Id
-    @Column(name = "coupon_no")
+    @Column(name = "coupon_template_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "image_no")
-    private Long imageNo;
+    @OneToOne
+    @JoinColumn(name = "image_no")
+    private Image image;
 
     @Column(name = "code")
     private Long typeCode;
@@ -58,12 +55,11 @@ public class CouponTemplate {
 
 
     @Builder
-    public CouponTemplate(Long imageNo, Long typeCode, Boolean isOrderCoupon,
+    public CouponTemplate(Image image, Long typeCode, Boolean isOrderCoupon,
                           Long applyItemId,
                           String name, int amount, int minimumUseAmount, int maximumDiscountAmount,
                           LocalDateTime issuingDeadLine,
                           Integer validateTerm, Boolean isDuplicatable) {
-        this.imageNo = imageNo;
         this.typeCode = typeCode;
         this.isOrderCoupon = isOrderCoupon;
         this.applyItemId = applyItemId;
@@ -74,16 +70,17 @@ public class CouponTemplate {
         this.issuingDeadLine = issuingDeadLine;
         this.validateTerm = validateTerm;
         this.isDuplicatable = isDuplicatable;
+        this.image = image;
     }
 
     public CouponCURequest toCouponCURequest() {
-        return new CouponCURequest(name, imageNo, typeCode, amount
+        return new CouponCURequest(name, image.getId(), typeCode, amount
             , isOrderCoupon, applyItemId, minimumUseAmount, maximumDiscountAmount,
             LocalDateTime.now().plusDays(validateTerm),isDuplicatable, false);
     }
 
-    public void update(CouponTemplateCURequest couponTemplateCURequest, Long imageNo) {
-        this.imageNo = imageNo;
+    public void update(CouponTemplateCURequest couponTemplateCURequest, Image image) {
+        this.image = image;
         this.typeCode = couponTemplateCURequest.getTypeCode();
         this.isOrderCoupon = couponTemplateCURequest.getIsOrderCoupon();
         this.applyItemId = couponTemplateCURequest.getApplyItemId();
