@@ -15,6 +15,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -89,20 +90,24 @@ public class CouponAdminServiceImpl implements CouponAdminService{
 
     private void setCategoryOrProduct(Coupon coupon, CouponCURequest couponRequest) {
 
-        boolean isOrderCoupon = couponRequest.getIsOrderCoupon();
+        Boolean isOrderCoupon = couponRequest.getIsOrderCoupon();
         Long applyItemId = couponRequest.getApplyItemId();
 
-        if(isOrderCoupon) {
+        if(Objects.isNull(applyItemId)) {
+            coupon.setCategory(null);
+            coupon.setProduct(null);
+        } else if (isOrderCoupon) {
+            // 주문 쿠폰일 때,
             Category category = categoryRepository.findById(applyItemId)
                 .orElseThrow(() -> new NotFoundException(Category.class.toString(), applyItemId));
 
             coupon.setCategory(category);
         } else {
+            // 상품 쿠폰일 때,
             Product product = productRepository.findById(applyItemId)
                 .orElseThrow(() -> new NotFoundException(Product.class.toString(), applyItemId));
 
             coupon.setProduct(product);
         }
     }
-
 }

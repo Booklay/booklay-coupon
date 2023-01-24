@@ -34,7 +34,6 @@ public class CouponCURequest {
     @NotNull
     private Boolean isOrderCoupon;
 
-    @NotNull
     private Long applyItemId;
 
     @NotNull
