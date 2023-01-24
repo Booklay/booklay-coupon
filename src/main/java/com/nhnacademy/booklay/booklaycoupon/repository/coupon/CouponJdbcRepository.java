@@ -33,7 +33,7 @@ public class CouponJdbcRepository {
             });
     }
     public void saveOrderCoupons(Long couponId, int quantity) {
-        jdbcTemplate.batchUpdate("insert into product_coupon(coupon_no, coupon_code) " +
+        jdbcTemplate.batchUpdate("insert into order_coupon(coupon_no, coupon_code) " +
                 "values(?, ?)",
             new BatchPreparedStatementSetter() {
                 @Override
