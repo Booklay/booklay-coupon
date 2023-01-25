@@ -16,18 +16,37 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     }
 
     @Override
-    public List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderAndProduct() {
+    public List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderCoupon() {
         QCoupon coupon = QCoupon.coupon;
-        QProductCoupon productCoupon = QProductCoupon.productCoupon;
         QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
 
         return from(coupon)
+            .rightJoin(orderCoupon).on(coupon.id.eq(orderCoupon.coupon.id))
+            .select(Projections.constructor(CouponHistoryRetrieveResponse.class,
+                coupon.id.as("id"),
+                orderCoupon.code.as("code"),
+                coupon.name.as("name"),
+                orderCoupon.member.memberId.as("memberId"),
+                orderCoupon.issuedAt.as("issuedAt")
+                ))
+            .fetch();
+    }
+
+    @Override
+    public List<CouponHistoryRetrieveResponse> getCouponHistoryAtProductCoupon() {
+        QCoupon coupon = QCoupon.coupon;
+        QProductCoupon productCoupon = QProductCoupon.productCoupon;
+
+        return from(coupon)
             .leftJoin(productCoupon).on(coupon.id.eq(productCoupon.coupon.id))
-            .leftJoin(orderCoupon).on(coupon.id.eq(orderCoupon.coupon.id))
-            .where(productCoupon.code.isNotNull().or(orderCoupon.code.isNotNull()))
+            .where(productCoupon.code.isNotNull())
             .select(Projections.constructor(CouponHistoryRetrieveResponse.class,
                 coupon.id,
-                coupon.name))
+                productCoupon.code,
+                coupon.name,
+                productCoupon.member.memberId,
+                productCoupon.issuedAt
+                ))
             .fetch();
     }
 }
