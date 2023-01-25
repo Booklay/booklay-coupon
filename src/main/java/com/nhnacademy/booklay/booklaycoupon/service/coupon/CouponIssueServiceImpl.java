@@ -15,12 +15,14 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepos
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class CouponIssueServiceImpl implements CouponIssueService{
 
     private final CouponRepository couponRepository;
@@ -28,6 +30,8 @@ public class CouponIssueServiceImpl implements CouponIssueService{
     private final CouponJdbcRepository couponJdbcRepository;
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
+
+    private static final Long POINT_COUPON_CODE = 3L;
 
     @Override
     public void issueCouponToMember(CouponIssueToMemberRequest couponRequest) {
@@ -41,7 +45,8 @@ public class CouponIssueServiceImpl implements CouponIssueService{
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new NotFoundException(Member.class.toString(), memberId));
 
-        if(Objects.nonNull(coupon.getCategory())) {
+        if(Objects.nonNull(coupon.getCategory()) ||
+            Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
             OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode());
             orderCoupon.setMember(member);
 
@@ -65,7 +70,8 @@ public class CouponIssueServiceImpl implements CouponIssueService{
         Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> new NotFoundException(Coupon.class.toString(), couponId));
 
-        if(Objects.nonNull(coupon.getCategory())) {
+        if(Objects.nonNull(coupon.getCategory()) ||
+            Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
             couponJdbcRepository.saveOrderCoupons(couponId, quantity);
         } else if (Objects.nonNull(coupon.getProduct())){
             couponJdbcRepository.saveProductCoupons(couponId, quantity);
