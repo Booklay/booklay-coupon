@@ -51,7 +51,6 @@ class CouponTemplateAdminControllerTest {
     MockMvc mockMvc;
 
     ObjectMapper objectMapper;
-
     CouponTemplate couponTemplate;
     CouponTemplateRetrieveResponse couponTemplateRetrieveResponse;
     List<CouponTemplateRetrieveResponse> couponTemplateRetrieveResponseList;
@@ -77,7 +76,7 @@ class CouponTemplateAdminControllerTest {
         couponTemplateRetrieveResponseList = List.of(couponTemplateRetrieveResponse);
         couponTemplateCURequest = Dummy.getCouponTemplateCURequest();
         couponTemplateDetailRetrieveResponse = new CouponTemplateDetailRetrieveResponse(
-            1L, 1L, 1L,"더미주문쿠폰", true, 1L
+            1L, "default", 1L,"더미주문쿠폰", true, 1L
             , 100, 100, 100
             , LocalDateTime.now(), 7, false
         );
