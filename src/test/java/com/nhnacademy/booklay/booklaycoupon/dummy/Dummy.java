@@ -311,7 +311,7 @@ public class Dummy {
 
     public static CouponTemplate getCouponTemplate(){
         CouponTemplate couponTemplate = CouponTemplate.builder()
-            .imageNo(1L)
+            .image(Image.builder().id(1L).address("dummy").build())
             .typeCode(1L)
             .isOrderCoupon(true)
             .applyItemId(1L)
