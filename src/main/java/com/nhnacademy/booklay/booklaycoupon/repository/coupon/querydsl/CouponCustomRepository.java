@@ -4,5 +4,6 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRet
 import java.util.List;
 
 public interface CouponCustomRepository {
-    List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderAndProduct();
+    List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderCoupon();
+    List<CouponHistoryRetrieveResponse> getCouponHistoryAtProductCoupon();
 }

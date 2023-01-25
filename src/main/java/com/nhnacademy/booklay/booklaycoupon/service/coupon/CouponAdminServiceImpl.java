@@ -16,6 +16,10 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -91,8 +95,20 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CouponHistoryRetrieveResponse> retrieveIssuedCoupons() {
-        return couponRepository.getCouponHistoryAtOrderAndProduct();
+        List<CouponHistoryRetrieveResponse> couponHistoryAtOrderCoupon =
+            couponRepository.getCouponHistoryAtOrderCoupon();
+        List<CouponHistoryRetrieveResponse> couponHistoryAtProductCoupon = couponRepository.getCouponHistoryAtProductCoupon();
+
+
+        List<CouponHistoryRetrieveResponse> couponHistoryList = new ArrayList<>();
+        couponHistoryList.addAll(couponHistoryAtOrderCoupon);
+        couponHistoryList.addAll(couponHistoryAtProductCoupon);
+
+        couponHistoryList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
+
+        return couponHistoryList;
     }
 
     private void setCategoryOrProduct(Coupon coupon, CouponCURequest couponRequest) {

@@ -1,11 +1,15 @@
 package com.nhnacademy.booklay.booklaycoupon.dto.coupon.response;
 
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CouponHistoryRetrieveResponse {
-    private final Long id;
-    private final String name;
+    private Long id;
+    private String code;
+    private String name;
+    private String memberId;
+    private LocalDateTime issuedAt;
 }
