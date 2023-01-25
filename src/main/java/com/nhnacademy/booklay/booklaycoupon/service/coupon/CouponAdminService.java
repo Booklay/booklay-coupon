@@ -3,8 +3,10 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,4 +17,5 @@ public interface CouponAdminService {
     CouponDetailRetrieveResponse retrieveCoupon(Long couponId);
     void updateCoupon(Long couponId, CouponCURequest couponRequest);
     void deleteCoupon(Long couponId);
+    List<CouponHistoryRetrieveResponse> retrieveIssuedCoupons();
 }

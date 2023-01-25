@@ -5,12 +5,15 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -33,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/coupons")
+@Slf4j
 public class CouponAdminController {
 
     private final CouponAdminService couponAdminService;
@@ -97,10 +101,12 @@ public class CouponAdminController {
     }
 
     // 쿠폰 발급 내역
-    @GetMapping("/issue")
-    public ResponseEntity<Void> retrieveCouponIssueHistory() {
-
-        return null;
+    @GetMapping("/issue-history")
+    public ResponseEntity<List<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory() {
+        List<CouponHistoryRetrieveResponse> responses =
+            couponAdminService.retrieveIssuedCoupons();
+        log.info(String.valueOf(responses.size()));
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
     // 쿠폰 사용 내역
