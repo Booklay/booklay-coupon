@@ -3,6 +3,7 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
@@ -15,6 +16,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -86,6 +88,11 @@ public class CouponAdminServiceImpl implements CouponAdminService{
             throw new NotFoundException(Coupon.class.toString(), couponId);
         }
         couponRepository.deleteById(couponId);
+    }
+
+    @Override
+    public List<CouponHistoryRetrieveResponse> retrieveIssuedCoupons() {
+        return couponRepository.getCouponHistoryAtOrderAndProduct();
     }
 
     private void setCategoryOrProduct(Coupon coupon, CouponCURequest couponRequest) {
