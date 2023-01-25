@@ -46,6 +46,8 @@ drop table if exists author cascade;
 
 drop table if exists product_coupon cascade;
 
+drop table if exists coupon_zone cascade;
+
 drop table if exists coupon cascade;
 
 drop table if exists coupon_type cascade;
@@ -304,6 +306,13 @@ create table product
         foreign key (thumbnail_no) references image (image_no)
 );
 
+create table coupon_zone
+(
+    coupon_zone_no bigint not null primary key auto_increment,
+    opened_at datetime null,
+    is_blind boolean not null
+);
+
 create table coupon
 (
     coupon_no bigint not null
@@ -312,6 +321,7 @@ create table coupon
     code tinyint not null,
     product_no bigint null,
     category_no bigint null,
+    coupon_zone_no bigint null,
     name varchar(100) not null,
     amount int not null,
     minimum_use_amount int not null,
@@ -319,6 +329,9 @@ create table coupon
     issuance_deadline_at datetime not null,
     is_duplicatable boolean not null,
     is_limited boolean not null,
+    validate_term int not null,
+    constraint FK_coupon_zone_TO_coupon_1
+        foreign key (coupon_zone_no) references coupon_zone (coupon_zone_no),
     constraint FK_product_TO_coupon_1
         foreign key (product_no) references product (product_no),
     constraint FK_category_TO_coupon_1
