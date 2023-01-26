@@ -9,13 +9,17 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
+import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
+import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -94,14 +98,9 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     @Override
     @Transactional(readOnly = true)
     public List<CouponHistoryRetrieveResponse> retrieveIssuedCoupons() {
-        List<CouponHistoryRetrieveResponse> couponHistoryAtOrderCoupon =
-            couponRepository.getCouponHistoryAtOrderCoupon();
-        List<CouponHistoryRetrieveResponse> couponHistoryAtProductCoupon = couponRepository.getCouponHistoryAtProductCoupon();
-
-
         List<CouponHistoryRetrieveResponse> couponHistoryList = new ArrayList<>();
-        couponHistoryList.addAll(couponHistoryAtOrderCoupon);
-        couponHistoryList.addAll(couponHistoryAtProductCoupon);
+        couponHistoryList.addAll(couponRepository.getCouponHistoryAtOrderCoupon());
+        couponHistoryList.addAll(couponRepository.getCouponHistoryAtProductCoupon());
 
         couponHistoryList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 
