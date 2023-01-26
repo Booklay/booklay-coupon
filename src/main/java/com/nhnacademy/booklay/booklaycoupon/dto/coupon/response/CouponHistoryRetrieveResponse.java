@@ -12,4 +12,5 @@ public class CouponHistoryRetrieveResponse {
     private String name;
     private String memberId;
     private LocalDateTime issuedAt;
+    private LocalDateTime expiredAt;
 }

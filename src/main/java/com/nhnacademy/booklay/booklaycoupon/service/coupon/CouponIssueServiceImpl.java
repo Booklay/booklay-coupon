@@ -12,6 +12,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +50,14 @@ public class CouponIssueServiceImpl implements CouponIssueService{
             Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
             OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode());
             orderCoupon.setMember(member);
-
+            orderCoupon.setIssuedAt(LocalDateTime.now());
+            orderCoupon.setExpiredAt(orderCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
             orderCouponRepository.save(orderCoupon);
         } else if (Objects.nonNull(coupon.getProduct())){
             ProductCoupon productCoupon = new ProductCoupon(coupon, getCode());
             productCoupon.setMember(member);
-
+            productCoupon.setIssuedAt(LocalDateTime.now());
+            productCoupon.setExpiredAt(productCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
             productCouponRepository.save(productCoupon);
         } else {
             throw new IllegalArgumentException();

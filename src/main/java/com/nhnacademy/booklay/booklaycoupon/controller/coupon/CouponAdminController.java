@@ -105,7 +105,7 @@ public class CouponAdminController {
     public ResponseEntity<List<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory() {
         List<CouponHistoryRetrieveResponse> responses =
             couponAdminService.retrieveIssuedCoupons();
-        log.info(String.valueOf(responses.size()));
+
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
