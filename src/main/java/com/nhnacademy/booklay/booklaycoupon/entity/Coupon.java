@@ -47,6 +47,11 @@ public class Coupon {
     @Setter
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_zone_no")
+    @Setter
+    private CouponZone couponZone;
+
     @Column
     private String name;
 
@@ -69,10 +74,13 @@ public class Coupon {
     @Setter
     private Boolean isLimited;
 
+    @Column(name = "validate_term")
+    private int validateTerm;
+
     @Builder
     public Coupon(Image image, CouponType couponType, String name, int amount, int minimumUseAmount,
                   int maximumDiscountAmount, LocalDateTime issuanceDeadlineAt,
-                  Boolean isDuplicatable, Boolean isLimited) {
+                  Boolean isDuplicatable, Boolean isLimited, int validateTerm) {
         this.image = image;
         this.couponType = couponType;
         this.name = name;
@@ -82,6 +90,7 @@ public class Coupon {
         this.issuanceDeadlineAt = issuanceDeadlineAt;
         this.isDuplicatable = isDuplicatable;
         this.isLimited = isLimited;
+        this.validateTerm = validateTerm;
     }
 
     public void update(CouponCURequest couponRequest, CouponType couponType) {
