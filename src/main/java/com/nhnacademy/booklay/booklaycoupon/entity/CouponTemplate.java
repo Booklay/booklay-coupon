@@ -76,7 +76,7 @@ public class CouponTemplate {
     public CouponCURequest toCouponCURequest() {
         return new CouponCURequest(name, image.getId(), typeCode, amount
             , isOrderCoupon, applyItemId, minimumUseAmount, maximumDiscountAmount,
-            LocalDateTime.now().plusDays(validateTerm),isDuplicatable, false);
+            LocalDateTime.now().plusDays(validateTerm),isDuplicatable, false, validateTerm);
     }
 
     public void update(CouponTemplateCURequest couponTemplateCURequest, Image image) {
