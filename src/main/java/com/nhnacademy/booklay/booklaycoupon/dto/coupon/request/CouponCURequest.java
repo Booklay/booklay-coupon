@@ -51,6 +51,9 @@ public class CouponCURequest {
     @NotNull
     private Boolean isLimited;
 
+    @NotNull
+    private int validateTerm;
+
     public static Coupon toEntity(CouponCURequest couponRequest, CouponType couponType, Image image) {
         return Coupon.builder()
             .couponType(couponType)
@@ -61,7 +64,8 @@ public class CouponCURequest {
             .maximumDiscountAmount(couponRequest.getMaximumDiscountAmount())
             .issuanceDeadlineAt(couponRequest.getIssuanceDeadlineAt())
             .isDuplicatable(couponRequest.getIsDuplicatable())
-            .isLimited(couponRequest.isLimited)
+            .isLimited(couponRequest.getIsLimited())
+            .validateTerm(couponRequest.getValidateTerm())
             .build();
     }
 }
