@@ -5,6 +5,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetr
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCoupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.QMember;
 import com.nhnacademy.booklay.booklaycoupon.entity.QOrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QProductCoupon;
 import com.querydsl.core.QueryResults;
@@ -25,9 +26,11 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     public List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderCoupon() {
         QCoupon coupon = QCoupon.coupon;
         QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
+        QMember member = QMember.member;
 
         return from(coupon)
             .innerJoin(orderCoupon).on(coupon.id.eq(orderCoupon.coupon.id))
+            .leftJoin(member).on(orderCoupon.member.memberId.eq(member.memberId))
             .select(Projections.constructor(CouponHistoryRetrieveResponse.class,
                 coupon.id.as("id"),
                 orderCoupon.code.as("code"),
@@ -43,9 +46,11 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     public List<CouponHistoryRetrieveResponse> getCouponHistoryAtProductCoupon() {
         QCoupon coupon = QCoupon.coupon;
         QProductCoupon productCoupon = QProductCoupon.productCoupon;
+        QMember member = QMember.member;
 
         return from(coupon)
             .innerJoin(productCoupon).on(coupon.id.eq(productCoupon.coupon.id))
+            .leftJoin(member).on(productCoupon.member.memberId.eq(member.memberId))
             .select(Projections.constructor(CouponHistoryRetrieveResponse.class,
                 coupon.id,
                 productCoupon.code,
