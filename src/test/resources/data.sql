@@ -649,18 +649,18 @@ create table coupon_template
     coupon_template_no bigint not null
         primary key auto_increment,
     image_no bigint not null,
-    code tinyint not null,
-    is_order_coupon tinyint(1) not null,
+    `code` tinyint not null,
+    is_order_coupon boolean not null,
     apply_item_id bigint not null,
     name varchar(100) not null,
-    amount int not null,
+    `amount` int not null,
     minimum_use_amount int not null,
     maximum_discount_amount int null,
     issuing_dead_line datetime NULL,
     validate_term int not null,
-    is_duplicatable tinyint(1) not null,
+    is_duplicatable boolean not null,
     constraint FK_coupon_type_TO_coupon_template_1
-        foreign key (code) references coupon_type (code),
+        foreign key (`code`) references coupon_type (code),
     constraint FK_image_TO_coupon_template_1
         foreign key (image_no) references image (image_no)
 );
