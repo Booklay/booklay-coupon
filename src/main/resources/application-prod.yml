@@ -8,6 +8,7 @@ spring:
     username: booklay
     password: _nys_6*0osSnt5Pa
 
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -25,4 +26,8 @@ booklay:
     url: https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/500rMJPT021TnyNl/secrets/
     p12_password: 1234
 
-  pool_size: 20
+  pool_size: 5
+
+logging:
+  level:
+    root: debug
