@@ -25,6 +25,7 @@ import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderProduct;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderStatusCode;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
+import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -53,7 +54,7 @@ public class Dummy {
             .build();
 
         ReflectionTestUtils.setField(member, "memberNo", 1L);
-
+        ReflectionTestUtils.setField(member, "createdAt", LocalDateTime.now());
         return member;
     }
 
@@ -338,5 +339,16 @@ public class Dummy {
             , LocalDateTime.now(), 7, false, "default");
 
         return couponTemplateCURequest;
+    }
+
+    public static ProductCoupon getDummyProductCoupon() {
+        ProductCoupon productCoupon = ProductCoupon.builder()
+            .coupon(getDummyCoupon())
+            .code(UUID.randomUUID().toString().substring(0, 30))
+            .build();
+
+        ReflectionTestUtils.setField(productCoupon, "id", 1L);
+
+        return productCoupon;
     }
 }
