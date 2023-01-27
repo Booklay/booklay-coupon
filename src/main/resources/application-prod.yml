@@ -28,6 +28,3 @@ booklay:
 
   pool_size: 5
 
-logging:
-  level:
-    root: debug
