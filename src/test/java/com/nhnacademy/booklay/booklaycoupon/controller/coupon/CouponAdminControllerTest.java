@@ -207,12 +207,12 @@ class CouponAdminControllerTest {
     void testIssueCouponToMember() throws Exception {
 
         // given
-        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1l, 1L);
+        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1L, 1L);
 
         // when
 
         // then
-        mockMvc.perform(post(URI_PREFIX + "/member/issue")
+        mockMvc.perform(post(URI_PREFIX + "/members/issue")
                 .content(objectMapper.writeValueAsString(couponRequest))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
@@ -232,13 +232,12 @@ class CouponAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(post(URI_PREFIX + "/member/issue")
-                .content(objectMapper.writeValueAsString(couponRequest))
+        mockMvc.perform(get(URI_PREFIX + "/issue-history")
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated())
+            .andExpect(status().isOk())
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponIssueService).issueCouponToMember(any());
+        Mockito.verify(couponAdminService).retrieveIssuedCoupons();
     }
 }
