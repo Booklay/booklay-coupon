@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -51,6 +52,9 @@ class CouponRepositoryImplTest {
 
     @BeforeEach
     void setUp() {
+        clearRepo("coupon", couponRepository);
+        clearRepo("member", memberRepository);
+        clearRepo("order_coupon", orderCouponRepository);
         coupon = Dummy.getDummyCoupon();
         orderCoupon = Dummy.getDummyOrderCoupon();
         productCoupon = Dummy.getDummyProductCoupon();
@@ -112,5 +116,16 @@ class CouponRepositoryImplTest {
 
         // then
         assertThat(result.getContent().size()).isEqualTo(0);
+    }
+
+    void clearRepo(String entityName, JpaRepository jpaRepository) {
+        jpaRepository.deleteAll();
+
+        String query = String.format("ALTER TABLE `%s` ALTER COLUMN `%s_no` RESTART WITH 1", entityName, entityName);
+
+        this.entityManager
+            .getEntityManager()
+            .createNativeQuery(query)
+            .executeUpdate();
     }
 }
