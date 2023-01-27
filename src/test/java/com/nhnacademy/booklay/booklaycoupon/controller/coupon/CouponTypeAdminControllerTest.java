@@ -12,10 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponType.request.CouponTypeCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponType.response.CouponTypeRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.response.CouponTypeRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
-import com.nhnacademy.booklay.booklaycoupon.service.couponType.CouponTypeService;
+import com.nhnacademy.booklay.booklaycoupon.service.coupontype.CouponTypeService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

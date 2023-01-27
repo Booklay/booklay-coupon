@@ -1,9 +1,9 @@
-package com.nhnacademy.booklay.booklaycoupon.service.couponTemplate;
+package com.nhnacademy.booklay.booklaycoupon.service.coupontemplate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTemplateRepository;

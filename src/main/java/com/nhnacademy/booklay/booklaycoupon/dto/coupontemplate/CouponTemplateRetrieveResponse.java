@@ -1,4 +1,4 @@
-package com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate;
+package com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate;
 
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import lombok.Builder;

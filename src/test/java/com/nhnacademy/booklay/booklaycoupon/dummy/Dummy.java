@@ -2,9 +2,9 @@ package com.nhnacademy.booklay.booklaycoupon.dummy;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponType.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Authority;
@@ -28,7 +28,7 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.validation.constraints.NotNull;
+
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class Dummy {
