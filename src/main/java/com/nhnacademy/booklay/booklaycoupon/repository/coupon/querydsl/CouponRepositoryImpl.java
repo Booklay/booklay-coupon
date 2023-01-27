@@ -71,6 +71,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
             .where(orderCoupon.member.memberNo.eq(memberNo))
             .where(orderCoupon.coupon.couponType.name.eq("포인트"))
             .select(Projections.constructor(PointCouponRetrieveResponse.class,
+                coupon.id,
                 coupon.name,
                 coupon.amount))
             .offset(pageable.getOffset())
