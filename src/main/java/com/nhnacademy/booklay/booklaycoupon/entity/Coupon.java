@@ -47,11 +47,6 @@ public class Coupon {
     @Setter
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_zone_no")
-    @Setter
-    private CouponZone couponZone;
-
     @Column
     private String name;
 
