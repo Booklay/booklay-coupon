@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
@@ -166,7 +167,7 @@ class CouponAdminControllerTest {
 
     @Test
     @DisplayName("쿠폰 삭제 테스트")
-    void deleteCoupon() throws Exception {
+    void testDeleteCoupon() throws Exception {
 
         // given
 
@@ -182,8 +183,8 @@ class CouponAdminControllerTest {
     }
 
     @Test
-    @DisplayName("관리자가 회원에게 쿠폰 발급")
-    void issueCouponToMember() throws Exception {
+    @DisplayName("관리자가 쿠폰 수량 발급")
+    void testIssueCoupon() throws Exception {
 
         // given
         CouponIssueRequest couponRequest = new CouponIssueRequest(1L, 1);
@@ -199,5 +200,44 @@ class CouponAdminControllerTest {
             .andReturn();
 
         Mockito.verify(couponIssueService).issueCoupon(any());
+    }
+
+    @Test
+    @DisplayName("관리자가 사용자에게 쿠폰 발급")
+    void testIssueCouponToMember() throws Exception {
+
+        // given
+        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1L, 1L);
+
+        // when
+
+        // then
+        mockMvc.perform(post(URI_PREFIX + "/members/issue")
+                .content(objectMapper.writeValueAsString(couponRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andDo(print())
+            .andReturn();
+
+        Mockito.verify(couponIssueService).issueCouponToMember(any());
+    }
+
+    @Test
+    @DisplayName("관리자의 발급 내역 조회")
+    void issueCouponToMember() throws Exception {
+
+        // given
+        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1l, 1L);
+
+        // when
+
+        // then
+        mockMvc.perform(get(URI_PREFIX + "/issue-history")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andReturn();
+
+        Mockito.verify(couponAdminService).retrieveIssuedCoupons();
     }
 }

@@ -1,6 +1,6 @@
 package com.nhnacademy.booklay.booklaycoupon.entity;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

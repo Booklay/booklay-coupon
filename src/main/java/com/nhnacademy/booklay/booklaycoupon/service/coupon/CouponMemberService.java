@@ -6,6 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CouponMemberService {
-    Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberId, Pageable pageable);
-    Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberId, Pageable pageable);
+    Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberNo, Pageable pageable);
+    Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberNo, Pageable pageable);
 }

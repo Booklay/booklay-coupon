@@ -105,7 +105,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
 
     private void setCategoryOrProduct(Coupon coupon, CouponCURequest couponRequest) {
 
-        Boolean isOrderCoupon = couponRequest.getIsOrderCoupon();
+        boolean isOrderCoupon = couponRequest.getIsOrderCoupon();
         Long applyItemId = couponRequest.getApplyItemId();
 
         if(Objects.isNull(applyItemId)) {

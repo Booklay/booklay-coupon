@@ -309,8 +309,14 @@ create table product
 create table coupon_zone
 (
     coupon_zone_no bigint not null primary key auto_increment,
-    opened_at datetime null,
-    is_blind boolean not null
+    `name`	VARCHAR(100)	NOT NULL,
+    `short_description`	VARCHAR(100)	NOT NULL,
+    `maximum_discount_amount`	INT	NOT NULL,
+    `opened_at`	DATETIME	NOT NULL,
+    `closed_at`	DATETIME	NOT NULL,
+    `coupon_no`	BIGINT	NOT NULL,
+    `is_blind`	boolean	NOT NULL,
+    `is_limited` boolean	NOT NULL
 );
 
 create table coupon
@@ -321,7 +327,6 @@ create table coupon
     code tinyint not null,
     product_no bigint null,
     category_no bigint null,
-    coupon_zone_no bigint null,
     name varchar(100) not null,
     amount int not null,
     minimum_use_amount int not null,
@@ -330,8 +335,6 @@ create table coupon
     is_duplicatable boolean not null,
     is_limited boolean not null,
     validate_term int not null,
-    constraint FK_coupon_zone_TO_coupon_1
-        foreign key (coupon_zone_no) references coupon_zone (coupon_zone_no),
     constraint FK_product_TO_coupon_1
         foreign key (product_no) references product (product_no),
     constraint FK_category_TO_coupon_1

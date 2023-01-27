@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/members/{memberId}/coupons")
+@RequestMapping("/members/{memberNo}/coupons")
 @RequiredArgsConstructor
 public class CouponMemberController {
 
     private final CouponMemberService couponMemberService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<MemberCouponRetrieveResponse>> retrieveCouponsByMember(@PathVariable Long memberId, @PageableDefault
+    public ResponseEntity<PageResponse<MemberCouponRetrieveResponse>> retrieveCouponsByMember(@PathVariable Long memberNo, @PageableDefault
     Pageable pageable) {
-        couponMemberService.retrieveCoupons(memberId, pageable);
+        couponMemberService.retrieveCoupons(memberNo, pageable);
 
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
@@ -34,9 +34,9 @@ public class CouponMemberController {
     }
 
     @GetMapping("/point")
-    public ResponseEntity<PageResponse<PointCouponRetrieveResponse>> retrievePointCoupons(@PathVariable Long memberId, @PageableDefault Pageable pageable) {
+    public ResponseEntity<PageResponse<PointCouponRetrieveResponse>> retrievePointCoupons(@PathVariable Long memberNo, @PageableDefault Pageable pageable) {
         Page<PointCouponRetrieveResponse> pages =
-            couponMemberService.retrievePointCoupons(memberId, pageable);
+            couponMemberService.retrievePointCoupons(memberNo, pageable);
 
         PageResponse<PointCouponRetrieveResponse> response = new PageResponse<>(pages);
 
