@@ -1,8 +1,8 @@
-package com.nhnacademy.booklay.booklaycoupon.service.couponTemplate;
+package com.nhnacademy.booklay.booklaycoupon.service.coupontemplate;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateDetailRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateDetailRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
