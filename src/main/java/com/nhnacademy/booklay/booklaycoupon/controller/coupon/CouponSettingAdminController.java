@@ -1,9 +1,9 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
-import com.nhnacademy.booklay.booklaycoupon.service.couponSetting.CouponSettingService;
+import com.nhnacademy.booklay.booklaycoupon.service.couponsetting.CouponSettingService;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

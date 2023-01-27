@@ -1,6 +1,6 @@
-package com.nhnacademy.booklay.booklaycoupon.service.couponSetting;
+package com.nhnacademy.booklay.booklaycoupon.service.couponsetting;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
 import java.util.List;
 import org.springframework.data.domain.Page;

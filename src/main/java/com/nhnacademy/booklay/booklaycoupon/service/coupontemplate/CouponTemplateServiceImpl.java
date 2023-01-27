@@ -1,13 +1,13 @@
-package com.nhnacademy.booklay.booklaycoupon.service.couponTemplate;
+package com.nhnacademy.booklay.booklaycoupon.service.coupontemplate;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateDetailRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateDetailRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTemplateRepository;
-import com.nhnacademy.booklay.booklaycoupon.service.couponType.CouponTypeService;
+import com.nhnacademy.booklay.booklaycoupon.service.coupontype.CouponTypeService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,7 +53,6 @@ public class CouponTemplateServiceImpl implements CouponTemplateService{
         CouponTemplateCURequest couponTemplateCURequest){
         CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
             .orElseThrow(() -> new NotFoundException("CouponTemplate", couponTemplateId));
-//        couponTypeService.retrieveCouponType(couponTemplateCURequest.getTypeCode());
         //todo imageService 완성시 변경
         couponTemplate.update(couponTemplateCURequest, new Image(0L, "sss", "sss"));
         return couponTemplateRepository.save(couponTemplate);

@@ -1,4 +1,4 @@
-package com.nhnacademy.booklay.booklaycoupon.dto.couponType.response;
+package com.nhnacademy.booklay.booklaycoupon.dto.coupontype.response;
 
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import lombok.Getter;
