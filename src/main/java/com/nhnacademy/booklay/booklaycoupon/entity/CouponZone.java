@@ -22,9 +22,21 @@ public class CouponZone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String name;
+
+    @Column(name = "short_description")
+    private String description;
+
     @Column(name = "opened_at")
     private LocalDateTime openedAt;
 
+    @Column(name = "closed_at")
+    private LocalDateTime closedAt;
+
     @Column(name = "is_blind")
     private Boolean isBlind;
+
+    @Column(name = "is_limited")
+    private Boolean isLimited;
 }
