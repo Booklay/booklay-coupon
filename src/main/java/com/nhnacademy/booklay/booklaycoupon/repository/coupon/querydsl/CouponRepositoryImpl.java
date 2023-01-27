@@ -63,14 +63,15 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     }
 
     @Override
-    public Page<PointCouponRetrieveResponse> getPointCouponByMember(Long memberId, Pageable pageable) {
+    public Page<PointCouponRetrieveResponse> getPointCouponByMember(Long memberNo, Pageable pageable) {
         QCoupon coupon = QCoupon.coupon;
         QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
 
         QueryResults<PointCouponRetrieveResponse> list = from(orderCoupon)
-            .where(orderCoupon.member.memberNo.eq(memberId))
+            .where(orderCoupon.member.memberNo.eq(memberNo))
             .where(orderCoupon.coupon.couponType.name.eq("포인트"))
             .select(Projections.constructor(PointCouponRetrieveResponse.class,
+                coupon.id,
                 coupon.name,
                 coupon.amount))
             .offset(pageable.getOffset())

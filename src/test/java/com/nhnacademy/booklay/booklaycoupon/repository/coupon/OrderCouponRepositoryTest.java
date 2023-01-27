@@ -29,7 +29,6 @@ class OrderCouponRepositoryTest {
     @Autowired
     private CouponRepository couponRepository;
 
-
     private Coupon coupon;
     private OrderCoupon orderCoupon;
 

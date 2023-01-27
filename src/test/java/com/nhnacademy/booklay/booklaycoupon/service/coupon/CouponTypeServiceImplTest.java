@@ -4,11 +4,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponType.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
-import com.nhnacademy.booklay.booklaycoupon.service.couponType.CouponTypeServiceImpl;
+import com.nhnacademy.booklay.booklaycoupon.service.coupontype.CouponTypeServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

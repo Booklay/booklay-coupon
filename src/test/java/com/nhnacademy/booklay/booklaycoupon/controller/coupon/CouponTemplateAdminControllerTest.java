@@ -1,11 +1,9 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,15 +13,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.booklay.booklaycoupon.controller.coupon.CouponTemplateAdminController;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateDetailRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateDetailRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
-import com.nhnacademy.booklay.booklaycoupon.service.couponTemplate.CouponTemplateService;
+import com.nhnacademy.booklay.booklaycoupon.service.coupontemplate.CouponTemplateService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

@@ -18,13 +18,13 @@ public class CouponMemberServiceImpl implements CouponMemberService{
 
     @Override
     @Transactional(readOnly = true)
-    public Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberId, Pageable pageable) {
-        return couponRepository.getCouponsByMember(memberId);
+    public Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberNo, Pageable pageable) {
+        return couponRepository.getCouponsByMember(memberNo);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<PointCouponRetrieveResponse> retrievePointCoupons(Long couponId, Pageable pageable) {
-        return couponRepository.getPointCouponByMember(couponId, pageable);
+    public Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberNo, Pageable pageable) {
+        return couponRepository.getPointCouponByMember(memberNo, pageable);
     }
 }

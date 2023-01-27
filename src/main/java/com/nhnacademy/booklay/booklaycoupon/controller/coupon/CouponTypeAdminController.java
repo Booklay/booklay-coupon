@@ -1,9 +1,9 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponType.request.CouponTypeCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponType.response.CouponTypeRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.response.CouponTypeRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
-import com.nhnacademy.booklay.booklaycoupon.service.couponType.CouponTypeService;
+import com.nhnacademy.booklay.booklaycoupon.service.coupontype.CouponTypeService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
