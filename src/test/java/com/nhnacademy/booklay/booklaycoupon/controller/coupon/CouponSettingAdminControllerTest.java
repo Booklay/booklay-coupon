@@ -14,11 +14,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponSetting.CouponSettingCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
-import com.nhnacademy.booklay.booklaycoupon.service.couponSetting.CouponSettingService;
-import java.time.LocalDateTime;
+import com.nhnacademy.booklay.booklaycoupon.service.couponsetting.CouponSettingService;
+
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

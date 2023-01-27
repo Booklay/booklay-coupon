@@ -1,4 +1,4 @@
-package com.nhnacademy.booklay.booklaycoupon.dto.couponType.request;
+package com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request;
 
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import javax.validation.constraints.NotBlank;

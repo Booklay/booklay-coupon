@@ -1,7 +1,7 @@
 package com.nhnacademy.booklay.booklaycoupon.entity;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponTemplate.CouponTemplateCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
