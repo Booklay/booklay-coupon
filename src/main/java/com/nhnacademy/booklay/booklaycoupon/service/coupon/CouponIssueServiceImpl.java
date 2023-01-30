@@ -52,12 +52,14 @@ public class CouponIssueServiceImpl implements CouponIssueService{
             orderCoupon.setMember(member);
             orderCoupon.setIssuedAt(LocalDateTime.now());
             orderCoupon.setExpiredAt(orderCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
+
             orderCouponRepository.save(orderCoupon);
         } else if (Objects.nonNull(coupon.getProduct())){
             ProductCoupon productCoupon = new ProductCoupon(coupon, getCode());
             productCoupon.setMember(member);
             productCoupon.setIssuedAt(LocalDateTime.now());
             productCoupon.setExpiredAt(productCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
+
             productCouponRepository.save(productCoupon);
         } else {
             throw new IllegalArgumentException();
