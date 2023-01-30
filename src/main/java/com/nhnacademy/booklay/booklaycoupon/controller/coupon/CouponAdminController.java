@@ -1,13 +1,13 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 
+import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
 import java.util.List;
@@ -100,7 +100,9 @@ public class CouponAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 쿠폰 발급 내역
+    /**
+     * 발급된 쿠폰을 조회합니다.
+     */
     @GetMapping("/issue-history")
     public ResponseEntity<List<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory() {
         List<CouponHistoryRetrieveResponse> responses =
