@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,8 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ImageRepository imageRepository;
+
+    private static final int PAGE_SIZE = 20;
 
     @Override
     public Coupon createCoupon(CouponCURequest couponRequest) {
@@ -91,16 +95,33 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         couponRepository.deleteById(couponId);
     }
 
+    /**
+     * 발급된 쿠폰을 조회하기 위해, 상품 쿠폰과 주문 쿠폰을 조회하고 Page로 반환합니다.
+     *
+     */
     @Override
     @Transactional(readOnly = true)
-    public List<CouponHistoryRetrieveResponse> retrieveIssuedCoupons() {
+    public Page<CouponHistoryRetrieveResponse> retrieveIssuedCoupons(Pageable pageable) {
         List<CouponHistoryRetrieveResponse> couponHistoryList = new ArrayList<>();
+
         couponHistoryList.addAll(couponRepository.getCouponHistoryAtOrderCoupon());
         couponHistoryList.addAll(couponRepository.getCouponHistoryAtProductCoupon());
 
         couponHistoryList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 
-        return couponHistoryList;
+        return getHistoryPage(pageable, couponHistoryList);
+    }
+
+    /**
+     * List를 Page로 바꿈.
+     *
+     */
+    private static Page<CouponHistoryRetrieveResponse> getHistoryPage(Pageable pageable,
+                                                                      List<CouponHistoryRetrieveResponse> couponHistoryList) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), couponHistoryList.size());
+
+        return new PageImpl<>(couponHistoryList.subList(start, end), pageable, couponHistoryList.size());
     }
 
     private void setCategoryOrProduct(Coupon coupon, CouponCURequest couponRequest) {
@@ -125,4 +146,5 @@ public class CouponAdminServiceImpl implements CouponAdminService{
             coupon.setProduct(product);
         }
     }
+
 }

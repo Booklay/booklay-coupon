@@ -238,6 +238,6 @@ class CouponAdminControllerTest {
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponAdminService).retrieveIssuedCoupons();
+        Mockito.verify(couponAdminService).retrieveIssuedCoupons(any());
     }
 }
