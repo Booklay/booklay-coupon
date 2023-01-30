@@ -3,7 +3,6 @@ package com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
