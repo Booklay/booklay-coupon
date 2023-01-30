@@ -18,6 +18,12 @@
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <jacoco.version>0.8.6</jacoco.version>
         <querydsl.version>5.0.0</querydsl.version>
+        <!-- SonarQube -->
+        <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S6212</sonar.issue.ignore.multicriteria.e1.ruleKey>
+        <sonar.issue.ignore.multicriteria.e1.resourceKey>
+            **/*.java
+        </sonar.issue.ignore.multicriteria.e1.resourceKey>
     </properties>
 
     <dependencyManagement>
@@ -127,6 +133,7 @@
             <artifactId>querydsl-jpa</artifactId>
             <version>${querydsl.version}</version>
         </dependency>
+
 
 <!--        &lt;!&ndash; kafka &ndash;&gt;-->
 <!--        <dependency>-->
