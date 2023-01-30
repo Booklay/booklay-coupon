@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CouponZoneRepository extends JpaRepository<CouponZone, Long> {
-    Page<CouponZoneResponse> findAllBy(Pageable pageable);
+    Page<CouponZoneResponse> findAllByIsLimitedIs(Boolean isLimited, Pageable pageable);
 }

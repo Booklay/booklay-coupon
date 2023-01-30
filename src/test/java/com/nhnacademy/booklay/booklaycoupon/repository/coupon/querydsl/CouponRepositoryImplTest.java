@@ -115,7 +115,7 @@ class CouponRepositoryImplTest {
             couponRepository.getPointCouponByMember(1L, pageRequest);
 
         // then
-        assertThat(result.getContent().size()).isEqualTo(0);
+        assertThat(result.getContent().size()).isZero();
     }
 
     void clearRepo(String entityName, JpaRepository jpaRepository) {
