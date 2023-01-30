@@ -104,7 +104,7 @@ class CouponRepositoryTest {
         couponRepository.deleteById(coupon.getId());
 
         //then
-        assertThat(couponRepository.findAll().size()).isEqualTo(0);
+        assertThat(couponRepository.findAll().size()).isZero();
     }
 
     @Test
