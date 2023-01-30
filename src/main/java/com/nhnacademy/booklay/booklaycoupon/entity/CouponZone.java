@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,9 +35,30 @@ public class CouponZone {
     @Column(name = "closed_at")
     private LocalDateTime closedAt;
 
+    @Column(name = "maximum_discount_amount")
+    private int maximumDiscountAmount;
+
+    @Column(name = "coupon_no")
+    private Long couponId;
+
     @Column(name = "is_blind")
     private Boolean isBlind;
 
     @Column(name = "is_limited")
     private Boolean isLimited;
+
+    @Builder
+    public CouponZone(String name, String description, LocalDateTime openedAt,
+                      LocalDateTime closedAt,
+                      int maximumDiscountAmount, Long couponId, Boolean isBlind,
+                      Boolean isLimited) {
+        this.name = name;
+        this.description = description;
+        this.openedAt = openedAt;
+        this.closedAt = closedAt;
+        this.maximumDiscountAmount = maximumDiscountAmount;
+        this.couponId = couponId;
+        this.isBlind = isBlind;
+        this.isLimited = isLimited;
+    }
 }
