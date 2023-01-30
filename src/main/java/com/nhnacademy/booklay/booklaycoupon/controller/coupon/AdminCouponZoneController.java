@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member/coupon-zone")
-public class CouponZoneController {
+@RequestMapping("/admin/coupon-zone")
+public class AdminCouponZoneController {
 
     private final CouponZoneService couponZoneService;
 
@@ -45,5 +45,13 @@ public class CouponZoneController {
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
             .body(pageResponse);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createCoupon(@Valid @RequestBody
+                                             CouponZoneCreateRequest couponRequest) {
+        couponZoneService.createAtCouponZone(couponRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
