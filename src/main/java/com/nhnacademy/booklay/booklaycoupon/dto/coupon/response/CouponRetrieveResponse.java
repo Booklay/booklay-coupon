@@ -13,7 +13,7 @@ public class CouponRetrieveResponse {
     private final int amount;
     private final int minimumUseAmount;
     private final int maximumDiscountAmount;
-    private final boolean isLimited;
+    private final Boolean isLimited;
 
     @Builder
     public CouponRetrieveResponse(Long id, String name, CouponType couponType, int amount,
