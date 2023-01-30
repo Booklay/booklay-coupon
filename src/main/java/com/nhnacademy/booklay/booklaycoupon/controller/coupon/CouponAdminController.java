@@ -102,13 +102,16 @@ public class CouponAdminController {
 
     /**
      * 발급된 쿠폰을 조회합니다.
+     *
      */
     @GetMapping("/issue-history")
-    public ResponseEntity<List<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory() {
-        List<CouponHistoryRetrieveResponse> responses =
-            couponAdminService.retrieveIssuedCoupons();
+    public ResponseEntity<PageResponse<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory(Pageable pageable) {
+        Page<CouponHistoryRetrieveResponse> historyPage =
+            couponAdminService.retrieveIssuedCoupons(pageable);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+        PageResponse<CouponHistoryRetrieveResponse> response = new PageResponse<>(historyPage);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // 쿠폰 사용 내역
