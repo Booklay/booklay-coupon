@@ -6,11 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Table(name = "coupon_zone")
 @Entity
@@ -23,6 +26,11 @@ public class CouponZone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @Setter
+    @JoinColumn(name = "file_no")
+    private ObjectFile file;
+
     @Column
     private String name;
 
@@ -32,8 +40,8 @@ public class CouponZone {
     @Column(name = "opened_at")
     private LocalDateTime openedAt;
 
-    @Column(name = "closed_at")
-    private LocalDateTime closedAt;
+    @Column(name = "issuance_deadline_at")
+    private LocalDateTime issuanceDeadlineAt;
 
     @Column(name = "maximum_discount_amount")
     private int maximumDiscountAmount;
@@ -49,13 +57,13 @@ public class CouponZone {
 
     @Builder
     public CouponZone(String name, String description, LocalDateTime openedAt,
-                      LocalDateTime closedAt,
+                      LocalDateTime issuanceDeadlineAt,
                       int maximumDiscountAmount, Long couponId, Boolean isBlind,
                       Boolean isLimited) {
         this.name = name;
         this.description = description;
         this.openedAt = openedAt;
-        this.closedAt = closedAt;
+        this.issuanceDeadlineAt = issuanceDeadlineAt;
         this.maximumDiscountAmount = maximumDiscountAmount;
         this.couponId = couponId;
         this.isBlind = isBlind;
