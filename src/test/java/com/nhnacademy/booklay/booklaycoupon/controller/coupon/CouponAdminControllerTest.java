@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
@@ -76,7 +77,7 @@ class CouponAdminControllerTest {
         when(couponAdminService.retrieveAllCoupons(any())).thenReturn(couponRetrieveResponses);
 
         // then
-        mockMvc.perform(get(URI_PREFIX + "/pages")
+        mockMvc.perform(get(URI_PREFIX)
                 .queryParam("page", "0")
                 .queryParam("size", "10")
             .accept(MediaType.APPLICATION_JSON))
@@ -227,9 +228,11 @@ class CouponAdminControllerTest {
     void issueCouponToMember() throws Exception {
 
         // given
-        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1l, 1L);
+        PageRequest pageRequest = PageRequest.of(0,10);
+        PageImpl<CouponHistoryRetrieveResponse> couponRetrieveResponses = new PageImpl<>(List.of(), pageRequest, 1);
 
         // when
+        when(couponAdminService.retrieveIssuedCoupons(any())).thenReturn(couponRetrieveResponses);
 
         // then
         mockMvc.perform(get(URI_PREFIX + "/issue-history")
