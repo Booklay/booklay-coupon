@@ -9,6 +9,7 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
+import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
@@ -16,6 +17,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,22 +41,31 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final CouponTypeRepository couponTypeRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final ImageRepository imageRepository;
+    private final ObjectFileRepository fileRepository;
 
     private static final int PAGE_SIZE = 20;
 
+    /**
+     * 쿠폰을 생성합니다.
+     * @param couponRequest 쿠폰 생성에 필요한 요청 객체.
+     */
     @Override
     public Coupon createCoupon(CouponCURequest couponRequest) {
         Long typeCode = couponRequest.getTypeCode();
-        Long imageId = couponRequest.getImageId();
+        Long fileId = couponRequest.getFileId();
 
         CouponType couponType = couponTypeRepository.findById(typeCode)
             .orElseThrow(() -> new NotFoundException(CouponType.class.toString(), typeCode));
 
-        Image image = imageRepository.findById(imageId)
-            .orElseThrow(() -> new NotFoundException(Image.class.toString(), imageId));
+        Coupon coupon = CouponCURequest.toEntity(couponRequest, couponType);
 
-        Coupon coupon = CouponCURequest.toEntity(couponRequest, couponType, image);
+        if(Objects.nonNull(couponRequest.getFileId())) {
+            ObjectFile file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new NotFoundException(Image.class.toString(), fileId));
+
+            coupon.setFile(file);
+        }
+
         setCategoryOrProduct(coupon, couponRequest);
 
         return couponRepository.save(coupon);

@@ -27,7 +27,7 @@ public class CouponZoneCreateRequest {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime closedAt;
+    private LocalDateTime issuanceDeadlineAt;
 
     @NotNull
     private Boolean isBlind;
@@ -37,7 +37,7 @@ public class CouponZoneCreateRequest {
             .name(name)
             .description(request.description)
             .openedAt(request.getOpenedAt())
-            .closedAt(request.getClosedAt())
+            .issuanceDeadlineAt(request.issuanceDeadlineAt)
             .isBlind(request.isBlind)
             .couponId(couponId)
             .maximumDiscountAmount(maximum)
