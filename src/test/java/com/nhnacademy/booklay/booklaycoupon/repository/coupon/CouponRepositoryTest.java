@@ -46,7 +46,6 @@ class CouponRepositoryTest {
         clearRepo("coupon", couponRepository);
         coupon = Dummy.getDummyCoupon();
 
-        entityManager.persist(coupon.getImage());
         entityManager.persist(coupon.getCouponType());
 
         couponRepository.save(coupon);
