@@ -72,9 +72,6 @@ class CouponAdminServiceImplTest {
         given(categoryRepository.findById(couponCURequest.getApplyItemId())).willReturn(
             Optional.ofNullable(Dummy.getDummyCategory()));
 
-        given(imageRepository.findById(couponCURequest.getImageId())).willReturn(
-            Optional.ofNullable(Dummy.getDummyImage()));
-
         // when
         couponAdminService.createCoupon(couponCURequest);
 

@@ -60,7 +60,6 @@ public class Dummy {
 
     public static Coupon getDummyCoupon() {
         Coupon coupon = Coupon.builder()
-            .image(getDummyImage())
             .couponType(Dummy.getDummyCouponType())
             .name("이달의 쿠폰")
             .amount(5)
@@ -214,7 +213,6 @@ public class Dummy {
         CouponCURequest couponRequest = new CouponCURequest();
 
         ReflectionTestUtils.setField(couponRequest, "name", "이달의 쿠폰");
-        ReflectionTestUtils.setField(couponRequest, "imageId", 1L);
         ReflectionTestUtils.setField(couponRequest, "typeCode", 1L);
         ReflectionTestUtils.setField(couponRequest, "amount", 5);
         ReflectionTestUtils.setField(couponRequest, "isOrderCoupon", true);
@@ -286,7 +284,6 @@ public class Dummy {
             .title("test title")
             .shortDescription("test short description")
             .longDescription("test long description")
-            .image(getDummyImage())
             .isSelling(true)
             .build();
     }

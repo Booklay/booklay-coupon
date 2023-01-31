@@ -9,6 +9,7 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
+import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
@@ -16,11 +17,13 @@ import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,20 +41,31 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final CouponTypeRepository couponTypeRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final ImageRepository imageRepository;
+    private final ObjectFileRepository fileRepository;
 
+    private static final int PAGE_SIZE = 20;
+
+    /**
+     * 쿠폰을 생성합니다.
+     * @param couponRequest 쿠폰 생성에 필요한 요청 객체.
+     */
     @Override
     public Coupon createCoupon(CouponCURequest couponRequest) {
         Long typeCode = couponRequest.getTypeCode();
-        Long imageId = couponRequest.getImageId();
+        Long fileId = couponRequest.getFileId();
 
         CouponType couponType = couponTypeRepository.findById(typeCode)
             .orElseThrow(() -> new NotFoundException(CouponType.class.toString(), typeCode));
 
-        Image image = imageRepository.findById(imageId)
-            .orElseThrow(() -> new NotFoundException(Image.class.toString(), imageId));
+        Coupon coupon = CouponCURequest.toEntity(couponRequest, couponType);
 
-        Coupon coupon = CouponCURequest.toEntity(couponRequest, couponType, image);
+        if(Objects.nonNull(couponRequest.getFileId())) {
+            ObjectFile file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new NotFoundException(Image.class.toString(), fileId));
+
+            coupon.setFile(file);
+        }
+
         setCategoryOrProduct(coupon, couponRequest);
 
         return couponRepository.save(coupon);
@@ -91,16 +105,33 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         couponRepository.deleteById(couponId);
     }
 
+    /**
+     * 발급된 쿠폰을 조회하기 위해, 상품 쿠폰과 주문 쿠폰을 조회하고 Page로 반환합니다.
+     *
+     */
     @Override
     @Transactional(readOnly = true)
-    public List<CouponHistoryRetrieveResponse> retrieveIssuedCoupons() {
+    public Page<CouponHistoryRetrieveResponse> retrieveIssuedCoupons(Pageable pageable) {
         List<CouponHistoryRetrieveResponse> couponHistoryList = new ArrayList<>();
+
         couponHistoryList.addAll(couponRepository.getCouponHistoryAtOrderCoupon());
         couponHistoryList.addAll(couponRepository.getCouponHistoryAtProductCoupon());
 
         couponHistoryList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 
-        return couponHistoryList;
+        return getHistoryPage(pageable, couponHistoryList);
+    }
+
+    /**
+     * List를 Page로 바꿈.
+     *
+     */
+    private static Page<CouponHistoryRetrieveResponse> getHistoryPage(Pageable pageable,
+                                                                      List<CouponHistoryRetrieveResponse> couponHistoryList) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), couponHistoryList.size());
+
+        return new PageImpl<>(couponHistoryList.subList(start, end), pageable, couponHistoryList.size());
     }
 
     private void setCategoryOrProduct(Coupon coupon, CouponCURequest couponRequest) {
@@ -125,4 +156,5 @@ public class CouponAdminServiceImpl implements CouponAdminService{
             coupon.setProduct(product);
         }
     }
+
 }

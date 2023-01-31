@@ -30,8 +30,9 @@ public class Coupon {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "image_no")
-    private Image image;
+    @Setter
+    @JoinColumn(name = "file_no")
+    private ObjectFile file;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
@@ -73,10 +74,9 @@ public class Coupon {
     private int validateTerm;
 
     @Builder
-    public Coupon(Image image, CouponType couponType, String name, int amount, int minimumUseAmount,
+    public Coupon(CouponType couponType, String name, int amount, int minimumUseAmount,
                   int maximumDiscountAmount, LocalDateTime issuanceDeadlineAt,
                   Boolean isDuplicatable, Boolean isLimited, int validateTerm) {
-        this.image = image;
         this.couponType = couponType;
         this.name = name;
         this.amount = amount;

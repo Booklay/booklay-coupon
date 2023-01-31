@@ -35,7 +35,6 @@ class OrderCouponRepositoryTest {
     @BeforeEach
     void setUp() {
         coupon = Coupon.builder()
-            .image(Dummy.getDummyImage())
             .couponType(Dummy.getDummyCouponType())
             .name("이달의 쿠폰")
             .amount(5)
@@ -59,7 +58,6 @@ class OrderCouponRepositoryTest {
 
         // given
         entityManager.persist(coupon.getCouponType());
-        entityManager.persist(coupon.getImage());
         entityManager.persist(coupon);
 
         // when
@@ -76,7 +74,6 @@ class OrderCouponRepositoryTest {
 
         // given
         entityManager.persist(coupon.getCouponType());
-        entityManager.persist(coupon.getImage());
         entityManager.persist(coupon);
         orderCouponRepository.save(orderCoupon);
 
