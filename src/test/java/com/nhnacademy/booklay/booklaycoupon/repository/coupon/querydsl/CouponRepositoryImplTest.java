@@ -67,7 +67,6 @@ class CouponRepositoryImplTest {
     void getCouponHistoryAtOrderCoupon() {
         // given
         entityManager.persist(coupon.getCouponType());
-        entityManager.persist(coupon.getImage());
         couponRepository.save(coupon);
         entityManager.persist(member.getGender());
         memberRepository.save(member);
@@ -85,7 +84,6 @@ class CouponRepositoryImplTest {
     void getCouponHistoryAtProductCoupon() {
         // given
         entityManager.persist(coupon.getCouponType());
-        entityManager.persist(coupon.getImage());
         couponRepository.save(coupon);
         entityManager.persist(member.getGender());
         memberRepository.save(member);
@@ -104,7 +102,6 @@ class CouponRepositoryImplTest {
         // given
         PageRequest pageRequest = PageRequest.of(0, 10);
         entityManager.persist(coupon.getCouponType());
-        entityManager.persist(coupon.getImage());
         couponRepository.save(coupon);
         entityManager.persist(member.getGender());
         memberRepository.save(member);

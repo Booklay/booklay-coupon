@@ -86,6 +86,8 @@ drop table if exists image cascade;
 drop table if exists coupon_template cascade;
 drop table if exists coupon_birthday_setting cascade;
 
+drop table if exists object_file cascade;
+
 create table access_log
 (
     access_log_no bigint not null
@@ -143,6 +145,14 @@ create table image
         primary key auto_increment,
     address varchar(255) not null,
     ext varchar(5) not null
+);
+
+create table object_file
+(
+    file_no bigint not null
+        primary key auto_increment,
+    address varchar(255) not null,
+    file_name varchar(255) not null
 );
 
 create table member
@@ -309,21 +319,24 @@ create table product
 create table coupon_zone
 (
     coupon_zone_no bigint not null primary key auto_increment,
+    file_no bigint null,
     `name`	VARCHAR(100)	NOT NULL,
     `short_description`	VARCHAR(100)	NOT NULL,
     `maximum_discount_amount`	INT	NOT NULL,
     `opened_at`	DATETIME	NOT NULL,
-    `closed_at`	DATETIME	NOT NULL,
+    `issuance_deadline_at`	DATETIME	NOT NULL,
     `coupon_no`	BIGINT	NOT NULL,
     `is_blind`	boolean	NOT NULL,
-    `is_limited` boolean	NOT NULL
+    `is_limited` boolean	NOT NULL,
+    constraint FK_object_file_TO_coupon_zone_1
+        foreign key (file_no) references object_file (file_no)
 );
 
 create table coupon
 (
     coupon_no bigint not null
         primary key auto_increment,
-    image_no bigint not null,
+    file_no bigint null,
     code tinyint not null,
     product_no bigint null,
     category_no bigint null,
@@ -341,8 +354,8 @@ create table coupon
         foreign key (category_no) references category (category_no),
     constraint FK_coupon_type_TO_coupon_1
         foreign key (code) references coupon_type (code),
-    constraint FK_image_TO_coupon_1
-        foreign key (image_no) references image (image_no)
+    constraint FK_object_file_TO_coupon_1
+        foreign key (file_no) references object_file (file_no)
 );
 
 create table order_coupon
@@ -637,14 +650,6 @@ create table wishlist
         foreign key (member_no) references member (member_no),
     constraint FK_product_TO_wishlist_1
         foreign key (product_no) references product (product_no)
-);
-
-create table object_file
-(
-    file_no bigint not null
-        primary key auto_increment,
-    address varchar(255) not null,
-    file_name varchar(255) not null
 );
 
 create table coupon_template

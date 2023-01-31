@@ -18,7 +18,7 @@ public class CouponRetrieveResponse {
     @Builder
     public CouponRetrieveResponse(Long id, String name, CouponType couponType, int amount,
                                   int minimumUseAmount, int maximumDiscountAmount,
-                                  boolean isLimited) {
+                                  Boolean isLimited) {
         this.id = id;
         this.name = name;
         this.typeName = couponType.getName();
