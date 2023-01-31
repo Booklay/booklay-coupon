@@ -42,14 +42,11 @@ public class CouponAdminController {
     private final CouponAdminService couponAdminService;
     private final CouponIssueService couponIssueService;
 
-    @PostMapping
-    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CouponCURequest couponRequest) {
-        couponAdminService.createCoupon(couponRequest);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/pages")
+    /**
+     * 쿠폰 조회
+     *
+     */
+    @GetMapping()
     public ResponseEntity<PageResponse<CouponRetrieveResponse>> retrieveAllCoupons(@PageableDefault Pageable pageable) {
         Page<CouponRetrieveResponse> couponPage = couponAdminService.retrieveAllCoupons(pageable);
 
@@ -60,6 +57,21 @@ public class CouponAdminController {
             .body(couponPageResponse);
     }
 
+    /**
+     * 쿠폰 생성
+     * @param couponRequest 쿠폰 생성 요청 객체
+     */
+    @PostMapping
+    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CouponCURequest couponRequest) {
+        couponAdminService.createCoupon(couponRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 쿠폰 상세 조회
+     * @param couponId 조회할 쿠폰의 id
+     */
     @GetMapping("/{couponId}")
     public ResponseEntity<CouponDetailRetrieveResponse> retrieveCouponDetail(@PathVariable Long couponId) {
         CouponDetailRetrieveResponse couponDetailRetrieveResponse =
