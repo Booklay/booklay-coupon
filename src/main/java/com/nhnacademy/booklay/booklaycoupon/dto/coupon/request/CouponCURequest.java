@@ -22,8 +22,7 @@ public class CouponCURequest {
     @Size(max = 100)
     private String name;
 
-    @NotNull
-    private Long imageId;
+    private Long fileId;
 
     @NotNull
     private Long typeCode;
@@ -54,11 +53,10 @@ public class CouponCURequest {
     @NotNull
     private int validateTerm;
 
-    public static Coupon toEntity(CouponCURequest couponRequest, CouponType couponType, Image image) {
+    public static Coupon toEntity(CouponCURequest couponRequest, CouponType couponType) {
         return Coupon.builder()
             .couponType(couponType)
             .name(couponRequest.getName())
-            .image(image)
             .amount(couponRequest.getAmount())
             .minimumUseAmount(couponRequest.getMinimumUseAmount())
             .maximumDiscountAmount(couponRequest.getMaximumDiscountAmount())

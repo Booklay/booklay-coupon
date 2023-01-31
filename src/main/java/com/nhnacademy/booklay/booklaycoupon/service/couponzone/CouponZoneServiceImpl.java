@@ -4,9 +4,12 @@ import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCre
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
+import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.couponzone.CouponZoneRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
 
     private final CouponRepository couponRepository;
     private final CouponZoneRepository couponZoneRepository;
+    private final ObjectFileRepository fileRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -40,9 +44,14 @@ public class CouponZoneServiceImpl implements CouponZoneService{
         Long couponId = couponRequest.getCouponId();
 
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NotFoundException("Coupon", couponId));
+        ObjectFile file = coupon.getFile();
 
         CouponZone couponZone = CouponZoneCreateRequest.toEntity(couponRequest, coupon.getName(),
             coupon.getIsLimited(), coupon.getMaximumDiscountAmount(), couponId);
+
+        if(Objects.nonNull(file)) {
+            couponZone.setFile(file);
+        }
 
         couponZoneRepository.save(couponZone);
     }

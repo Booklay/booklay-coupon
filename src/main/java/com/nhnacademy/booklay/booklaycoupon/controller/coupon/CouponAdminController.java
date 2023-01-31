@@ -10,7 +10,6 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRet
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
+ * 관리자의 쿠폰 관리 요청을 받는 컨트롤러.
  * @author 김승혜
  */
 @RestController
@@ -42,14 +41,11 @@ public class CouponAdminController {
     private final CouponAdminService couponAdminService;
     private final CouponIssueService couponIssueService;
 
-    @PostMapping
-    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CouponCURequest couponRequest) {
-        couponAdminService.createCoupon(couponRequest);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/pages")
+    /**
+     * 쿠폰 조회
+     *
+     */
+    @GetMapping()
     public ResponseEntity<PageResponse<CouponRetrieveResponse>> retrieveAllCoupons(@PageableDefault Pageable pageable) {
         Page<CouponRetrieveResponse> couponPage = couponAdminService.retrieveAllCoupons(pageable);
 
@@ -60,6 +56,21 @@ public class CouponAdminController {
             .body(couponPageResponse);
     }
 
+    /**
+     * 쿠폰 생성
+     * @param couponRequest 쿠폰 생성 요청 객체
+     */
+    @PostMapping
+    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CouponCURequest couponRequest) {
+        couponAdminService.createCoupon(couponRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 쿠폰 상세 조회
+     * @param couponId 조회할 쿠폰의 id
+     */
     @GetMapping("/{couponId}")
     public ResponseEntity<CouponDetailRetrieveResponse> retrieveCouponDetail(@PathVariable Long couponId) {
         CouponDetailRetrieveResponse couponDetailRetrieveResponse =
@@ -69,6 +80,11 @@ public class CouponAdminController {
             .body(couponDetailRetrieveResponse);
     }
 
+    /**
+     * 쿠폰 정보 수정.
+     * @param couponId 수정하려는 쿠폰의 id
+     * @param couponRequest 쿠폰 수정에 필요한 요청 객체.
+     */
     @PutMapping("/{couponId}")
     public ResponseEntity<Void> updateCoupon(@PathVariable Long couponId,
                                              @Valid @RequestBody CouponCURequest couponRequest) {
@@ -77,6 +93,10 @@ public class CouponAdminController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * 쿠폰 삭제
+     * @param couponId 삭제하려는 쿠폰의 id
+     */
     @DeleteMapping("/{couponId}")
     public ResponseEntity<Void> deleteCoupon(@PathVariable Long couponId) {
         couponAdminService.deleteCoupon(couponId);
@@ -84,6 +104,10 @@ public class CouponAdminController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * 특정 사용자에게 쿠폰 발급
+     * @param couponRequest 발급하려는 쿠폰의 id, 발급 대상 사용자의 id
+     */
     @PostMapping("/members/issue")
     public ResponseEntity<Void> issueCouponToMember(@Valid @RequestBody
                                                     CouponIssueToMemberRequest couponRequest) {
@@ -92,6 +116,10 @@ public class CouponAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * 수량 만큼의 쿠폰 발급
+     * @param couponRequest 발급하려는 쿠폰의
+     */
     @PostMapping("/issue")
     public ResponseEntity<Void> issueCoupon(@Valid @RequestBody
                                             CouponIssueRequest couponRequest) {
@@ -101,17 +129,23 @@ public class CouponAdminController {
     }
 
     /**
-     * 발급된 쿠폰을 조회합니다.
+     * 발급된 쿠폰을 조회.
+     * 소유되지 않은 쿠폰도 조회합니다.
      */
     @GetMapping("/issue-history")
-    public ResponseEntity<List<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory() {
-        List<CouponHistoryRetrieveResponse> responses =
-            couponAdminService.retrieveIssuedCoupons();
+    public ResponseEntity<PageResponse<CouponHistoryRetrieveResponse>> retrieveCouponIssueHistory(Pageable pageable) {
+        Page<CouponHistoryRetrieveResponse> historyPage =
+            couponAdminService.retrieveIssuedCoupons(pageable);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+        PageResponse<CouponHistoryRetrieveResponse> response = new PageResponse<>(historyPage);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // 쿠폰 사용 내역
+    /**
+     * 사용된 쿠폰 조회
+     *
+     */
     @GetMapping("/history")
     public ResponseEntity<Void> retrieveCouponHistory() {
         return null;
