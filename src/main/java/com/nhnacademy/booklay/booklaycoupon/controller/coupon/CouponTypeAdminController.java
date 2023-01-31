@@ -51,10 +51,9 @@ public class CouponTypeAdminController {
        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{couponTypeId}")
-    public ResponseEntity<Void> updateCouponType(@PathVariable Long couponTypeId,
-                                                 @Valid @RequestBody CouponTypeCURequest couponTypeRequest) {
-        couponTypeService.updateCouponType(couponTypeId, couponTypeRequest);
+    @PutMapping
+    public ResponseEntity<Void> updateCouponType(@Valid @RequestBody CouponTypeCURequest couponTypeRequest) {
+        couponTypeService.updateCouponType(couponTypeRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
