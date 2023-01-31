@@ -36,9 +36,9 @@ public class CouponTypeServiceImpl implements CouponTypeService{
     }
 
     @Override
-    public void updateCouponType(Long couponTypeId, CouponTypeCURequest couponTypeRequest) {
-        if(!couponTypeRepository.existsById(couponTypeId)) {
-            throw new NotFoundException(CouponType.class.toString(), couponTypeId);
+    public void updateCouponType(CouponTypeCURequest couponTypeRequest) {
+        if(!couponTypeRepository.existsById(couponTypeRequest.getId())) {
+            throw new NotFoundException(CouponType.class.toString(), couponTypeRequest.getId());
         }
 
         CouponType couponType = CouponType.builder()

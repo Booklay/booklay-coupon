@@ -11,7 +11,7 @@ public interface CouponTypeService {
     void createCouponType(CouponTypeCURequest couponTypeRequest);
     CouponType retrieveCouponType(Long typeCode);
     Page<CouponTypeRetrieveResponse> retrieveAllCouponTypes(Pageable pageable);
-    void updateCouponType(Long couponTypeId, CouponTypeCURequest couponTypeRequest);
+    void updateCouponType(CouponTypeCURequest couponTypeRequest);
     void deleteCouponType(Long couponTypeId);
 
 }

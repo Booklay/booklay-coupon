@@ -117,7 +117,7 @@ class CouponTypeAdminControllerTest {
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponTypeService, times(1)).updateCouponType(eq(1L), any());
+        Mockito.verify(couponTypeService, times(1)).updateCouponType(any());
     }
 
     @Test

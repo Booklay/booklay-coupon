@@ -77,7 +77,7 @@ class CouponTypeServiceImplTest {
         given(couponTypeRepository.existsById(couponTypeRequest.getId())).willReturn(true);
 
         // when
-        couponTypeService.updateCouponType(couponTypeRequest.getId(), couponTypeRequest);
+        couponTypeService.updateCouponType(couponTypeRequest);
 
         // then
         BDDMockito.then(couponTypeRepository).should().existsById(couponTypeRequest.getId());
@@ -95,7 +95,7 @@ class CouponTypeServiceImplTest {
         // when
 
         // then
-        assertThatThrownBy(() -> couponTypeService.updateCouponType(couponTypeRequest.getId(), couponTypeRequest))
+        assertThatThrownBy(() -> couponTypeService.updateCouponType(couponTypeRequest))
             .isInstanceOf(NotFoundException.class)
             .hasMessageContaining(String.valueOf(couponTypeRequest.getId()));
 
