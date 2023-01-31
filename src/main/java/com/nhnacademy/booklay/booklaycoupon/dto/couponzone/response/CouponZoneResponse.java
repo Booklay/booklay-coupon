@@ -11,6 +11,6 @@ public class CouponZoneResponse {
     private final String name;
     private final String description;
     private final LocalDateTime openedAt;
-    private final LocalDateTime closedAt;
+    private final LocalDateTime issuanceDeadlineAt;
     private final Boolean isBlind;
 }

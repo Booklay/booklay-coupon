@@ -34,7 +34,7 @@ public class Product {
 
   @OneToOne
   @JoinColumn(name = "thumbnail_no")
-  private Image image;
+  private ObjectFile objectFile;
 
   @Column
   private String title;
@@ -42,30 +42,37 @@ public class Product {
   @CreatedDate
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 
-  @Column(name = "registed_at")
-  private LocalDateTime registedAt;
+  @Column(name = "created_at")
+  @Setter
+  private LocalDateTime createdAt;
 
   @Column
   private Long price;
 
-  @Column(name="point_rate")
+  @Column(name = "point_rate")
   private Long pointRate;
 
-  @Column(name="short_description")
+  @Column(name = "short_description")
   private String shortDescription;
 
-  @Column(name="long_description")
+  @Column(name = "long_description")
   private String longDescription;
 
-  @Column(name="is_selling")
+  @Column(name = "is_selling")
   private boolean isSelling;
 
-  @Column(name="point_method")
+  @Column(name = "point_method")
   private boolean pointMethod;
 
+  @Column(name = "is_deleted")
+  @Setter
+  private boolean isDeleted = false;
+
   @Builder
-  public Product(Image image, String title, Long price, Long pointRate, String shortDescription, String longDescription, boolean isSelling, boolean pointMethod) {
-    this.image = image;
+  public Product(ObjectFile objectFile, String title, Long price, Long pointRate,
+                 String shortDescription, String longDescription, boolean isSelling,
+                 boolean pointMethod) {
+    this.objectFile = objectFile;
     this.title = title;
     this.price = price;
     this.pointRate = pointRate;
