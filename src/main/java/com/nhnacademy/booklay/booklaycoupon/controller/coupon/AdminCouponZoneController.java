@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 관리자의 쿠폰존 관리 요청을 받는 컨트롤러.
+ * @author 김승혜
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/coupon-zone")
