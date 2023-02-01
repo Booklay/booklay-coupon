@@ -368,6 +368,7 @@ create table order_coupon
     coupon_code char(36) not null,
     issued_at datetime null,
     expired_at datetime null,
+    is_used boolean not null,
     constraint FK_coupon_TO_order_coupon_1
         foreign key (coupon_no) references coupon (coupon_no),
     constraint FK_member_TO_order_coupon_1

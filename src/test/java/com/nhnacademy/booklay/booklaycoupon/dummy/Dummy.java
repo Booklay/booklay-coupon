@@ -269,6 +269,7 @@ public class Dummy {
         OrderCoupon orderCoupon = OrderCoupon.builder()
             .coupon(getDummyCoupon())
             .code(UUID.randomUUID().toString().substring(0, 30))
+            .isUsed(false)
             .build();
 
         ReflectionTestUtils.setField(orderCoupon, "id", 1L);
