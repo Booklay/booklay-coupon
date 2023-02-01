@@ -18,6 +18,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
+import com.nhnacademy.booklay.booklaycoupon.service.RestService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +44,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final ProductRepository productRepository;
     private final ObjectFileRepository fileRepository;
 
+    private final RestService restService;
     private static final int PAGE_SIZE = 20;
 
     /**
@@ -77,10 +79,36 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         return couponRepository.findAllBy(pageable);
     }
 
+    /**
+     * 쿠폰 상세 조회
+     * @param couponId 상세 조회하려는 쿠폰의 id
+     */
     @Override
     @Transactional(readOnly = true)
     public CouponDetailRetrieveResponse retrieveCoupon(Long couponId) {
-        return CouponDetailRetrieveResponse.fromEntity(couponRepository.findById(couponId).orElseThrow(() -> new IllegalArgumentException("No Such Coupon.")));
+        Coupon coupon = couponRepository.findById(couponId)
+            .orElseThrow(() -> new NotFoundException("coupon", couponId));
+
+        CouponDetailRetrieveResponse response =
+            CouponDetailRetrieveResponse.fromEntity(coupon);
+
+        if(Objects.nonNull(coupon.getCategory())) {
+            response.setApplyItemId(coupon.getCategory().getId());
+            response.setItemName(coupon.getCategory().getName());
+            response.setIsOrderCoupon(true);
+        }
+
+        if(Objects.nonNull(coupon.getProduct())) {
+            response.setApplyItemId(coupon.getProduct().getId());
+            response.setItemName(coupon.getProduct().getTitle());
+            response.setIsOrderCoupon(false);
+        }
+
+        if(Objects.nonNull(coupon.getFile())) {
+            response.setObjectFileId(coupon.getFile().getId());
+        }
+
+        return response;
     }
 
     @Override
@@ -156,5 +184,4 @@ public class CouponAdminServiceImpl implements CouponAdminService{
             coupon.setProduct(product);
         }
     }
-
 }

@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Table(name = "order_coupon")
 @Entity
@@ -55,9 +56,14 @@ public class OrderCoupon {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime expiredAt;
 
+    @Column(name = "is_used")
+    @Setter
+    private Boolean isUsed;
+
     @Builder
-    public OrderCoupon(Coupon coupon, String code) {
+    public OrderCoupon(Coupon coupon, String code, Boolean isUsed) {
         this.coupon = coupon;
         this.code = code;
+        this.isUsed = isUsed;
     }
 }
