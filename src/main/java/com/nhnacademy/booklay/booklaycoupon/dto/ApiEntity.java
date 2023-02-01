@@ -10,8 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class
-ApiEntity<T> {
+public class  ApiEntity<T> {
     private ResponseEntity<T> successResponse;
     private HttpClientErrorException httpClientErrorException;
 
