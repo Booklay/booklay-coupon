@@ -48,7 +48,7 @@ public class CouponIssueServiceImpl implements CouponIssueService{
 
         if(Objects.nonNull(coupon.getCategory()) ||
             Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
-            OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode());
+            OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode(), false);
             orderCoupon.setMember(member);
             orderCoupon.setIssuedAt(LocalDateTime.now());
             orderCoupon.setExpiredAt(orderCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
