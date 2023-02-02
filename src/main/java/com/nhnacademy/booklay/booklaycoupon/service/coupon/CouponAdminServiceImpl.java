@@ -92,6 +92,10 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         CouponDetailRetrieveResponse response =
             CouponDetailRetrieveResponse.fromEntity(coupon);
 
+        if(coupon.getCouponType().getName().equals("포인트")) {
+            response.setIsOrderCoupon(true);
+        }
+
         if(Objects.nonNull(coupon.getCategory())) {
             response.setApplyItemId(coupon.getCategory().getId());
             response.setItemName(coupon.getCategory().getName());
@@ -111,6 +115,11 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         return response;
     }
 
+    /**
+     * 쿠폰 정보 수정
+     * @param couponId 수정하려는 쿠폰의 id
+     * @param couponRequest 쿠폰 수정 객체
+     */
     @Override
     public void updateCoupon(Long couponId, CouponCURequest couponRequest) {
         Coupon coupon = couponRepository.findById(couponId)
