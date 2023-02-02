@@ -17,8 +17,8 @@ public class CouponProductController {
     private final ProductCouponService couponAdminService;
     @GetMapping("/{productNo}")
     public ResponseEntity<PageResponse<CouponRetrieveResponseFromProduct>> retrieveAllCoupons(@PageableDefault Pageable pageable
-            , @PathVariable Long productNo, @RequestParam Long memberNo) {
-        Page<CouponRetrieveResponseFromProduct> couponPage = couponAdminService.retrieveCouponPageByMemberNoAndProductNo(memberNo, productNo, pageable);
+            , @PathVariable Long productNo, @RequestParam Long memberNo, @RequestParam Boolean isDuplicable) {
+        Page<CouponRetrieveResponseFromProduct> couponPage = couponAdminService.retrieveCouponPageByMemberNoAndProductNo(memberNo, productNo, isDuplicable,  pageable);
         PageResponse<CouponRetrieveResponseFromProduct> couponPageResponse = new PageResponse<>(couponPage);
         return ResponseEntity.ok(couponPageResponse);
     }
