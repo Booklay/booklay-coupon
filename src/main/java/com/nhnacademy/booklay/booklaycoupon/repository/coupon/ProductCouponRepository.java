@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductCouponRepository extends JpaRepository<ProductCoupon, Long> {
-    Page<CouponRetrieveResponseFromProduct> findAllByCoupon_Product_IdAndMember_MemberNo(Long productNo, Long memberNo, Pageable pageable);
+    Page<CouponRetrieveResponseFromProduct> findAllByCoupon_Product_IdAndMember_MemberNoAndCoupon_IsDuplicatable(Long productNo, Long memberNo, Boolean isDuplicatable, Pageable pageable);
 }

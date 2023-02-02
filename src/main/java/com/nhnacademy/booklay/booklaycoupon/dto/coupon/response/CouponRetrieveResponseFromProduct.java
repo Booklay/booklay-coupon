@@ -13,9 +13,10 @@ public class CouponRetrieveResponseFromProduct {
     private final int minimumUseAmount;
     private final int maximumDiscountAmount;
     private final Boolean isLimited;
+    private final String couponCode;
 
     @Builder
-    public CouponRetrieveResponseFromProduct(Coupon coupon) {
+    public CouponRetrieveResponseFromProduct(String code, Coupon coupon) {
         this.id = coupon.getId();
         this.name = coupon.getName();
         this.typeName = coupon.getCouponType().getName();
@@ -23,6 +24,7 @@ public class CouponRetrieveResponseFromProduct {
         this.minimumUseAmount = coupon.getMinimumUseAmount();
         this.maximumDiscountAmount = coupon.getMaximumDiscountAmount();
         this.isLimited = coupon.getIsLimited();
+        this.couponCode = code;
     }
 
 }
