@@ -21,9 +21,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class WebControllerAdvice extends ResponseEntityExceptionHandler {
 
+    // TODO 3 : 에러 처리
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(Exception ex) {
+        // TODO 4 : 우선은 HttpStatus = Method Not Allowed로 설정.
         ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
+
+        // TODO 5 : errorCode랑 NotFoundException에 들어간 message를 보냄.
         return handleWithMessage(errorCode, ex.getMessage());
     }
 

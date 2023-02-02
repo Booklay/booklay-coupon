@@ -86,6 +86,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     @Override
     @Transactional(readOnly = true)
     public CouponDetailRetrieveResponse retrieveCoupon(Long couponId) {
+        // TODO 1 : 없는 쿠폰 찾으면 NotFoundException 던짐.
         Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> new NotFoundException("coupon", couponId));
 

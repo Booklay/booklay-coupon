@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum CommonErrorCode implements ErrorCode{
 
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
+    // TODO 4 : HttpStatus.METHOD_NOT_ALLOWED ㅇㅋ?
     RESOURCE_NOT_FOUND(HttpStatus.METHOD_NOT_ALLOWED, "Element Not Found."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
     ;
