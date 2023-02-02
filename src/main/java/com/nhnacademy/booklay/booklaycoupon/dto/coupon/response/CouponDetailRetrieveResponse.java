@@ -27,14 +27,14 @@ public class CouponDetailRetrieveResponse {
     private Long objectFileId;
     @Setter
     private Boolean isOrderCoupon = true;
+    private final int validateTerm;
 
     @Builder
     public CouponDetailRetrieveResponse(Long id, String name, String typeName, int amount,
                                         Long applyItemId, String itemName, int minimumUseAmount,
                                         int maximumDiscountAmount, LocalDateTime issuanceDeadlineAt,
                                         Boolean isDuplicatable, Boolean isLimited,
-                                        Long objectFileId,
-                                        Boolean isOrderCoupon) {
+                                        Long objectFileId, Boolean isOrderCoupon, int validateTerm) {
         this.id = id;
         this.name = name;
         this.typeName = typeName;
@@ -48,6 +48,7 @@ public class CouponDetailRetrieveResponse {
         this.isLimited = isLimited;
         this.objectFileId = objectFileId;
         this.isOrderCoupon = isOrderCoupon;
+        this.validateTerm = validateTerm;
     }
 
     public static CouponDetailRetrieveResponse fromEntity(Coupon coupon) {
@@ -58,8 +59,10 @@ public class CouponDetailRetrieveResponse {
             .amount(coupon.getAmount())
             .minimumUseAmount(coupon.getMinimumUseAmount())
             .minimumUseAmount(coupon.getMaximumDiscountAmount())
+            .issuanceDeadlineAt(coupon.getIssuanceDeadlineAt())
             .isDuplicatable(coupon.getIsDuplicatable())
             .isLimited(coupon.getIsLimited())
+            .validateTerm(coupon.getValidateTerm())
             .build();
     }
 }

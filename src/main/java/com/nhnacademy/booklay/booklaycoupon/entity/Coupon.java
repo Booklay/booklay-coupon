@@ -97,6 +97,7 @@ public class Coupon {
         this.issuanceDeadlineAt = couponRequest.getIssuanceDeadlineAt();
         this.isDuplicatable = couponRequest.getIsDuplicatable();
         this.isLimited = couponRequest.getIsLimited();
+        this.validateTerm = couponRequest.getValidateTerm();
     }
 
 }
