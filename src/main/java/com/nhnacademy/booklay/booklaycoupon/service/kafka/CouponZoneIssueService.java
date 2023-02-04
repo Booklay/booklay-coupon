@@ -2,7 +2,9 @@ package com.nhnacademy.booklay.booklaycoupon.service.kafka;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.message.CouponIssueRequestMessage;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.message.CouponIssueResponseMessage;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.couponzone.CouponZoneRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
@@ -41,7 +43,7 @@ public class CouponZoneIssueService {
         if(!couponZoneRepository.existsByCouponId(couponId)) throw new NotFoundException("couponId", couponId);
 
         // 발급
-        
+
 
         // 완료 메시지 보냄.
         responseIssueCoupon(couponId, request.getMemberId());
