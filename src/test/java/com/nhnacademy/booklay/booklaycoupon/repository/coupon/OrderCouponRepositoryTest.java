@@ -49,6 +49,7 @@ class OrderCouponRepositoryTest {
         orderCoupon = OrderCoupon.builder()
             .coupon(coupon)
             .code(UUID.randomUUID().toString().substring(0, 30))
+            .isUsed(false)
             .build();
     }
 
