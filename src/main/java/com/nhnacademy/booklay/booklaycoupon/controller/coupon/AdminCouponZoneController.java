@@ -32,7 +32,7 @@ public class AdminCouponZoneController {
     @GetMapping("/limited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneLimited(@PageableDefault
                                                                                Pageable pageable) {
-        Page<CouponZoneResponse> pages = couponZoneService.retrieveCouponZoneLimited(pageable);
+        Page<CouponZoneResponse> pages = couponZoneService.retrieveAdminLimited(pageable);
         PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -43,7 +43,7 @@ public class AdminCouponZoneController {
     @GetMapping("/unlimited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneUnlimited(@PageableDefault
                                                                                       Pageable pageable) {
-        Page<CouponZoneResponse> pages = couponZoneService.retrieveCouponZoneUnlimited(pageable);
+        Page<CouponZoneResponse> pages = couponZoneService.retrieveAdminUnlimited(pageable);
         PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
 
         return ResponseEntity.status(HttpStatus.OK)

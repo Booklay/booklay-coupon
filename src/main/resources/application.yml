@@ -2,15 +2,9 @@ spring:
   application:
     name: booklay-coupon
 
-#  profiles:
-#    active: dev
-
   config:
     import: "optional:configserver:http://133.186.218.11:8888"
 
-#message:
-#  topic:
-#    name: quickstart-events
-
 server:
+
   port: 8090
