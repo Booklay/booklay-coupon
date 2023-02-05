@@ -16,7 +16,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Table(name = "order_coupon")
 @Entity
@@ -32,17 +31,20 @@ public class OrderCoupon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_no")
     private Coupon coupon;
-
+    @Column(name = "coupon_no", insertable = false, updatable = false)
+    private Long couponNo;
     @ManyToOne(fetch = FetchType.LAZY)
     @Setter
     @JoinColumn(name = "member_no")
     private Member member;
-
+    @Column(name = "member_no", insertable = false, updatable = false)
+    private Long memberNo;
     @ManyToOne(fetch = FetchType.LAZY)
     @Setter
     @JoinColumn(name = "order_no")
     private Order order;
-
+    @Column(name = "order_no", insertable = false, updatable = false)
+    private Long orderNo;
     @Column(name = "coupon_code")
     private String code;
 
