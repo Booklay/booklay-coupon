@@ -29,14 +29,26 @@ public class CouponZoneServiceImpl implements CouponZoneService{
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable) {
+    public Page<CouponZoneResponse> retrieveAdminLimited(Pageable pageable) {
         return couponZoneRepository.findAllByIsLimitedIs(true, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
+    public Page<CouponZoneResponse> retrieveAdminUnlimited(Pageable pageable) {
         return couponZoneRepository.findAllByIsLimitedIs(false, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable) {
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalse(true, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalse(false, pageable);
     }
 
     @Override
