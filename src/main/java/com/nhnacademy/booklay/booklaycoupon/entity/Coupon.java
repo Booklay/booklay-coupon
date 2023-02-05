@@ -37,11 +37,15 @@ public class Coupon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
     private CouponType couponType;
+    @Column(name = "code", insertable = false, updatable = false)
+    private Long couponTypeNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_no")
     @Setter
     private Product product;
+    @Column(name = "product_no", insertable = false, updatable = false)
+    private Long productNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no")

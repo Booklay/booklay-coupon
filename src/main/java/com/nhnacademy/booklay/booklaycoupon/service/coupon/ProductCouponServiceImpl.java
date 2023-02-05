@@ -14,7 +14,7 @@ public class ProductCouponServiceImpl implements ProductCouponService{
 
     @Override
     public Page<CouponRetrieveResponseFromProduct> retrieveCouponPageByMemberNoAndProductNo(Long memberNo, Long productNo, Boolean isDuplicatable, Pageable pageable){
-        return productCouponRepository.findAllByCoupon_Product_IdAndMember_MemberNoAndCoupon_IsDuplicatable(productNo, memberNo, isDuplicatable, pageable);
+        return productCouponRepository.findAllByCoupon_ProductNoAndMemberNoAndCoupon_IsDuplicatable(productNo, memberNo, isDuplicatable, pageable);
     }
 
     @Override
