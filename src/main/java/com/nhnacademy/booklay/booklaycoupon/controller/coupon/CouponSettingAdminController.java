@@ -1,6 +1,7 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
 import com.nhnacademy.booklay.booklaycoupon.service.couponsetting.CouponSettingService;
@@ -30,7 +31,7 @@ public class CouponSettingAdminController {
 
     @PostMapping
     public ResponseEntity<Void> createCouponSetting(@Valid @RequestBody
-                                                     CouponSettingCURequest couponSettingCURequest) {
+                                                     CouponSettingCURequest couponSettingCURequest, MemberInfo memberInfo) {
         couponSettingService.createSetting(couponSettingCURequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
