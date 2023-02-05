@@ -48,6 +48,9 @@ public class Coupon {
     @Setter
     private Category category;
 
+    @Column(name = "category_no", insertable = false, updatable = false)
+    private Long categoryNo;
+
     @Column
     private String name;
 
