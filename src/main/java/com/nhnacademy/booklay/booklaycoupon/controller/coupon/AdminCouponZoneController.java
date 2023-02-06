@@ -12,7 +12,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,7 @@ public class AdminCouponZoneController {
     @GetMapping("/limited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneLimited(@PageableDefault
                                                                                Pageable pageable) {
-        Page<CouponZoneResponse> pages = couponZoneService.retrieveCouponZoneLimited(pageable);
+        Page<CouponZoneResponse> pages = couponZoneService.retrieveAdminLimited(pageable);
         PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -43,7 +45,7 @@ public class AdminCouponZoneController {
     @GetMapping("/unlimited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneUnlimited(@PageableDefault
                                                                                       Pageable pageable) {
-        Page<CouponZoneResponse> pages = couponZoneService.retrieveCouponZoneUnlimited(pageable);
+        Page<CouponZoneResponse> pages = couponZoneService.retrieveAdminUnlimited(pageable);
         PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -52,10 +54,17 @@ public class AdminCouponZoneController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCoupon(@Valid @RequestBody
+    public ResponseEntity<Void> createAtCoupon(@Valid @RequestBody
                                              CouponZoneCreateRequest couponRequest) {
         couponZoneService.createAtCouponZone(couponRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{couponZoneId}")
+    public ResponseEntity<Void> deleteAtCouponZone(@PathVariable Long couponZoneId) {
+        couponZoneService.deleteAtCouponZone(couponZoneId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

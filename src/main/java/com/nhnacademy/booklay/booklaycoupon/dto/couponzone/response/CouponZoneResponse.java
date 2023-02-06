@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CouponZoneResponse {
     private final Long id;
+    private final Long couponId;
     private final String name;
     private final String description;
     private final LocalDateTime openedAt;
