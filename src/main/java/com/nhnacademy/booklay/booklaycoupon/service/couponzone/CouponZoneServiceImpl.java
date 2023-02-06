@@ -67,4 +67,13 @@ public class CouponZoneServiceImpl implements CouponZoneService{
 
         couponZoneRepository.save(couponZone);
     }
+
+    @Override
+    public void deleteAtCouponZone(Long couponZoneId) {
+        if(!couponZoneRepository.existsById(couponZoneId)) {
+            throw new NotFoundException("couponZone", couponZoneId);
+        }
+
+        couponZoneRepository.deleteById(couponZoneId);
+    }
 }

@@ -12,4 +12,5 @@ public interface CouponZoneService {
     Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable);
     Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable);
     void createAtCouponZone(CouponZoneCreateRequest couponRequest);
+    void deleteAtCouponZone(Long couponZoneId);
 }
