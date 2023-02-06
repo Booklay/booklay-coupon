@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -30,6 +31,10 @@ public class CouponZone {
     @Setter
     @JoinColumn(name = "file_no")
     private ObjectFile file;
+
+    @ManyToOne
+    @JoinColumn(name = "authority_no")
+    private Authority authority;
 
     @Column
     private String name;
