@@ -2,8 +2,10 @@ package com.nhnacademy.booklay.booklaycoupon;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class BooklayCouponApplication {
 
     public static void main(String[] args) {
