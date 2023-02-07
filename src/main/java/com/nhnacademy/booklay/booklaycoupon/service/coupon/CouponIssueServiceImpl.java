@@ -8,10 +8,9 @@ import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponJdbcRepository;
-import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
-import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -26,39 +25,42 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CouponIssueServiceImpl implements CouponIssueService{
 
-    private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
     private final CouponJdbcRepository couponJdbcRepository;
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
 
+    private final GetCouponService getCouponService;
+
     private static final Long POINT_COUPON_CODE = 3L;
 
+    /**
+     * 사용자에게 쿠폰을 발급합니다.
+     * 포인트 쿠폰은 주문쿠폰에 저장됩니다.
+     */
     @Override
-    public void issueCouponToMember(CouponIssueToMemberRequest couponRequest) {
+    public void issueCouponToMember(CouponIssueToMemberRequest request) {
 
-        Long couponId = couponRequest.getCouponId();
-        Long memberId = couponRequest.getMemberId();
+        Long couponId = request.getCouponId();
+        Long memberId = request.getMemberId();
 
-        Coupon coupon = couponRepository.findById(couponId)
-            .orElseThrow(() -> new NotFoundException(Coupon.class.toString(), couponId));
+        Coupon coupon = getCouponService.checkCouponExist(couponId);
 
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new NotFoundException(Member.class.toString(), memberId));
 
-        if(Objects.nonNull(coupon.getCategory()) ||
-            Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
+        if(Objects.nonNull(coupon.getCategory()) || Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
             OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode(), false);
             orderCoupon.setMember(member);
             orderCoupon.setIssuedAt(LocalDateTime.now());
-            orderCoupon.setExpiredAt(orderCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
+            orderCoupon.setExpiredAt(request.getExpiredAt());
 
             orderCouponRepository.save(orderCoupon);
         } else if (Objects.nonNull(coupon.getProduct())){
             ProductCoupon productCoupon = new ProductCoupon(coupon, getCode());
             productCoupon.setMember(member);
             productCoupon.setIssuedAt(LocalDateTime.now());
-            productCoupon.setExpiredAt(productCoupon.getIssuedAt().plusDays(coupon.getValidateTerm()));
+            productCoupon.setExpiredAt(request.getExpiredAt());
 
             productCouponRepository.save(productCoupon);
         } else {
@@ -72,11 +74,9 @@ public class CouponIssueServiceImpl implements CouponIssueService{
         Long couponId = couponRequest.getCouponId();
         int quantity = couponRequest.getQuantity();
 
-        Coupon coupon = couponRepository.findById(couponId)
-            .orElseThrow(() -> new NotFoundException(Coupon.class.toString(), couponId));
+        Coupon coupon = getCouponService.checkCouponExist(couponId);
 
-        if(Objects.nonNull(coupon.getCategory()) ||
-            Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
+        if(Objects.nonNull(coupon.getCategory()) || Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
             couponJdbcRepository.saveOrderCoupons(couponId, quantity);
         } else if (Objects.nonNull(coupon.getProduct())){
             couponJdbcRepository.saveProductCoupons(couponId, quantity);

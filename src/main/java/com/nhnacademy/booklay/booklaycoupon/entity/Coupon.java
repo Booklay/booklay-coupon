@@ -87,5 +87,4 @@ public class Coupon {
         this.isDuplicatable = couponRequest.getIsDuplicatable();
         this.isLimited = couponRequest.getIsLimited();
     }
-
 }

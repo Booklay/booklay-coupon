@@ -65,7 +65,6 @@ public class Dummy {
             .amount(5)
             .minimumUseAmount(1000)
             .maximumDiscountAmount(3000)
-            .issuanceDeadlineAt(LocalDateTime.of(2023, 1, 20, 0, 0, 0))
             .isDuplicatable(false)
             .isLimited(true)
             .build();
@@ -145,27 +144,6 @@ public class Dummy {
             .depth(allProduct.getDepth() + 1)
             .isExposure(true)
             .build();
-    }
-
-    public static DeliveryDetail getDummyDeliveryDetail() {
-
-        DeliveryDetail deliveryDetail = DeliveryDetail.builder()
-            .order(getDummyOrder())
-            .statusCode(getDummyDeliveryStatusCode())
-            .zipCode("11111")
-            .address("우리집 바둑이네 밥그릇")
-            .sender("Dumb")
-            .senderPhoneNumber("010-1234-5678")
-            .receiver("Dumber")
-            .receiverPhoneNumber("010-9876-5432")
-            .build();
-
-        deliveryDetail.setCompletedAt(LocalDateTime.now());
-
-        ReflectionTestUtils.setField(deliveryDetail, "id", 1L);
-        ReflectionTestUtils.setField(deliveryDetail, "deliveryStartAt", LocalDateTime.now());
-
-        return deliveryDetail;
     }
 
     public static DeliveryStatusCode getDummyDeliveryStatusCode() {
