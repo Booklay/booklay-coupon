@@ -44,6 +44,9 @@ class CouponAdminServiceImplTest {
     private CategoryRepository categoryRepository;
 
     @Mock
+    private GetCouponService couponService;
+
+    @Mock
     private ImageRepository imageRepository;
 
     Coupon coupon;
@@ -99,13 +102,13 @@ class CouponAdminServiceImplTest {
 
         // given
         Long targetId = 1L;
-        given(couponRepository.findById(targetId)).willReturn(Optional.ofNullable(coupon));
+        given(couponService.checkCouponExist(targetId)).willReturn(coupon);
 
         // when
         couponAdminService.retrieveCoupon(targetId);
 
         // then
-        BDDMockito.then(couponRepository).should().findById(targetId);
+        BDDMockito.then(couponService).should().checkCouponExist(targetId);
     }
 
     @Test
@@ -115,7 +118,7 @@ class CouponAdminServiceImplTest {
         // given
         Long targetId = coupon.getId();
 
-        given(couponRepository.findById(targetId)).willReturn(Optional.ofNullable(coupon));
+        given(couponService.checkCouponExist(targetId)).willReturn(coupon);
         given(couponTypeRepository.findById(targetId)).willReturn(Optional.ofNullable(couponType));
         given(categoryRepository.findById(category.getId())).willReturn(
             Optional.ofNullable(Dummy.getDummyCategory()));
