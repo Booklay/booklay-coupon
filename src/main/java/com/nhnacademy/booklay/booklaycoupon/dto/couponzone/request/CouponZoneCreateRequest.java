@@ -29,6 +29,10 @@ public class CouponZoneCreateRequest {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime issuanceDeadlineAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime expiredAt;
+
     @NotNull
     private Boolean isBlind;
 
