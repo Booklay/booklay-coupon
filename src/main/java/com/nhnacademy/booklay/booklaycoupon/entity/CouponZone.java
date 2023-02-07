@@ -32,9 +32,8 @@ public class CouponZone {
     @JoinColumn(name = "file_no")
     private ObjectFile file;
 
-    @ManyToOne
-    @JoinColumn(name = "authority_no")
-    private Authority authority;
+    @Column
+    private String grade;
 
     @Column
     private String name;
