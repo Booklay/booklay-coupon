@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderCouponService {
     Page<CouponRetrieveResponseFromProduct> retrieveCouponPageByMemberNo(Long memberNo, Boolean isDuplicable, Pageable pageable);
+
+    CouponRetrieveResponseFromProduct retrieveCouponByCouponCode(String couponCode);
 }

@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Long> {
     Page<CouponRetrieveResponseFromProduct> findAllByMember_MemberNoAndCoupon_IsDuplicatable(Long memberNo, Boolean isDuplicatable, Pageable pageable);
+    CouponRetrieveResponseFromProduct findByCode(String code);
 }
