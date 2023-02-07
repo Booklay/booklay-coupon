@@ -6,7 +6,6 @@ import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +41,6 @@ class OrderCouponRepositoryTest {
             .amount(5)
             .minimumUseAmount(1000)
             .maximumDiscountAmount(3000)
-            .issuanceDeadlineAt(LocalDateTime.of(2023, 1, 20, 0, 0, 0))
             .isDuplicatable(false)
             .build();
 

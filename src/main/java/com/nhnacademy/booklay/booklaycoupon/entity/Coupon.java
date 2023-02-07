@@ -1,7 +1,6 @@
 package com.nhnacademy.booklay.booklaycoupon.entity;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -67,9 +66,6 @@ public class Coupon {
     @Column(name = "maximum_discount_amount")
     private int maximumDiscountAmount;
 
-    @Column(name = "issuance_deadline_at")
-    private LocalDateTime issuanceDeadlineAt;
-
     @Column(name = "is_duplicatable")
     private Boolean isDuplicatable;
 
@@ -77,22 +73,16 @@ public class Coupon {
     @Setter
     private Boolean isLimited;
 
-    @Column(name = "validate_term")
-    private int validateTerm;
-
     @Builder
     public Coupon(CouponType couponType, String name, int amount, int minimumUseAmount,
-                  int maximumDiscountAmount, LocalDateTime issuanceDeadlineAt,
-                  Boolean isDuplicatable, Boolean isLimited, int validateTerm) {
+                  int maximumDiscountAmount, Boolean isDuplicatable, Boolean isLimited) {
         this.couponType = couponType;
         this.name = name;
         this.amount = amount;
         this.minimumUseAmount = minimumUseAmount;
         this.maximumDiscountAmount = maximumDiscountAmount;
-        this.issuanceDeadlineAt = issuanceDeadlineAt;
         this.isDuplicatable = isDuplicatable;
         this.isLimited = isLimited;
-        this.validateTerm = validateTerm;
     }
 
     public void update(CouponCURequest couponRequest, CouponType couponType) {
@@ -101,10 +91,7 @@ public class Coupon {
         this.amount = couponRequest.getAmount();
         this.minimumUseAmount = couponRequest.getMinimumUseAmount();
         this.maximumDiscountAmount = couponRequest.getMaximumDiscountAmount();
-        this.issuanceDeadlineAt = couponRequest.getIssuanceDeadlineAt();
         this.isDuplicatable = couponRequest.getIsDuplicatable();
         this.isLimited = couponRequest.getIsLimited();
-        this.validateTerm = couponRequest.getValidateTerm();
     }
-
 }
