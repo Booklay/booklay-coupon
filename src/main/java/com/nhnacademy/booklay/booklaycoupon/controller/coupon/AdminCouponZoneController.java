@@ -53,6 +53,10 @@ public class AdminCouponZoneController {
             .body(pageResponse);
     }
 
+    /**
+     * 쿠폰존에 쿠폰을 등록합니다.
+     * @param couponRequest 쿠폰존에 쿠폰을 등록학기 위한 객체입니다.
+     */
     @PostMapping
     public ResponseEntity<Void> createAtCoupon(@Valid @RequestBody
                                              CouponZoneCreateRequest couponRequest) {
