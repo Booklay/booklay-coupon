@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CouponZoneRepository extends JpaRepository<CouponZone, Long> {
     Page<CouponZoneResponse> findAllByIsLimitedIs(Boolean isLimited, Pageable pageable);
+    Page<CouponZoneResponse> findAllByIsLimitedIsAndIsBlindIsFalse(Boolean isLimited, Pageable pageable);
+    boolean existsByCouponId(Long couponId);
 }
