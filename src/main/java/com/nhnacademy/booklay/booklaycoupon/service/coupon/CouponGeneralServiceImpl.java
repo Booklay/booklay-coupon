@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CouponGeneralServiceImpl implements CouponGeneralService{
     private final ProductCouponService productCouponService;
-
+    private final OrderCouponService orderCouponService;
     /**
      * 코드 해독기능이 달려 각각의 쿠폰에 맞는서비스에서 쿠폰을 조회하여 반환
      * //todo DTO가 쿠폰 3종류 모두를 지원하는 형태가 필요함 - 미확인
@@ -17,6 +17,10 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
      */
     @Override
     public CouponRetrieveResponseFromProduct retrieveCouponByCouponCode(String couponCode) {
-        return productCouponService.retrieveCouponByCouponCode(couponCode);
+        CouponRetrieveResponseFromProduct result = productCouponService.retrieveCouponByCouponCode(couponCode);
+        if (result == null){
+            result = orderCouponService.retrieveCouponByCouponCode(couponCode);
+        }
+        return result;
     }
 }

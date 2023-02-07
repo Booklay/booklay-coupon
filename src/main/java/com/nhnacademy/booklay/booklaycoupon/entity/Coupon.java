@@ -32,6 +32,8 @@ public class Coupon {
     @Setter
     @JoinColumn(name = "file_no")
     private ObjectFile file;
+    @Column(name = "file_no", insertable = false, updatable = false)
+    private Long fileNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
