@@ -14,6 +14,7 @@ public class CouponRetrieveResponseFromProduct {
     private final int maximumDiscountAmount;
     private final Boolean isLimited;
     private final String couponCode;
+    private final Long categoryNo;
 
     @Builder
     public CouponRetrieveResponseFromProduct(String code, Coupon coupon) {
@@ -25,6 +26,7 @@ public class CouponRetrieveResponseFromProduct {
         this.maximumDiscountAmount = coupon.getMaximumDiscountAmount();
         this.isLimited = coupon.getIsLimited();
         this.couponCode = code;
+        this.categoryNo = coupon.getCategoryNo();
     }
 
 }
