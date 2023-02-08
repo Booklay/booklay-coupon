@@ -74,7 +74,7 @@ class CouponRepositoryImplTest {
 
         // when
         List<CouponHistoryRetrieveResponse> result =
-            couponRepository.getCouponHistoryAtOrderCoupon();
+            orderCouponRepository.findAllBy();
 
         // then
         assertThat(result.size()).isEqualTo(1);
@@ -91,7 +91,7 @@ class CouponRepositoryImplTest {
 
         // when
         List<CouponHistoryRetrieveResponse> result =
-            couponRepository.getCouponHistoryAtProductCoupon();
+            productCouponRepository.findAllBy();
 
         // then
         assertThat(result.size()).isEqualTo(1);
