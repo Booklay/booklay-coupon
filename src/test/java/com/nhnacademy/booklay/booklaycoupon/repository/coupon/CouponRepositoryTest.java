@@ -21,7 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@ComponentScan("com.nhnacademy.booklay.booklaycoupon.config")
 class CouponRepositoryTest {
 
     @Autowired
