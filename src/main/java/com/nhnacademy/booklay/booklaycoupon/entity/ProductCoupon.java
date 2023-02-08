@@ -31,17 +31,20 @@ public class ProductCoupon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_no")
     private Coupon coupon;
-
+    @Column(name = "coupon_no", insertable = false, updatable = false)
+    private Long couponNo;
     @ManyToOne(fetch = FetchType.LAZY)
     @Setter
     @JoinColumn(name = "member_no")
     private Member member;
-
+    @Column(name = "member_no", insertable = false, updatable = false)
+    private Long memberNo;
     @ManyToOne(fetch = FetchType.LAZY)
     @Setter
     @JoinColumn(name = "order_product_no")
     private OrderProduct orderProduct;
-
+    @Column(name = "order_product_no", insertable = false, updatable = false)
+    private Long orderProductNo;
     @Column(name = "coupon_code")
     private String code;
 

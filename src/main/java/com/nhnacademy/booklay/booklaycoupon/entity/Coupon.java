@@ -32,20 +32,29 @@ public class Coupon {
     @Setter
     @JoinColumn(name = "file_no")
     private ObjectFile file;
+    @Column(name = "file_no", insertable = false, updatable = false)
+    private Long fileNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
     private CouponType couponType;
+    @Column(name = "code", insertable = false, updatable = false)
+    private Long couponTypeNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_no")
     @Setter
     private Product product;
+    @Column(name = "product_no", insertable = false, updatable = false)
+    private Long productNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no")
     @Setter
     private Category category;
+
+    @Column(name = "category_no", insertable = false, updatable = false)
+    private Long categoryNo;
 
     @Column
     private String name;
