@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CouponZoneRepository extends JpaRepository<CouponZone, Long> {
-    Page<CouponZoneResponse> findAllByIsLimitedIs(Boolean isLimited, Pageable pageable);
-    Page<CouponZoneResponse> findAllByIsLimitedIsAndIsBlindIsFalse(Boolean isLimited, Pageable pageable);
+    Page<CouponZoneResponse> findAllByIsLimitedIsAndGradeNull(Boolean isLimited, Pageable pageable);
+    Page<CouponZoneResponse> findAllByGradeNotNullAndIsBlindIsFalse(Pageable pageable);
+    Page<CouponZoneResponse> findAllByIsLimitedIsAndIsBlindIsFalseAndGradeNull(Boolean isLimited, Pageable pageable);
+    Page<CouponZoneResponse> findAllByGradeNotNull(Pageable pageable);
     boolean existsByCouponId(Long couponId);
 }

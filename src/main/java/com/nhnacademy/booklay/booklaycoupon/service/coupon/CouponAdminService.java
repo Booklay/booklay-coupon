@@ -15,6 +15,9 @@ public interface CouponAdminService {
     Page<CouponRetrieveResponse> retrieveAllCoupons(Pageable pageable);
     CouponDetailRetrieveResponse retrieveCoupon(Long couponId);
     void updateCoupon(Long couponId, CouponCURequest couponRequest);
+    void updateCouponImage(Long couponId, Long objectFileId);
+    void deleteCouponImage(Long couponId);
     void deleteCoupon(Long couponId);
     Page<CouponHistoryRetrieveResponse> retrieveIssuedCoupons(Pageable pageable);
+
 }

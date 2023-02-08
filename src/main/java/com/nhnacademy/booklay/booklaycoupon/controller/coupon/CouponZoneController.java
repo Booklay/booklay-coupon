@@ -22,7 +22,7 @@ public class CouponZoneController {
     private final CouponZoneService couponZoneService;
 
     /**
-     * isLimited = true 인 쿠폰존 쿠폰을 조회합니다.
+     * isLimited = true 인 쿠폰존의 쿠폰을 조회합니다.
      */
     @GetMapping("/limited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneLimited(
@@ -37,13 +37,27 @@ public class CouponZoneController {
     }
 
     /**
-     * isLimited = false 인 쿠폰존 쿠폰을 조회합니다.
+     * isLimited = false 인 쿠폰존의 쿠폰을 조회합니다.
      */
     @GetMapping("/unlimited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneUnlimited(
         @PageableDefault
         Pageable pageable) {
         Page<CouponZoneResponse> pages = couponZoneService.retrieveCouponZoneUnlimited(pageable);
+        PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(pageResponse);
+    }
+
+    /**
+     * graded != null 인 쿠폰존의 쿠폰을 조회합니다.
+     */
+    @GetMapping("/graded")
+    public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneGraded(@PageableDefault
+                                                                                     Pageable pageable) {
+        Page<CouponZoneResponse> pages = couponZoneService.retrieveCouponZoneGraded(pageable);
         PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
 
         return ResponseEntity.status(HttpStatus.OK)
