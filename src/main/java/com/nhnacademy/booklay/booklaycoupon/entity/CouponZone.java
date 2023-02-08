@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -47,6 +46,9 @@ public class CouponZone {
     @Column(name = "issuance_deadline_at")
     private LocalDateTime issuanceDeadlineAt;
 
+    @Column(name = "expired_at")
+    private LocalDateTime expiredAt;
+
     @Column(name = "maximum_discount_amount")
     private int maximumDiscountAmount;
 
@@ -60,14 +62,16 @@ public class CouponZone {
     private Boolean isLimited;
 
     @Builder
-    public CouponZone(String name, String description, LocalDateTime openedAt,
-                      LocalDateTime issuanceDeadlineAt,
+    public CouponZone(String name, String description, String grade,
+                      LocalDateTime openedAt, LocalDateTime issuanceDeadlineAt, LocalDateTime expiredAt,
                       int maximumDiscountAmount, Long couponId, Boolean isBlind,
                       Boolean isLimited) {
         this.name = name;
         this.description = description;
+        this.grade = grade;
         this.openedAt = openedAt;
         this.issuanceDeadlineAt = issuanceDeadlineAt;
+        this.expiredAt = expiredAt;
         this.maximumDiscountAmount = maximumDiscountAmount;
         this.couponId = couponId;
         this.isBlind = isBlind;

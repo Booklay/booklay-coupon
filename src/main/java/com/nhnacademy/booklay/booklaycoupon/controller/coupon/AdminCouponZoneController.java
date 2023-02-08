@@ -53,6 +53,17 @@ public class AdminCouponZoneController {
             .body(pageResponse);
     }
 
+    @GetMapping("/graded")
+    public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneGraded(@PageableDefault
+                                                                                        Pageable pageable) {
+        Page<CouponZoneResponse> pages = couponZoneService.retrieveAdminCouponZoneGraded(pageable);
+        PageResponse<CouponZoneResponse> pageResponse = new PageResponse<>(pages);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(pageResponse);
+    }
+
     /**
      * 쿠폰존에 쿠폰을 등록합니다.
      * @param couponRequest 쿠폰존에 쿠폰을 등록학기 위한 객체입니다.
