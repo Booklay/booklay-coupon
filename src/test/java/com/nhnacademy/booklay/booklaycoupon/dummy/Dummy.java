@@ -65,7 +65,6 @@ public class Dummy {
             .amount(5)
             .minimumUseAmount(1000)
             .maximumDiscountAmount(3000)
-            .issuanceDeadlineAt(LocalDateTime.of(2023, 1, 20, 0, 0, 0))
             .isDuplicatable(false)
             .isLimited(true)
             .build();
@@ -147,27 +146,6 @@ public class Dummy {
             .build();
     }
 
-    public static DeliveryDetail getDummyDeliveryDetail() {
-
-        DeliveryDetail deliveryDetail = DeliveryDetail.builder()
-            .order(getDummyOrder())
-            .statusCode(getDummyDeliveryStatusCode())
-            .zipCode("11111")
-            .address("우리집 바둑이네 밥그릇")
-            .sender("Dumb")
-            .senderPhoneNumber("010-1234-5678")
-            .receiver("Dumber")
-            .receiverPhoneNumber("010-9876-5432")
-            .build();
-
-        deliveryDetail.setCompletedAt(LocalDateTime.now());
-
-        ReflectionTestUtils.setField(deliveryDetail, "id", 1L);
-        ReflectionTestUtils.setField(deliveryDetail, "deliveryStartAt", LocalDateTime.now());
-
-        return deliveryDetail;
-    }
-
     public static DeliveryStatusCode getDummyDeliveryStatusCode() {
         return DeliveryStatusCode.builder()
             .id(1)
@@ -219,7 +197,6 @@ public class Dummy {
         ReflectionTestUtils.setField(couponRequest, "applyItemId", Dummy.getDummyCategory().getId());
         ReflectionTestUtils.setField(couponRequest, "minimumUseAmount", 1000);
         ReflectionTestUtils.setField(couponRequest, "maximumDiscountAmount", 5000);
-        ReflectionTestUtils.setField(couponRequest, "issuanceDeadlineAt", LocalDateTime.now());
         ReflectionTestUtils.setField(couponRequest, "isDuplicatable", true);
         ReflectionTestUtils.setField(couponRequest, "isLimited", true);
 

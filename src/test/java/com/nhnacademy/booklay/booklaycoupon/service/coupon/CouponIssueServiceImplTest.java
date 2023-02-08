@@ -46,6 +46,9 @@ class CouponIssueServiceImplTest {
     @Mock
     private ProductCouponRepository productCouponRepository;
 
+    @Mock
+    private GetCouponService couponService;
+
     Coupon orderCoupon;
     Coupon productCoupon;
 
@@ -64,11 +67,10 @@ class CouponIssueServiceImplTest {
         // given
         CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L);
 
-        given(couponRepository.findById(request.getCouponId())).willReturn(
-            Optional.ofNullable(orderCoupon));
-
+        given(couponService.checkCouponExist(1L)).willReturn(orderCoupon);
         given(memberRepository.findById(request.getMemberId())).willReturn(
             Optional.ofNullable(Dummy.getDummyMember()));
+
 
         // when
         couponIssueService.issueCouponToMember(request);
@@ -83,11 +85,10 @@ class CouponIssueServiceImplTest {
         // given
         CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L);
 
-        given(couponRepository.findById(request.getCouponId())).willReturn(
-            Optional.ofNullable(productCoupon));
-
+        given(couponService.checkCouponExist(1L)).willReturn(productCoupon);
         given(memberRepository.findById(request.getMemberId())).willReturn(
             Optional.ofNullable(Dummy.getDummyMember()));
+
 
         // when
         couponIssueService.issueCouponToMember(request);
@@ -101,8 +102,7 @@ class CouponIssueServiceImplTest {
     void testIssueOrderCoupon() {
         // given
         CouponIssueRequest request = new CouponIssueRequest(1L, 50);
-        given(couponRepository.findById(request.getCouponId())).willReturn(
-            Optional.ofNullable(orderCoupon));
+        given(couponService.checkCouponExist(1L)).willReturn(orderCoupon);
 
         // when
         couponIssueService.issueCoupon(request);
@@ -116,8 +116,7 @@ class CouponIssueServiceImplTest {
     void testIssueProductCoupon() {
         // given
         CouponIssueRequest request = new CouponIssueRequest(1L, 50);
-        given(couponRepository.findById(request.getCouponId())).willReturn(
-            Optional.ofNullable(productCoupon));
+        given(couponService.checkCouponExist(request.getCouponId())).willReturn(productCoupon);
 
         // when
         couponIssueService.issueCoupon(request);

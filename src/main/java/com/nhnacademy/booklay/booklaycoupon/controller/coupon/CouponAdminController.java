@@ -94,6 +94,28 @@ public class CouponAdminController {
     }
 
     /**
+     * 쿠폰의 이미지 수정
+     * @param couponId 수정하려는 쿠폰의 id
+     * @param objectFileId 오브젝트 스토리지 상의 Id
+     */
+    @PutMapping("/image/{couponId}/{objectFileId}")
+    public ResponseEntity<Void> updateCouponImage(@PathVariable Long couponId, @PathVariable Long objectFileId) {
+        couponAdminService.updateCouponImage(couponId, objectFileId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /**
+     * 쿠폰의 이미지 삭제
+     */
+    @PutMapping("/image/{couponId}")
+    public ResponseEntity<Void> deleteCouponImage(@PathVariable Long couponId) {
+        couponAdminService.deleteCouponImage(couponId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /**
      * 쿠폰 삭제
      * @param couponId 삭제하려는 쿠폰의 id
      */
