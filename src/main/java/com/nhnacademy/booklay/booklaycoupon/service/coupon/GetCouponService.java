@@ -3,7 +3,6 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
 
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

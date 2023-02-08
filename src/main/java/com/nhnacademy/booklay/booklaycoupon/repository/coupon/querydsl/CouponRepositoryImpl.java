@@ -23,46 +23,6 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     }
 
     @Override
-    public List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderCoupon() {
-        QCoupon coupon = QCoupon.coupon;
-        QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
-        QMember member = QMember.member;
-
-        return from(coupon)
-            .innerJoin(orderCoupon).on(coupon.id.eq(orderCoupon.coupon.id))
-            .leftJoin(member).on(orderCoupon.member.memberId.eq(member.memberId))
-            .select(Projections.constructor(CouponHistoryRetrieveResponse.class,
-                coupon.id.as("id"),
-                orderCoupon.code.as("code"),
-                coupon.name.as("name"),
-                orderCoupon.member.memberId.as("memberId"),
-                orderCoupon.issuedAt.as("issuedAt"),
-                orderCoupon.expiredAt.as("expiredAt")
-                ))
-            .fetch();
-    }
-
-    @Override
-    public List<CouponHistoryRetrieveResponse> getCouponHistoryAtProductCoupon() {
-        QCoupon coupon = QCoupon.coupon;
-        QProductCoupon productCoupon = QProductCoupon.productCoupon;
-        QMember member = QMember.member;
-
-        return from(coupon)
-            .innerJoin(productCoupon).on(coupon.id.eq(productCoupon.coupon.id))
-            .leftJoin(member).on(productCoupon.member.memberId.eq(member.memberId))
-            .select(Projections.constructor(CouponHistoryRetrieveResponse.class,
-                coupon.id,
-                productCoupon.code,
-                coupon.name,
-                productCoupon.member.memberId,
-                productCoupon.issuedAt,
-                productCoupon.expiredAt
-                ))
-            .fetch();
-    }
-
-    @Override
     public Page<PointCouponRetrieveResponse> getPointCouponByMember(Long memberNo, Pageable pageable) {
         QCoupon coupon = QCoupon.coupon;
         QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
