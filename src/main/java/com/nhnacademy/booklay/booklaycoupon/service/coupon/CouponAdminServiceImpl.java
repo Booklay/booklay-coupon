@@ -13,7 +13,6 @@ import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
-import com.nhnacademy.booklay.booklaycoupon.repository.ImageRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
@@ -43,6 +42,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ObjectFileRepository fileRepository;
+    private final GetCouponService couponService;
 
     private final RestService restService;
     private static final int PAGE_SIZE = 20;
@@ -86,8 +86,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     @Override
     @Transactional(readOnly = true)
     public CouponDetailRetrieveResponse retrieveCoupon(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
-            .orElseThrow(() -> new NotFoundException("coupon", couponId));
+        Coupon coupon = couponService.checkCouponExist(couponId);
 
         CouponDetailRetrieveResponse response =
             CouponDetailRetrieveResponse.fromEntity(coupon);
@@ -122,8 +121,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
      */
     @Override
     public void updateCoupon(Long couponId, CouponCURequest couponRequest) {
-        Coupon coupon = couponRepository.findById(couponId)
-            .orElseThrow(() -> new NotFoundException(Coupon.class.toString(), couponId));
+        Coupon coupon = couponService.checkCouponExist(couponId);
 
         CouponType couponType = couponTypeRepository.findById(couponRequest.getTypeCode())
             .orElseThrow(() -> new NotFoundException(CouponType.class.toString(), couponRequest.getTypeCode()));
@@ -134,6 +132,37 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         couponRepository.save(coupon);
     }
 
+    /**
+     * 등록된 쿠폰의 이미지를 수정합니다.
+     * @param objectFileId 오브젝트 스토리지 상의 Id
+     */
+    @Override
+    public void updateCouponImage(Long couponId, Long objectFileId) {
+        Coupon coupon = couponService.checkCouponExist(couponId);
+
+        ObjectFile file = fileRepository.findById(objectFileId)
+            .orElseThrow(() -> new NotFoundException(Image.class.toString(), objectFileId));
+
+        coupon.setFile(file);
+
+        couponRepository.save(coupon);
+    }
+
+    /**
+     * 쿠폰의 이미지를 삭제합니다.
+     */
+    @Override
+    public void deleteCouponImage(Long couponId) {
+        Coupon coupon = couponService.checkCouponExist(couponId);
+        ObjectFile file = coupon.getFile();
+
+        coupon.setFile(null);
+        fileRepository.delete(file);
+    }
+
+    /**
+     * 쿠폰을 삭제합니다.
+     */
     @Override
     public void deleteCoupon(Long couponId) {
         if(!couponRepository.existsById(couponId)) {

@@ -320,6 +320,7 @@ create table coupon_zone
 (
     coupon_zone_no bigint not null primary key auto_increment,
     file_no bigint null,
+    `grade` varchar(10) null,
     `name`	VARCHAR(100)	NOT NULL,
     `short_description`	VARCHAR(100)	NOT NULL,
     `maximum_discount_amount`	INT	NOT NULL,
@@ -344,10 +345,8 @@ create table coupon
     amount int not null,
     minimum_use_amount int not null,
     maximum_discount_amount int null,
-    issuance_deadline_at datetime not null,
     is_duplicatable boolean not null,
     is_limited boolean not null,
-    validate_term int not null,
     constraint FK_product_TO_coupon_1
         foreign key (product_no) references product (product_no),
     constraint FK_category_TO_coupon_1
