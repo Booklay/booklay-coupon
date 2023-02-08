@@ -2,6 +2,8 @@ package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.couponzone.CouponZoneService;
 import javax.validation.Valid;
@@ -76,6 +78,26 @@ public class AdminCouponZoneController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/blind/{couponZoneId}")
+    public ResponseEntity<CouponZoneIsBlindResponse> getIsBlind(@PathVariable Long couponZoneId) {
+        CouponZoneIsBlindResponse response = couponZoneService.retrieveCouponZoneIsBlind(couponZoneId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
+
+    @PostMapping("/blind/{couponZoneId}")
+    public ResponseEntity<Void> updateIsBlind(@PathVariable Long couponZoneId,
+                                              @Valid @RequestBody CouponZoneIsBlindRequest request) {
+        couponZoneService.updateIsBlind(couponZoneId, request);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /**
+     * 쿠폰존에서 쿠폰을 삭제합니다.
+     */
     @DeleteMapping("/{couponZoneId}")
     public ResponseEntity<Void> deleteAtCouponZone(@PathVariable Long couponZoneId) {
         couponZoneService.deleteAtCouponZone(couponZoneId);

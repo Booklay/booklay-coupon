@@ -57,7 +57,7 @@ public class OrderCoupon {
 
     @Column(name = "is_used")
     @Setter
-    private Boolean isUsed;
+    private Boolean isUsed = false;
 
     @Builder
     public OrderCoupon(Coupon coupon, String code, Boolean isUsed) {

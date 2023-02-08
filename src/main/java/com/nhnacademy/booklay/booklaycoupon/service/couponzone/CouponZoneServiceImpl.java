@@ -1,6 +1,8 @@
 package com.nhnacademy.booklay.booklaycoupon.service.couponzone;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
@@ -87,5 +89,21 @@ public class CouponZoneServiceImpl implements CouponZoneService{
         }
 
         couponZoneRepository.deleteById(couponZoneId);
+    }
+
+    @Override
+    public CouponZoneIsBlindResponse retrieveCouponZoneIsBlind(Long couponZoneId) {
+        CouponZone couponZone = couponZoneRepository.findById(couponZoneId)
+            .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
+
+        return new CouponZoneIsBlindResponse(couponZone.getIsBlind());
+    }
+
+    @Override
+    public void updateIsBlind(Long couponZoneId, CouponZoneIsBlindRequest request) {
+        CouponZone couponZone = couponZoneRepository.findById(couponZoneId)
+            .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
+
+        couponZone.setIsBlind(request.getIsBlind());
     }
 }
