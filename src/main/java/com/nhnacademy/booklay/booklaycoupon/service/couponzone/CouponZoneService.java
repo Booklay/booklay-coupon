@@ -1,6 +1,8 @@
 package com.nhnacademy.booklay.booklaycoupon.service.couponzone;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import org.springframework.data.domain.Page;
@@ -16,4 +18,7 @@ public interface CouponZoneService {
     void createAtCouponZone(CouponZoneCreateRequest couponRequest);
     void deleteAtCouponZone(Long couponZoneId);
 
+    CouponZoneIsBlindResponse retrieveCouponZoneIsBlind(Long couponZoneId);
+
+    void updateIsBlind(Long couponZoneId, CouponZoneIsBlindRequest request);
 }
