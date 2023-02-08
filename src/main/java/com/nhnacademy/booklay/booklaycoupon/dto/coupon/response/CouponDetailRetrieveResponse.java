@@ -20,7 +20,6 @@ public class CouponDetailRetrieveResponse {
     private String itemName;
     private final int minimumUseAmount;
     private final int maximumDiscountAmount;
-    private final LocalDateTime issuanceDeadlineAt;
     private final Boolean isDuplicatable;
     private final Boolean isLimited;
     @Setter
@@ -30,8 +29,8 @@ public class CouponDetailRetrieveResponse {
 
     @Builder
     public CouponDetailRetrieveResponse(Long id, String name, String typeName, int amount,
-                                        Long applyItemId, String itemName, int minimumUseAmount,
-                                        int maximumDiscountAmount, LocalDateTime issuanceDeadlineAt,
+                                        Long applyItemId, String itemName,
+                                        int minimumUseAmount, int maximumDiscountAmount,
                                         Boolean isDuplicatable, Boolean isLimited,
                                         Long objectFileId, Boolean isOrderCoupon) {
         this.id = id;
@@ -42,7 +41,6 @@ public class CouponDetailRetrieveResponse {
         this.itemName = itemName;
         this.minimumUseAmount = minimumUseAmount;
         this.maximumDiscountAmount = maximumDiscountAmount;
-        this.issuanceDeadlineAt = issuanceDeadlineAt;
         this.isDuplicatable = isDuplicatable;
         this.isLimited = isLimited;
         this.objectFileId = objectFileId;
@@ -56,7 +54,7 @@ public class CouponDetailRetrieveResponse {
             .typeName(coupon.getCouponType().getName())
             .amount(coupon.getAmount())
             .minimumUseAmount(coupon.getMinimumUseAmount())
-            .minimumUseAmount(coupon.getMaximumDiscountAmount())
+            .maximumDiscountAmount(coupon.getMaximumDiscountAmount())
             .isDuplicatable(coupon.getIsDuplicatable())
             .isLimited(coupon.getIsLimited())
             .build();

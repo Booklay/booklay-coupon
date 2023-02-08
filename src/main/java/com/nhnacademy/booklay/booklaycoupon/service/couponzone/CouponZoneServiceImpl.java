@@ -9,6 +9,7 @@ import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.couponzone.CouponZoneRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
+import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,37 +26,48 @@ public class CouponZoneServiceImpl implements CouponZoneService{
 
     private final CouponRepository couponRepository;
     private final CouponZoneRepository couponZoneRepository;
+    private final GetCouponService couponService;
     private final ObjectFileRepository fileRepository;
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIs(true, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeNull(true, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIs(false, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeNull(false, pageable);
+    }
+
+    @Override
+    public Page<CouponZoneResponse> retrieveAdminCouponZoneGraded(Pageable pageable) {
+        return couponZoneRepository.findAllByGradeNotNull(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalse(true, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeNull(true, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalse(false, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeNull(false, pageable);
+    }
+
+    @Override
+    public Page<CouponZoneResponse> retrieveCouponZoneGraded(Pageable pageable) {
+        return couponZoneRepository.findAllByGradeNotNullAndIsBlindIsFalse(pageable);
     }
 
     @Override
     public void createAtCouponZone(CouponZoneCreateRequest couponRequest) {
         Long couponId = couponRequest.getCouponId();
 
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NotFoundException("Coupon", couponId));
+        Coupon coupon = couponService.checkCouponExist(couponId);
         ObjectFile file = coupon.getFile();
 
         CouponZone couponZone = CouponZoneCreateRequest.toEntity(couponRequest, coupon.getName(),

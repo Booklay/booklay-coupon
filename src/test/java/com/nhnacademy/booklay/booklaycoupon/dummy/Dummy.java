@@ -197,7 +197,6 @@ public class Dummy {
         ReflectionTestUtils.setField(couponRequest, "applyItemId", Dummy.getDummyCategory().getId());
         ReflectionTestUtils.setField(couponRequest, "minimumUseAmount", 1000);
         ReflectionTestUtils.setField(couponRequest, "maximumDiscountAmount", 5000);
-        ReflectionTestUtils.setField(couponRequest, "issuanceDeadlineAt", LocalDateTime.now());
         ReflectionTestUtils.setField(couponRequest, "isDuplicatable", true);
         ReflectionTestUtils.setField(couponRequest, "isLimited", true);
 
