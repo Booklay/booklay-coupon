@@ -138,7 +138,7 @@ class CouponAdminControllerTest {
         // then
         mockMvc.perform(get(URI_PREFIX + "/1")
                 .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isInternalServerError())
+            .andExpect(status().is4xxClientError())
             .andDo(print())
             .andReturn();
 

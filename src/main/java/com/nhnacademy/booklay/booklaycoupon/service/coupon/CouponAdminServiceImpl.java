@@ -10,12 +10,15 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
+import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.ProductRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
+import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.RestService;
 import java.util.ArrayList;
@@ -43,6 +46,8 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final ProductRepository productRepository;
     private final ObjectFileRepository fileRepository;
     private final GetCouponService couponService;
+    private final OrderCouponRepository orderCouponRepository;
+    private final ProductCouponRepository productCouponRepository;
 
     private final RestService restService;
     private static final int PAGE_SIZE = 20;
@@ -180,8 +185,11 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     public Page<CouponHistoryRetrieveResponse> retrieveIssuedCoupons(Pageable pageable) {
         List<CouponHistoryRetrieveResponse> couponHistoryList = new ArrayList<>();
 
-        couponHistoryList.addAll(couponRepository.getCouponHistoryAtOrderCoupon());
-        couponHistoryList.addAll(couponRepository.getCouponHistoryAtProductCoupon());
+        List<CouponHistoryRetrieveResponse> atOrder = orderCouponRepository.findAllBy();
+        List<CouponHistoryRetrieveResponse> atProduct = productCouponRepository.findAllBy();
+
+        couponHistoryList.addAll(atOrder);
+        couponHistoryList.addAll(atProduct);
 
         couponHistoryList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 

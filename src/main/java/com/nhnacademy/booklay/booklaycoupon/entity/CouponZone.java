@@ -56,6 +56,7 @@ public class CouponZone {
     private Long couponId;
 
     @Column(name = "is_blind")
+    @Setter
     private Boolean isBlind;
 
     @Column(name = "is_limited")

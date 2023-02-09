@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CouponCustomRepository {
-    List<CouponHistoryRetrieveResponse> getCouponHistoryAtOrderCoupon();
-    List<CouponHistoryRetrieveResponse> getCouponHistoryAtProductCoupon();
     Page<PointCouponRetrieveResponse> getPointCouponByMember(Long memberNo, Pageable pageable);
     Page<MemberCouponRetrieveResponse> getCouponsByMember(Long memberId);
 }
