@@ -14,4 +14,5 @@ public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Long> 
     Optional<OrderCoupon> findFirstByMemberIsNullAndCouponId(Long couponId);
     CouponRetrieveResponseFromProduct findByCode(String code);
     List<CouponHistoryRetrieveResponse> findAllBy();
+    boolean existsByCouponIdAndMemberNoIs(Long couponId, Long memberNo);
 }
