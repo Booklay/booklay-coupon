@@ -1,13 +1,12 @@
 package com.nhnacademy.booklay.booklaycoupon.service.kafka;
 
+import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.ALREADY_ISSUED;
 import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
 import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NO_STORAGE;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.message.CouponIssueRequestMessage;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.message.CouponIssueResponseMessage;
-import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
 import com.nhnacademy.booklay.booklaycoupon.entity.Member;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
@@ -19,7 +18,6 @@ import com.nhnacademy.booklay.booklaycoupon.repository.couponzone.CouponZoneRepo
 import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,8 +44,9 @@ public class CouponZoneIssueService {
     @KafkaListener(topics = "${message.topic.coupon.request}", containerFactory = "kafkaListenerContainerFactory")
     public void issueCoupon(CouponIssueRequestMessage request) {
         Long couponId = request.getCouponId();
-        Long memberId = request.getMemberId();
+        Long memberNo = request.getMemberId();
 
+        log.info(couponId.toString() + "ddd");
         try {
             // 쿠폰존에 등록된 쿠폰인지 확인.
             CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
@@ -57,23 +56,37 @@ public class CouponZoneIssueService {
             if (couponAtZone.getIsBlind())
                 throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
 
-            // 이미 받은 쿠폰입니다.
-
             // 쿠폰이 주문쿠폰에 있는지, 상품쿠폰에 있는지 확인.
             Coupon coupon = couponService.checkCouponExist(couponId);
             String orderOrProduct = couponService.isOrderOrProduct(coupon);
 
+
+            // 이미 발급 받았는지 확인 후, 재고가 남아있다면 발급.
             if (orderOrProduct.equals("product")) {
-                issueAtProductCoupon(couponId, memberId, couponAtZone.getExpiredAt());
+                checkAlreadyIssuedAtProductCoupon(couponId, memberNo);
+                issueAtProductCoupon(couponId, memberNo, couponAtZone.getExpiredAt());
             } else {
-                issueAtOrderCoupon(couponId, memberId, couponAtZone.getExpiredAt());
+                checkAlreadyIssuedAtOrderCoupon(couponId, memberNo);
+                issueAtOrderCoupon(couponId, memberNo, couponAtZone.getExpiredAt());
             }
 
             responseIssueCoupon(request.getUuid(), "발급 완료되었습니다!");
 
         } catch (IllegalArgumentException ex){
-            // 완료 메시지 보냄.
+            // 에러 메시지 전송.
             responseIssueCoupon(request.getUuid(), ex.getMessage());
+        }
+    }
+
+    private void checkAlreadyIssuedAtOrderCoupon(Long couponId, Long memberNo) {
+        if(orderCouponRepository.existsByCouponIdAndMemberNoIs(couponId, memberNo)) {
+            throw new IllegalArgumentException(ALREADY_ISSUED);
+        }
+    }
+
+    private void checkAlreadyIssuedAtProductCoupon(Long couponId, Long memberNo) {
+        if(productCouponRepository.existsByCouponIdAndMemberNoIs(couponId, memberNo)) {
+            throw new IllegalArgumentException(ALREADY_ISSUED);
         }
     }
 
