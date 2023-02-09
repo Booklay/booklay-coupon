@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductCouponRepository extends JpaRepository<ProductCoupon, Long> {
     Page<CouponRetrieveResponseFromProduct> findAllByCoupon_Product_IdAndMember_MemberNoAndCoupon_IsDuplicatable(Long productNo, Long memberNo, Boolean isDuplicatable, Pageable pageable);
     CouponRetrieveResponseFromProduct findByCode(String code);
-    Optional<ProductCoupon> findByMemberIsNullAndCouponId(Long couponId);
+    Optional<ProductCoupon> findFirstByMemberIsNullAndCouponId(Long couponId);
     List<CouponHistoryRetrieveResponse> findAllBy();
 }
