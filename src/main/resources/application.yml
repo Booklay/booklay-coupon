@@ -2,8 +2,12 @@ spring:
   application:
     name: booklay-coupon
 
+
   config:
     import: "optional:configserver:http://133.186.218.11:8888"
+  kafka:
+    consumer:
+      group-id: coupon-test
 
 server:
 
@@ -12,5 +16,6 @@ server:
 logging:
   level:
     root: debug
+
 
 
