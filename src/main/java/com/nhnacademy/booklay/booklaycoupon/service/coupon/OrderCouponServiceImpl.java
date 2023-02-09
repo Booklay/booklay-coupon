@@ -13,7 +13,7 @@ public class OrderCouponServiceImpl implements OrderCouponService{
     private final OrderCouponRepository orderCouponRepository;
     @Override
     public Page<CouponRetrieveResponseFromProduct> retrieveCouponPageByMemberNo(Long memberNo, Boolean isDuplicable, Pageable pageable) {
-        return orderCouponRepository.findAllByMember_MemberNoAndCoupon_IsDuplicatable(memberNo, isDuplicable, pageable);
+        return orderCouponRepository.findAllByMember_MemberNoAndCoupon_IsDuplicatableAndCoupon_CategoryNoNotNull(memberNo, isDuplicable, pageable);
     }
     @Override
     public CouponRetrieveResponseFromProduct retrieveCouponByCouponCode(String couponCode) {
