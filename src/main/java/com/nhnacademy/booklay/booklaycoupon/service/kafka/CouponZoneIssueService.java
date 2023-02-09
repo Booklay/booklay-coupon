@@ -88,7 +88,7 @@ public class CouponZoneIssueService {
         Member member = memberRepository.findByMemberNo(memberNo)
             .orElseThrow(() -> new NotFoundException("member", memberNo));
         OrderCoupon coupon = orderCouponRepository
-            .findByMemberIsNullAndCouponId(couponId)
+            .findFirstByMemberIsNullAndCouponId(couponId)
             .orElseThrow(() -> new IllegalArgumentException(NO_STORAGE));
 
         coupon.setIssuedAt(LocalDateTime.now());
@@ -103,7 +103,7 @@ public class CouponZoneIssueService {
             .orElseThrow(() -> new NotFoundException("member", memberNo));
 
         ProductCoupon coupon = productCouponRepository
-            .findByMemberIsNullAndCouponId(couponId)
+            .findFirstByMemberIsNullAndCouponId(couponId)
             .orElseThrow(() -> new IllegalArgumentException(NO_STORAGE));
 
         coupon.setIssuedAt(LocalDateTime.now());
