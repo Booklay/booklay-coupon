@@ -75,7 +75,6 @@ public class Dummy {
             .isDuplicatable(false)
             .isLimited(true)
             .build();
-
         ReflectionTestUtils.setField(coupon, "id", 1L);
 
         return coupon;

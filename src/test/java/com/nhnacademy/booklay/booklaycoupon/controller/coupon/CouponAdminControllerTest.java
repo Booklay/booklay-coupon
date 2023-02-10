@@ -284,7 +284,7 @@ class CouponAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(delete(URI_PREFIX + "/history"))
+        mockMvc.perform(get(URI_PREFIX + "/history"))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();

@@ -125,6 +125,7 @@ class CouponZoneAdminControllerTest {
         // then
         mockMvc.perform(post(URI_PREFIX)
                 .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
@@ -163,6 +164,7 @@ class CouponZoneAdminControllerTest {
         // then
         mockMvc.perform(post(URI_PREFIX + "/blind/" + targetId)
                 .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
