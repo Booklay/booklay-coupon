@@ -23,16 +23,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 관리자의 쿠폰존 관리 요청을 받는 컨트롤러.
+ * 관리자의 쿠폰존 요청을 받는 컨트롤러.
  * @author 김승혜
  */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/coupon-zone")
-public class AdminCouponZoneController {
+public class CouponZoneAdminController {
 
     private final CouponZoneService couponZoneService;
 
+    /**
+     * 제한 수량의 쿠폰을 조회합니다.(이달의 쿠폰)
+     */
     @GetMapping("/limited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneLimited(@PageableDefault
                                                                                Pageable pageable) {
@@ -44,6 +47,9 @@ public class AdminCouponZoneController {
             .body(pageResponse);
     }
 
+    /**
+     * 수량 제한이 없는 쿠폰을 조회합니다.
+     */
     @GetMapping("/unlimited")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneUnlimited(@PageableDefault
                                                                                       Pageable pageable) {
@@ -55,6 +61,9 @@ public class AdminCouponZoneController {
             .body(pageResponse);
     }
 
+    /**
+     * 등급별 쿠폰을 조회합니다.
+     */
     @GetMapping("/graded")
     public ResponseEntity<PageResponse<CouponZoneResponse>> retrieveCouponZoneGraded(@PageableDefault
                                                                                         Pageable pageable) {
@@ -78,6 +87,9 @@ public class AdminCouponZoneController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * 쿠폰존에 등록된 쿠폰의 isBlind를 조회합니다.
+     */
     @GetMapping("/blind/{couponZoneId}")
     public ResponseEntity<CouponZoneIsBlindResponse> getIsBlind(@PathVariable Long couponZoneId) {
         CouponZoneIsBlindResponse response = couponZoneService.retrieveCouponZoneIsBlind(couponZoneId);
@@ -87,6 +99,9 @@ public class AdminCouponZoneController {
             .body(response);
     }
 
+    /**
+     * 쿠폰존에 등록된 쿠폰의 숨김 여부를 수정합니다.
+     */
     @PostMapping("/blind/{couponZoneId}")
     public ResponseEntity<Void> updateIsBlind(@PathVariable Long couponZoneId,
                                               @Valid @RequestBody CouponZoneIsBlindRequest request) {

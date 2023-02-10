@@ -169,7 +169,7 @@ public class CouponAdminController {
      *
      */
     @GetMapping("/history")
-    public ResponseEntity<Void> retrieveCouponHistory() {
-        return null;
+    public ResponseEntity<Void> retrieveCouponUsageHistory() {
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
