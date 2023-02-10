@@ -54,6 +54,8 @@ class CouponRepositoryImplTest {
 
     @BeforeEach
     void setUp() {
+        clearRepo("order_coupon", orderCouponRepository);
+        clearRepo("product_coupon", productCouponRepository);
         clearRepo("coupon", couponRepository);
         clearRepo("member", memberRepository);
 
