@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("admin/coupons/product")
 @RequiredArgsConstructor
 public class CouponProductController {
+
     private final ProductCouponService productCouponService;
+
     @GetMapping("/{productNo}")
-    public ResponseEntity<PageResponse<CouponRetrieveResponseFromProduct>> retrieveAllCoupons(@PageableDefault Pageable pageable
-            , @PathVariable Long productNo, MemberInfo memberInfo, @RequestParam Boolean isDuplicable) {
+    public ResponseEntity<PageResponse<CouponRetrieveResponseFromProduct>> retrieveAllCoupons(@PageableDefault Pageable pageable,
+                                                                                              @PathVariable Long productNo,
+                                                                                              MemberInfo memberInfo,
+                                                                                              @RequestParam Boolean isDuplicable) {
         Page<CouponRetrieveResponseFromProduct> couponPage = productCouponService.retrieveCouponPageByMemberNoAndProductNo(memberInfo.getMemberNo(), productNo, isDuplicable,  pageable);
         PageResponse<CouponRetrieveResponseFromProduct> couponPageResponse = new PageResponse<>(couponPage);
+
         return ResponseEntity.ok(couponPageResponse);
     }
 }
