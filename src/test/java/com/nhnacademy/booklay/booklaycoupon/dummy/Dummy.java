@@ -1,10 +1,14 @@
 package com.nhnacademy.booklay.booklaycoupon.dummy;
 
+import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Authority;
@@ -28,6 +32,9 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.test.util.ReflectionTestUtils;
@@ -68,7 +75,6 @@ public class Dummy {
             .isDuplicatable(false)
             .isLimited(true)
             .build();
-
         ReflectionTestUtils.setField(coupon, "id", 1L);
 
         return coupon;
@@ -325,5 +331,32 @@ public class Dummy {
         ReflectionTestUtils.setField(productCoupon, "id", 1L);
 
         return productCoupon;
+    }
+
+    public static CouponZoneCreateRequest getDummyCouponZoneCreateRequest() {
+        return new CouponZoneCreateRequest(1L, "description", Grade.WHITE.getKorGrade(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), false);
+    }
+
+    public static CouponZoneIsBlindRequest getDummyCouponZoneIsBlindRequest() {
+        return new CouponZoneIsBlindRequest(true);
+    }
+
+    public static MemberInfo getDummyMemberInfo() {
+        Map<String, String[]> paramMap =  new HashMap<>();
+        String[] longStringArray = new String[] {"1"};
+        String[] stringArray = new String[] {"test"};
+        String[] dateArray = new String[] {"2000, 01, 01"};
+
+
+        paramMap.put("memberNo",longStringArray);
+        paramMap.put("gender",stringArray);
+        paramMap.put("memberId",longStringArray);
+        paramMap.put("nickname",stringArray);
+        paramMap.put("name",stringArray);
+        paramMap.put("birthday",dateArray);
+        paramMap.put("phoneNo",stringArray);
+        paramMap.put("email",stringArray);
+
+        return new MemberInfo(paramMap);
     }
 }

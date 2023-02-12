@@ -24,8 +24,8 @@ public class CouponMemberController {
     private final CouponMemberService couponMemberService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<MemberCouponRetrieveResponse>> retrieveCouponsByMember(@PathVariable Long memberNo, @PageableDefault
-    Pageable pageable) {
+    public ResponseEntity<PageResponse<MemberCouponRetrieveResponse>> retrieveCouponsByMember(@PathVariable Long memberNo,
+                                                                                              @PageableDefault Pageable pageable) {
         couponMemberService.retrieveCoupons(memberNo, pageable);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -34,7 +34,8 @@ public class CouponMemberController {
     }
 
     @GetMapping("/point")
-    public ResponseEntity<PageResponse<PointCouponRetrieveResponse>> retrievePointCoupons(@PathVariable Long memberNo, @PageableDefault Pageable pageable) {
+    public ResponseEntity<PageResponse<PointCouponRetrieveResponse>> retrievePointCoupons(@PathVariable Long memberNo,
+                                                                                          @PageableDefault Pageable pageable) {
         Page<PointCouponRetrieveResponse> pages =
             couponMemberService.retrievePointCoupons(memberNo, pageable);
 
