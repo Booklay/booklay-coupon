@@ -50,11 +50,15 @@ class CouponRepositoryImplTest {
     ProductCoupon productCoupon;
     Member member;
 
+    static Long option = 1L;
+
     @BeforeEach
     void setUp() {
+        clearRepo("order_coupon", orderCouponRepository);
+        clearRepo("product_coupon", productCouponRepository);
         clearRepo("coupon", couponRepository);
         clearRepo("member", memberRepository);
-        clearRepo("order_coupon", orderCouponRepository);
+
         coupon = Dummy.getDummyCoupon();
         orderCoupon = Dummy.getDummyOrderCoupon();
         productCoupon = Dummy.getDummyProductCoupon();
