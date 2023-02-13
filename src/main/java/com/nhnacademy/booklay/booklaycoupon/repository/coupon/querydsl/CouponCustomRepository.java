@@ -9,5 +9,4 @@ import org.springframework.data.domain.Pageable;
 
 public interface CouponCustomRepository {
     Page<PointCouponRetrieveResponse> getPointCouponByMember(Long memberNo, Pageable pageable);
-    Page<MemberCouponRetrieveResponse> getCouponsByMember(Long memberId);
 }
