@@ -1,6 +1,5 @@
 package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUsingDto;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
@@ -53,7 +52,7 @@ public class ProductCouponServiceImpl implements ProductCouponService{
     //todo 벌크연산으로 변경 필요
     @Override
     public void refundCoupon(List<Long> orderProductNoList) {
-        List<ProductCoupon> couponList = productCouponRepository.findAllByOrderProductNo(orderProductNoList);
+        List<ProductCoupon> couponList = productCouponRepository.findAllByOrderProductNoIn(orderProductNoList);
         couponList.forEach(productCoupon -> productCoupon.setOrderProductNo(null));
         productCouponRepository.flush();
     }

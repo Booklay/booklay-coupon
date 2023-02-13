@@ -18,5 +18,5 @@ public interface ProductCouponRepository extends JpaRepository<ProductCoupon, Lo
 
     List<CouponRetrieveResponseFromProduct> findAllByCodeIn(List<String> couponCodeList);
 
-    List<ProductCoupon> findAllByOrderProductNo(List<Long> orderProductNoList);
+    List<ProductCoupon> findAllByOrderProductNoIn(List<Long> orderProductNoList);
 }
