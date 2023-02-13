@@ -46,7 +46,7 @@ public class CouponZoneIssueService {
         Long couponId = request.getCouponId();
         Long memberNo = request.getMemberId();
 
-        log.info(couponId.toString() + "ddd");
+        log.info(couponId.toString() + "번 쿠폰 발급 요청 왔음");
         try {
             // 쿠폰존에 등록된 쿠폰인지 확인.
             CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
@@ -75,6 +75,8 @@ public class CouponZoneIssueService {
         } catch (IllegalArgumentException ex){
             // 에러 메시지 전송.
             responseIssueCoupon(request.getUuid(), ex.getMessage());
+        } finally {
+            log.info("메세지 넣어졌음..");
         }
     }
 
