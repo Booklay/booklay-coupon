@@ -34,10 +34,10 @@ public class OrderCoupon {
     @Column(name = "coupon_no", insertable = false, updatable = false)
     private Long couponNo;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_no")
+    @JoinColumn(name = "member_no", insertable = false, updatable = false)
     private Member member;
     @Setter
-    @Column(name = "member_no", insertable = false, updatable = false)
+    @Column(name = "member_no")
     private Long memberNo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_no")

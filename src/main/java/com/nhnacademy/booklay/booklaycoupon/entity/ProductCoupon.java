@@ -33,6 +33,7 @@ public class ProductCoupon {
     private Coupon coupon;
     @Column(name = "coupon_no", insertable = false, updatable = false)
     private Long couponNo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_no")
     private Member member;
