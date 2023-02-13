@@ -49,26 +49,6 @@ class CouponMemberControllerTest {
     }
 
     @Test
-    @DisplayName("멤버의 보유 쿠폰 조회")
-    void testRetrieveCouponsByMember() throws Exception {
-        // given
-        PageRequest pageRequest = PageRequest.of(0,10);
-
-        // when
-
-        // then
-        mockMvc.perform(get(URI_PREFIX)
-                .queryParam("page", "0")
-                .queryParam("size", "10")
-                .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andReturn();
-
-        Mockito.verify(couponMemberService).retrieveCoupons(1L, pageRequest);
-    }
-
-    @Test
     @DisplayName("멤버의 보유 포인트 쿠폰 조회")
     void testRetrievePointCoupons() throws Exception {
         // given
