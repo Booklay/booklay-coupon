@@ -23,14 +23,20 @@ public class CouponMemberController {
 
     private final CouponMemberService couponMemberService;
 
+    /**
+     * 회원이 소유한 쿠폰을 조회합니다.
+     */
     @GetMapping
     public ResponseEntity<PageResponse<MemberCouponRetrieveResponse>> retrieveCouponsByMember(@PathVariable Long memberNo,
                                                                                               @PageableDefault Pageable pageable) {
-        couponMemberService.retrieveCoupons(memberNo, pageable);
+        Page<MemberCouponRetrieveResponse> pages =
+            couponMemberService.retrieveCoupons(memberNo, pageable);
+
+        PageResponse<MemberCouponRetrieveResponse> response = new PageResponse<>(pages);
 
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
-            .build();
+            .body(response);
     }
 
     @GetMapping("/point")
