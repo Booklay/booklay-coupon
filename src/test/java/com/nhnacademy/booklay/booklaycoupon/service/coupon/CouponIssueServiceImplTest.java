@@ -12,6 +12,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +66,7 @@ class CouponIssueServiceImplTest {
     @DisplayName("사용자에게 주문쿠폰 발급 테스트")
     void testIssueOrderCouponToMember() {
         // given
-        CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L);
+        CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
 
         given(couponService.checkCouponExist(1L)).willReturn(orderCoupon);
         given(memberRepository.findById(request.getMemberId())).willReturn(
@@ -83,7 +84,7 @@ class CouponIssueServiceImplTest {
     @DisplayName("사용자에게 상품쿠폰 발급 테스트")
     void testIssueProductCouponToMember() {
         // given
-        CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L);
+        CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
 
         given(couponService.checkCouponExist(1L)).willReturn(productCoupon);
         given(memberRepository.findById(request.getMemberId())).willReturn(

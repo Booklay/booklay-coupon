@@ -1,6 +1,5 @@
 package com.nhnacademy.booklay.booklaycoupon.repository.couponzone;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
 import java.util.Optional;
