@@ -4,6 +4,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetr
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCoupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.QCouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.QMember;
 import com.nhnacademy.booklay.booklaycoupon.entity.QOrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QProductCoupon;
@@ -24,14 +25,18 @@ public class ProductCouponRepositoryImpl extends QuerydslRepositorySupport imple
         QCoupon coupon = QCoupon.coupon;
         QProductCoupon productCoupon = QProductCoupon.productCoupon;
         QMember member = QMember.member;
+        QCouponType type = QCouponType.couponType;
 
         return from(productCoupon)
             .where(productCoupon.member.memberNo.eq(memberNo))
             .leftJoin(coupon).on(productCoupon.coupon.id.eq(coupon.id))
+            .leftJoin(type).on(coupon.couponType.id.eq(type.id))
             .leftJoin(member).on(productCoupon.member.memberNo.eq(member.memberNo))
             .select(Projections.constructor(MemberCouponRetrieveResponse.class,
                 coupon.name,
                 coupon.amount,
+                type.name,
+                productCoupon.orderProductNo,
                 coupon.minimumUseAmount,
                 coupon.maximumDiscountAmount,
                 productCoupon.expiredAt,
