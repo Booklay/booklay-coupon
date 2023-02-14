@@ -21,8 +21,10 @@ import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -219,7 +221,7 @@ class CouponAdminControllerTest {
     void testIssueCouponToMember() throws Exception {
 
         // given
-        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1L, 1L);
+        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
 
         // when
 
