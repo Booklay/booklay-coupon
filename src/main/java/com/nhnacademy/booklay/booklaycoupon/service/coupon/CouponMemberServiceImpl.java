@@ -8,6 +8,7 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponReposit
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,6 +32,18 @@ public class CouponMemberServiceImpl implements CouponMemberService{
 
         List<MemberCouponRetrieveResponse> orderCouponList = orderCouponRepository.getCouponsByMember(memberNo);
         List<MemberCouponRetrieveResponse> productCouponList = productCouponRepository.getCouponsByMember(memberNo);
+
+        orderCouponList.forEach(
+            c -> {
+                if(Objects.nonNull(c.getUsedItemNo())) c.setIsUsed(true);
+            }
+        );
+
+        productCouponList.forEach(
+            c -> {
+                if(Objects.nonNull(c.getUsedItemNo())) c.setIsUsed(true);
+            }
+        );
 
         couponList.addAll(orderCouponList);
         couponList.addAll(productCouponList);

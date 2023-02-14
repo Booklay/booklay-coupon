@@ -17,5 +17,5 @@ public class MemberCouponRetrieveResponse {
     private final LocalDateTime expiredAt;
     private final Boolean isDuplicatable;
     @Setter
-    private Boolean isUsed;
+    private Boolean isUsed = false;
 }
