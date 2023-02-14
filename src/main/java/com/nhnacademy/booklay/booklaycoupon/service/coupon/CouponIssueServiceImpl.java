@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CouponIssueServiceImpl implements CouponIssueService{
 
-    private final MemberRepository memberRepository;
     private final CouponJdbcRepository couponJdbcRepository;
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
@@ -46,19 +45,16 @@ public class CouponIssueServiceImpl implements CouponIssueService{
 
         Coupon coupon = getCouponService.checkCouponExist(couponId);
 
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new NotFoundException(Member.class.toString(), memberId));
-
         if(Objects.nonNull(coupon.getCategory()) || Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
             OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode(), false);
-            orderCoupon.setMember(member);
+            orderCoupon.setMemberNo(memberId);
             orderCoupon.setIssuedAt(LocalDateTime.now());
             orderCoupon.setExpiredAt(request.getExpiredAt());
 
             orderCouponRepository.save(orderCoupon);
         } else if (Objects.nonNull(coupon.getProduct())){
             ProductCoupon productCoupon = new ProductCoupon(coupon, getCode());
-            productCoupon.setMember(member);
+            productCoupon.setMemberNo(memberId);
             productCoupon.setIssuedAt(LocalDateTime.now());
             productCoupon.setExpiredAt(request.getExpiredAt());
 
