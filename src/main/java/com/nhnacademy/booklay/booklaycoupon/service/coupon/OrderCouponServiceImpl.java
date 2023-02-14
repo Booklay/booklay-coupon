@@ -3,11 +3,10 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUsingDto;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,14 +35,14 @@ public class OrderCouponServiceImpl implements OrderCouponService{
     // 벌크연산으로 변경되면 좋겠음 하지만 최대 2회연산이라 굳이 쿼리 dsl을 사용하거나 영속성에 결함을 가지게 하거나 클리어를 할정도는 아닌것으로 보임
     @Override
     public void usingCoupon(List<CouponUsingDto> categoryCouponList) {
-        Map<Long, CouponUsingDto> usingDtoMap = new HashMap<>();
-        List<OrderCoupon> couponList = orderCouponRepository.findAllById(categoryCouponList.stream()
+        AtomicReference<Long> orderNo = new AtomicReference<>();
+        List<OrderCoupon> couponList = orderCouponRepository.findByCodeIn(categoryCouponList.stream()
             .map(couponUsingDto -> {
-                usingDtoMap.put(couponUsingDto.getUsedTargetNo(), couponUsingDto);
-                return couponUsingDto.getSpecifiedCouponNo();
+                orderNo.set(couponUsingDto.getUsedTargetNo());
+                return couponUsingDto.getCouponCode();
             }).collect(Collectors.toList()));
 
-        couponList.forEach(orderCoupon -> orderCoupon.setOrderNo(usingDtoMap.get(orderCoupon.getId()).getUsedTargetNo()));
+        couponList.forEach(orderCoupon -> orderCoupon.setOrderNo(orderNo.get()));
         orderCouponRepository.flush();
     }
 
