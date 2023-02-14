@@ -69,8 +69,8 @@ class CouponIssueServiceImplTest {
         CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
 
         given(couponService.checkCouponExist(1L)).willReturn(orderCoupon);
-        given(memberRepository.findById(request.getMemberId())).willReturn(
-            Optional.ofNullable(Dummy.getDummyMember()));
+//        given(memberRepository.findById(request.getMemberId())).willReturn(
+//            Optional.ofNullable(Dummy.getDummyMember()));
 
 
         // when
@@ -87,8 +87,8 @@ class CouponIssueServiceImplTest {
         CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
 
         given(couponService.checkCouponExist(1L)).willReturn(productCoupon);
-        given(memberRepository.findById(request.getMemberId())).willReturn(
-            Optional.ofNullable(Dummy.getDummyMember()));
+//        given(memberRepository.findById(request.getMemberId())).willReturn(
+//            Optional.ofNullable(Dummy.getDummyMember()));
 
 
         // when
