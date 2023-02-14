@@ -1,16 +1,21 @@
 package com.nhnacademy.booklay.booklaycoupon.dto.coupon.response;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberCouponRetrieveResponse {
-    private String name;
-    private int amount;
-    private int minimumUseAmount;
-    private int maximumDiscountAmount;
-    private LocalDateTime expiredAt;
-    private Boolean isDuplicatable;
+    private final String name;
+    private final int amount;
+    private final String couponType;
+    private final Long usedItemNo;
+    private final int minimumUseAmount;
+    private final int maximumDiscountAmount;
+    private final LocalDateTime expiredAt;
+    private final Boolean isDuplicatable;
+    @Setter
+    private Boolean isUsed;
 }

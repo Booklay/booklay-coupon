@@ -5,6 +5,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemb
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class CouponComplexServiceImpl implements CouponComplexService {
     @Override
     public void createAndIssueCouponByTemplate(CouponTemplate couponTemplate, Long memberId){
         Long couponId = couponAdminService.createCoupon(couponTemplate.toCouponCURequest()).getId();
-        couponIssueService.issueCouponToMember(new CouponIssueToMemberRequest(couponId, memberId));
+        couponIssueService.issueCouponToMember(new CouponIssueToMemberRequest(couponId, memberId,
+            LocalDateTime.now()));
     }
 }
