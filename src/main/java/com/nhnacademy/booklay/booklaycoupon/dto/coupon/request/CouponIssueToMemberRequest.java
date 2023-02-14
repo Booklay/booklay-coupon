@@ -24,5 +24,5 @@ public class CouponIssueToMemberRequest {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime expiredAt;
+    private final LocalDateTime expiredAt;
 }
