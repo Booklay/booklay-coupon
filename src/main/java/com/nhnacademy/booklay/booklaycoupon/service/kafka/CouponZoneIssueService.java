@@ -100,29 +100,24 @@ public class CouponZoneIssueService {
     // TODO 수량 제한 없는 거랑 로직을 어떤식으로 할 거고, 코드 정하는 부분을 약간 수정해야할 것 같음.
 
     public void issueAtOrderCoupon(Long couponId, Long memberNo, LocalDateTime expiredAt) {
-        Member member = memberRepository.findByMemberNo(memberNo)
-            .orElseThrow(() -> new NotFoundException("member", memberNo));
         OrderCoupon coupon = orderCouponRepository
             .findFirstByMemberIsNullAndCouponId(couponId)
             .orElseThrow(() -> new IllegalArgumentException(NO_STORAGE));
 
         coupon.setIssuedAt(LocalDateTime.now());
-        coupon.setMember(member);
+        coupon.setMemberNo(memberNo);
         coupon.setExpiredAt(expiredAt);
 
         orderCouponRepository.save(coupon);
     }
 
     public void issueAtProductCoupon(Long couponId, Long memberNo, LocalDateTime expiredAt) {
-        Member member = memberRepository.findByMemberNo(memberNo)
-            .orElseThrow(() -> new NotFoundException("member", memberNo));
-
         ProductCoupon coupon = productCouponRepository
             .findFirstByMemberIsNullAndCouponId(couponId)
             .orElseThrow(() -> new IllegalArgumentException(NO_STORAGE));
 
         coupon.setIssuedAt(LocalDateTime.now());
-        coupon.setMember(member);
+        coupon.setMemberNo(memberNo);
         coupon.setExpiredAt(expiredAt);
 
         productCouponRepository.save(coupon);

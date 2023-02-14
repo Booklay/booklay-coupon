@@ -1,6 +1,9 @@
 package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +25,27 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
             result = orderCouponService.retrieveCouponByCouponCode(couponCode);
         }
         return result;
+    }
+
+    @Override
+    public List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
+        List<String> couponCodeList) {
+        List<CouponRetrieveResponseFromProduct> result = productCouponService.retrieveCouponByCouponCodeList(couponCodeList);
+
+        result.addAll(orderCouponService.retrieveCouponByCouponCodeList(couponCodeList));
+
+        return result;
+    }
+
+    @Override
+    public void couponUsing(CouponUseRequest couponUseRequest) {
+        productCouponService.usingCoupon(couponUseRequest.getProductCouponList());
+        orderCouponService.usingCoupon(couponUseRequest.getCategoryCouponList());
+    }
+
+    @Override
+    public void couponRefund(CouponRefundRequest couponRefundRequest) {
+        productCouponService.refundCoupon(couponRefundRequest.getOrderProductNoList());
+        orderCouponService.refundCoupon(couponRefundRequest.getOrderNo());
     }
 }
