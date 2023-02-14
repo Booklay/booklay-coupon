@@ -217,12 +217,11 @@ class CouponAdminControllerTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("관리자가 사용자에게 쿠폰 발급")
     void testIssueCouponToMember() throws Exception {
 
         // given
-        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.of(2000,02,02,11,11,11));
+        CouponIssueToMemberRequest couponRequest = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
 
         // when
 
