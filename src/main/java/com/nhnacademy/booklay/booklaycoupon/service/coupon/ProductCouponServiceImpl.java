@@ -30,8 +30,8 @@ public class ProductCouponServiceImpl implements ProductCouponService{
 
     @Override
     public List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
-        List<String> couponCodeList) {
-        return productCouponRepository.findAllByCodeIn(couponCodeList);
+            List<String> couponCodeList, Long memberNo) {
+        return productCouponRepository.findAllByCodeInAndMemberNoAndOrderProductNoNotNull(couponCodeList, memberNo);
     }
 
     

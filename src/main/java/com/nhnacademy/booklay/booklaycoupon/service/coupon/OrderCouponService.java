@@ -2,7 +2,7 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUsingDto;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
-import java.util.Collection;
+
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,7 @@ public interface OrderCouponService {
 
     CouponRetrieveResponseFromProduct retrieveCouponByCouponCode(String couponCode);
 
-    List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(List<String> couponCodeList);
+    List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(List<String> couponCodeList, Long memberNo);
 
     void usingCoupon(List<CouponUsingDto> categoryCouponList);
 
