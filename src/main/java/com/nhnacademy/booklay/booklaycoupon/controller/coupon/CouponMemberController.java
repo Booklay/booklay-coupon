@@ -39,6 +39,16 @@ public class CouponMemberController {
             .body(response);
     }
 
+    /**
+     * 회원이 소유한 쿠폰을 조회합니다.
+     */
+    @GetMapping
+    public ResponseEntity<Void> retrieveCouponsByMember(@PathVariable Long memberNo) {
+        couponMemberService.retrieveCouponCount(memberNo);
+        return ResponseEntity.status(HttpStatus.OK)
+            .build();
+    }
+
     @GetMapping("/point")
     public ResponseEntity<PageResponse<PointCouponRetrieveResponse>> retrievePointCoupons(@PathVariable Long memberNo,
                                                                                           @PageableDefault Pageable pageable) {
