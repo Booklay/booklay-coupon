@@ -19,7 +19,7 @@ public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Long>,
     List<CouponHistoryRetrieveResponse> findAllBy();
     boolean existsByCouponIdAndMemberNoIs(Long couponId, Long memberNo);
 
-    List<CouponRetrieveResponseFromProduct> findAllByCodeIn(List<String> couponCodeList);
+    List<CouponRetrieveResponseFromProduct> findAllByCodeInAndMemberNoAndOrderNoNotNull(List<String> couponCodeList, Long memberNo);
     List<OrderCoupon> findByCodeIn(List<String> couponCodeList);
 
     List<OrderCoupon> findByOrderNo(Long orderNo);

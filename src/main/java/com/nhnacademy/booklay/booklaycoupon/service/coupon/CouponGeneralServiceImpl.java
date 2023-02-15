@@ -29,10 +29,10 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
 
     @Override
     public List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
-        List<String> couponCodeList) {
-        List<CouponRetrieveResponseFromProduct> result = productCouponService.retrieveCouponByCouponCodeList(couponCodeList);
+            List<String> couponCodeList, Long memberNo) {
+        List<CouponRetrieveResponseFromProduct> result = productCouponService.retrieveCouponByCouponCodeList(couponCodeList, memberNo);
 
-        result.addAll(orderCouponService.retrieveCouponByCouponCodeList(couponCodeList));
+        result.addAll(orderCouponService.retrieveCouponByCouponCodeList(couponCodeList, memberNo));
 
         return result;
     }

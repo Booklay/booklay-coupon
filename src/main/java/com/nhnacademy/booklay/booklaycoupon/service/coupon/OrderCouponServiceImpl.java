@@ -28,8 +28,8 @@ public class OrderCouponServiceImpl implements OrderCouponService{
 
     @Override
     public List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
-        List<String> couponCodeList) {
-        return orderCouponRepository.findAllByCodeIn(couponCodeList);
+            List<String> couponCodeList, Long memberNo) {
+        return orderCouponRepository.findAllByCodeInAndMemberNoAndOrderNoNotNull(couponCodeList, memberNo);
     }
 
     // 벌크연산으로 변경되면 좋겠음 하지만 최대 2회연산이라 굳이 쿼리 dsl을 사용하거나 영속성에 결함을 가지게 하거나 클리어를 할정도는 아닌것으로 보임

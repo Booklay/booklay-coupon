@@ -9,7 +9,7 @@ public interface CouponGeneralService {
     CouponRetrieveResponseFromProduct retrieveCouponByCouponCode(String couponCode);
 
     List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
-        List<String> couponCodeList);
+            List<String> couponCodeList, Long memberNo);
 
     void couponUsing(CouponUseRequest couponUseRequest);
 
