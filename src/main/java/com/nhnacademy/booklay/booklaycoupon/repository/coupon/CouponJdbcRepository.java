@@ -1,5 +1,6 @@
 package com.nhnacademy.booklay.booklaycoupon.repository.coupon;
 
+import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class CouponJdbcRepository {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     ps.setLong(1, couponId);
-                    ps.setString(2, getCode());
+                    ps.setString(2, CodeUtils.getProductCouponCode());
                 }
 
                 @Override
@@ -39,7 +40,7 @@ public class CouponJdbcRepository {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     ps.setLong(1, couponId);
-                    ps.setString(2, getCode());
+                    ps.setString(2, CodeUtils.getOrderCouponCode());
                     ps.setInt(3, 0);
                 }
 
@@ -48,10 +49,6 @@ public class CouponJdbcRepository {
                     return quantity;
                 }
             });
-    }
-
-    private String getCode() {
-        return UUID.randomUUID().toString().substring(0, 30);
     }
 
 }

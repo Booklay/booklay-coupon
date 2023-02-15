@@ -5,6 +5,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetri
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CouponMemberServiceImpl implements CouponMemberService{
+public class CouponMemberServiceImpl implements CouponMemberService {
 
     private final CouponRepository couponRepository;
     private final OrderCouponRepository orderCouponRepository;
@@ -28,21 +29,15 @@ public class CouponMemberServiceImpl implements CouponMemberService{
     @Transactional(readOnly = true)
     public Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberNo, Pageable pageable) {
         List<MemberCouponRetrieveResponse> couponList = new ArrayList<>();
+        List<MemberCouponRetrieveResponse> orderCouponList =
+            orderCouponRepository.getCouponsByMember(memberNo);
+        List<MemberCouponRetrieveResponse> productCouponList =
+            productCouponRepository.getCouponsByMember(memberNo);
 
-        List<MemberCouponRetrieveResponse> orderCouponList = orderCouponRepository.getCouponsByMember(memberNo);
-        List<MemberCouponRetrieveResponse> productCouponList = productCouponRepository.getCouponsByMember(memberNo);
+        LocalDateTime now = LocalDateTime.now();
 
-        orderCouponList.forEach(
-            c -> {
-                if(Objects.nonNull(c.getUsedItemNo())) c.setIsUsed(true);
-            }
-        );
-
-        productCouponList.forEach(
-            c -> {
-                if(Objects.nonNull(c.getUsedItemNo())) c.setIsUsed(true);
-            }
-        );
+        checkIsUsable(orderCouponList, now);
+        checkIsUsable(productCouponList, now);
 
         couponList.addAll(orderCouponList);
         couponList.addAll(productCouponList);
@@ -50,13 +45,31 @@ public class CouponMemberServiceImpl implements CouponMemberService{
         return getPage(pageable, couponList);
     }
 
+    private void checkIsUsable(List<MemberCouponRetrieveResponse> couponList, LocalDateTime now) {
+        couponList.forEach(
+            c -> {
+                if (Objects.nonNull(c.getUsedItemNo())) {
+                    c.setIsUsed(true);
+                    c.setReason("사용 완료");
+                }
+
+                if (Objects.nonNull(c.getExpiredAt()) && c.getExpiredAt().isBefore(now)) {
+                    c.setIsUsed(true);
+                    c.setReason("기간 만료");
+                }
+            }
+        );
+    }
+
     @Override
     @Transactional(readOnly = true)
-    public Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberNo, Pageable pageable) {
+    public Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberNo,
+                                                                  Pageable pageable) {
         return couponRepository.getPointCouponByMember(memberNo, pageable);
     }
 
-    private Page<MemberCouponRetrieveResponse> getPage(Pageable pageable, List<MemberCouponRetrieveResponse> list) {
+    private Page<MemberCouponRetrieveResponse> getPage(Pageable pageable,
+                                                       List<MemberCouponRetrieveResponse> list) {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), list.size());
 

@@ -18,4 +18,6 @@ public class MemberCouponRetrieveResponse {
     private final Boolean isDuplicatable;
     @Setter
     private Boolean isUsed = false;
+    @Setter
+    private String reason = "사용 가능";
 }

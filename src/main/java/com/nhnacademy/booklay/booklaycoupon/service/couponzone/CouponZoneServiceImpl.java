@@ -1,9 +1,12 @@
 package com.nhnacademy.booklay.booklaycoupon.service.couponzone;
 
+import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
+
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneTimeResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
 import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
@@ -105,5 +108,18 @@ public class CouponZoneServiceImpl implements CouponZoneService{
             .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
 
         couponZone.setIsBlind(request.getIsBlind());
+    }
+
+    @Override
+    public CouponZoneTimeResponse retrieveCouponZoneTime(Long couponId) {
+        // 쿠폰존에 등록된 쿠폰인지 확인.
+        CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
+            .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
+
+        // isBlind = true 라면, 발급되지 않음.
+        if (couponAtZone.getIsBlind())
+            throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
+
+        return couponZoneRepository.getByCouponId(couponId);
     }
 }
