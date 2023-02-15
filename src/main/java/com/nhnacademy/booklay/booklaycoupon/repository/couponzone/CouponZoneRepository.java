@@ -1,6 +1,7 @@
 package com.nhnacademy.booklay.booklaycoupon.repository.couponzone;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneTimeResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -13,4 +14,5 @@ public interface CouponZoneRepository extends JpaRepository<CouponZone, Long> {
     Page<CouponZoneResponse> findAllByIsLimitedIsAndIsBlindIsFalseAndGradeNull(Boolean isLimited, Pageable pageable);
     Page<CouponZoneResponse> findAllByGradeNotNull(Pageable pageable);
     Optional<CouponZone> findByCouponId(Long couponId);
+    CouponZoneTimeResponse getByCouponId(Long couponId);
 }
