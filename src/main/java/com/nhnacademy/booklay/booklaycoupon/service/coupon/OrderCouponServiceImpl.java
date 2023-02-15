@@ -42,14 +42,20 @@ public class OrderCouponServiceImpl implements OrderCouponService{
                 return couponUsingDto.getCouponCode();
             }).collect(Collectors.toList()));
 
-        couponList.forEach(orderCoupon -> orderCoupon.setOrderNo(orderNo.get()));
+        couponList.forEach(orderCoupon -> {
+            orderCoupon.setOrderNo(orderNo.get());
+            orderCoupon.setIsUsed(true);
+        });
         orderCouponRepository.flush();
     }
 
     @Override
     public void refundCoupon(Long orderNo) {
         List<OrderCoupon> couponList = orderCouponRepository.findByOrderNo(orderNo);
-        couponList.forEach(orderCoupon -> orderCoupon.setOrderNo(null));
+        couponList.forEach(orderCoupon -> {
+            orderCoupon.setOrderNo(null);
+            orderCoupon.setIsUsed(false);
+        });
         orderCouponRepository.flush();
     }
 
