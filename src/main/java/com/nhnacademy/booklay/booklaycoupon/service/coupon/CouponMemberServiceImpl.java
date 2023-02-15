@@ -68,6 +68,14 @@ public class CouponMemberServiceImpl implements CouponMemberService {
         return couponRepository.getPointCouponByMember(memberNo, pageable);
     }
 
+    /**
+     * 사용자가 소유한 쿠폰의 갯수를 조회합니다.
+     */
+    @Override
+    public void retrieveCouponCount(Long memberNo) {
+
+    }
+
     private Page<MemberCouponRetrieveResponse> getPage(Pageable pageable,
                                                        List<MemberCouponRetrieveResponse> list) {
         int start = (int) pageable.getOffset();

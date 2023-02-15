@@ -165,11 +165,11 @@ public class CouponAdminController {
     }
 
     /**
-     * 사용된 쿠폰 조회
-     *
+     * 사용된 쿠폰을 조회합니다.
      */
     @GetMapping("/history")
-    public ResponseEntity<Void> retrieveCouponUsageHistory() {
+    public ResponseEntity<Void> retrieveCouponUsageHistory(@PageableDefault Pageable pageable) {
+        couponAdminService.retrieveUsedCoupon(pageable);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -5,6 +5,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
@@ -194,6 +195,11 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         couponHistoryList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 
         return getHistoryPage(pageable, couponHistoryList);
+    }
+
+    @Override
+    public Page<CouponUsedHistoryResponse> retrieveUsedCoupon(Pageable pageable) {
+        return null;
     }
 
     /**
