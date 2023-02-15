@@ -30,6 +30,7 @@ import com.nhnacademy.booklay.booklaycoupon.entity.OrderProduct;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderStatusCode;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
+import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -325,7 +326,7 @@ public class Dummy {
     public static ProductCoupon getDummyProductCoupon() {
         ProductCoupon productCoupon = ProductCoupon.builder()
             .coupon(getDummyCoupon())
-            .code(UUID.randomUUID().toString().substring(0, 30))
+            .code(CodeUtils.getProductCouponCode())
             .build();
 
         ReflectionTestUtils.setField(productCoupon, "id", 1L);
