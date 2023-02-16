@@ -1,11 +1,14 @@
 package com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl;
 
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.QMember;
+import com.nhnacademy.booklay.booklaycoupon.entity.QOrder;
 import com.nhnacademy.booklay.booklaycoupon.entity.QOrderCoupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.QOrderProduct;
 import com.nhnacademy.booklay.booklaycoupon.entity.QProductCoupon;
 import com.querydsl.core.types.Projections;
 import java.util.List;
@@ -39,6 +42,27 @@ public class OrderCouponRepositoryImpl extends QuerydslRepositorySupport impleme
                 coupon.maximumDiscountAmount,
                 orderCoupon.expiredAt,
                 coupon.isDuplicatable))
+            .fetch();
+    }
+
+    @Override
+    public List<CouponUsedHistoryResponse> getUsedOrderCoupon() {
+        QCoupon coupon = QCoupon.coupon;
+        QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
+        QMember member = QMember.member;
+        QOrder order = QOrder.order;
+
+        return from(orderCoupon)
+            .where(orderCoupon.orderNo.isNotNull())
+            .leftJoin(coupon).on(orderCoupon.coupon.id.eq(coupon.id))
+            .leftJoin(member).on(orderCoupon.member.memberNo.eq(member.memberNo))
+            .leftJoin(order).on(orderCoupon.orderNo.eq(order.id))
+            .select(Projections.constructor(CouponUsedHistoryResponse.class,
+                member.memberId,
+                coupon.name,
+                order.discountPrice,
+                order.orderedAt,
+                orderCoupon.issuedAt))
             .fetch();
     }
 }

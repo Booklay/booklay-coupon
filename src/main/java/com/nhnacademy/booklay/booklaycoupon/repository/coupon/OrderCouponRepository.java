@@ -2,6 +2,7 @@ package com.nhnacademy.booklay.booklaycoupon.repository.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl.OrderCouponCustomRepository;
 import org.springframework.data.domain.Page;

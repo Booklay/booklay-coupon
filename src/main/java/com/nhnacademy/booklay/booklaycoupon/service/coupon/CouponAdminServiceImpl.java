@@ -11,7 +11,6 @@ import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
-import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
@@ -21,7 +20,6 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeReposito
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
-import com.nhnacademy.booklay.booklaycoupon.service.RestService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,8 +48,6 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
 
-    private final RestService restService;
-    private static final int PAGE_SIZE = 20;
 
     /**
      * 쿠폰을 생성합니다.
@@ -195,7 +191,19 @@ public class CouponAdminServiceImpl implements CouponAdminService{
      */
     @Override
     public Page<CouponUsedHistoryResponse> retrieveUsedCoupon(Pageable pageable) {
-        return null;
+        List<CouponUsedHistoryResponse> usedList = new ArrayList<>();
+
+        List<CouponUsedHistoryResponse> usedOrderCoupon = orderCouponRepository.getUsedOrderCoupon();
+        List<CouponUsedHistoryResponse> usedProductCoupon = productCouponRepository.getUsedProductCoupon();
+
+        usedList.addAll(usedProductCoupon);
+        usedList.addAll(usedOrderCoupon);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), usedList.size());
+
+        return new PageImpl<>(usedList.subList(start, end), pageable, usedList.size());
+
     }
 
     /**
