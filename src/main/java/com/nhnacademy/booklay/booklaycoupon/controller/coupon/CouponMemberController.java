@@ -4,6 +4,8 @@ import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponMemberService;
+import java.util.Collections;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,10 +46,11 @@ public class CouponMemberController {
      * 회원이 소유한 쿠폰의 개수를 조회합니다.
      */
     @GetMapping("/count")
-    public ResponseEntity<Void> retrieveCouponCountByMember(@PathVariable Long memberNo) {
-        couponMemberService.retrieveCouponCount(memberNo);
+    public ResponseEntity<Map<String, Integer>> retrieveCouponCountByMember(@PathVariable Long memberNo) {
+        int count = couponMemberService.retrieveCouponCount(memberNo);
+
         return ResponseEntity.status(HttpStatus.OK)
-            .build();
+            .body(Collections.singletonMap("couponCount", count));
     }
 
     @GetMapping("/point")
@@ -63,6 +66,9 @@ public class CouponMemberController {
             .body(response);
     }
 
+    /**
+     * 사용자의 포인트 쿠폰 사용
+     */
     @PostMapping("/point/{couponId}")
     public ResponseEntity<Void> usePointCoupon(@PathVariable Long memberNo, @PathVariable Long couponId) {
         return null;

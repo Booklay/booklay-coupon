@@ -168,15 +168,11 @@ public class CouponAdminServiceImpl implements CouponAdminService{
      */
     @Override
     public void deleteCoupon(Long couponId) {
-        if(!couponRepository.existsById(couponId)) {
-            throw new NotFoundException(Coupon.class.toString(), couponId);
-        }
         couponRepository.deleteById(couponId);
     }
 
     /**
      * 발급된 쿠폰을 조회하기 위해, 상품 쿠폰과 주문 쿠폰을 조회하고 Page로 반환합니다.
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -194,6 +190,9 @@ public class CouponAdminServiceImpl implements CouponAdminService{
         return getHistoryPage(pageable, couponHistoryList);
     }
 
+    /**
+     * 관리자의 쿠폰 사용 내역을 조회합니다.
+     */
     @Override
     public Page<CouponUsedHistoryResponse> retrieveUsedCoupon(Pageable pageable) {
         return null;
@@ -201,7 +200,6 @@ public class CouponAdminServiceImpl implements CouponAdminService{
 
     /**
      * List를 Page로 바꿈.
-     *
      */
     private static Page<CouponHistoryRetrieveResponse> getHistoryPage(Pageable pageable,
                                                                       List<CouponHistoryRetrieveResponse> couponHistoryList) {
