@@ -1,6 +1,7 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.OrderCouponService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class CouponOrderController {
 
     @GetMapping
     public ResponseEntity<PageResponse<CouponRetrieveResponseFromProduct>> retrieveAllCoupons(@PageableDefault Pageable pageable,
-                                                                                              @RequestParam Long memberNo,
+                                                                                              MemberInfo memberInfo,
                                                                                               @RequestParam Boolean isDuplicable) {
-        Page<CouponRetrieveResponseFromProduct> couponPage = orderCouponService.retrieveCouponPageByMemberNo(memberNo, isDuplicable, pageable);
+        Page<CouponRetrieveResponseFromProduct> couponPage = orderCouponService.retrieveCouponPageByMemberNo(memberInfo.getMemberNo(), isDuplicable, pageable);
         PageResponse<CouponRetrieveResponseFromProduct> couponPageResponse = new PageResponse<>(couponPage);
 
         return ResponseEntity.ok(couponPageResponse);
