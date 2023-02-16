@@ -1,6 +1,7 @@
 package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberOrderCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
@@ -69,11 +70,16 @@ public class CouponMemberServiceImpl implements CouponMemberService {
 
     public List<MemberCouponRetrieveResponse> retrieveCouponList(Long memberNo) {
         List<MemberCouponRetrieveResponse> couponList = new ArrayList<>();
-        List<MemberCouponRetrieveResponse> orderCouponList =
+
+        List<MemberOrderCouponRetrieveResponse> orderList =
             orderCouponRepository.getCouponsByMember(memberNo);
         List<MemberCouponRetrieveResponse> productCouponList =
             productCouponRepository.getCouponsByMember(memberNo);
 
+        List<MemberCouponRetrieveResponse> orderCouponList =
+            orderList.stream().map(MemberCouponRetrieveResponse::fromOrderCoupon)
+                .collect(
+                    Collectors.toList());
         LocalDateTime now = LocalDateTime.now();
 
         checkIsUsable(orderCouponList, now);
@@ -88,7 +94,7 @@ public class CouponMemberServiceImpl implements CouponMemberService {
     private void checkIsUsable(List<MemberCouponRetrieveResponse> couponList, LocalDateTime now) {
         couponList.forEach(
             c -> {
-                if (Objects.nonNull(c.getUsedItemNo())) {
+                if (Objects.nonNull(c.getItemId())) {
                     c.setIsUsed(true);
                     c.setReason("사용 완료");
                 }
