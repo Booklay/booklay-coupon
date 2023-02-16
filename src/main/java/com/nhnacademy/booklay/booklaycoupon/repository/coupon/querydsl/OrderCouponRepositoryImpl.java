@@ -2,6 +2,7 @@ package com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberOrderCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCouponType;
@@ -22,7 +23,7 @@ public class OrderCouponRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<MemberCouponRetrieveResponse> getCouponsByMember(Long memberNo) {
+    public List<MemberOrderCouponRetrieveResponse> getCouponsByMember(Long memberNo) {
         QCoupon coupon = QCoupon.coupon;
         QOrderCoupon orderCoupon = QOrderCoupon.orderCoupon;
         QMember member = QMember.member;
@@ -33,7 +34,7 @@ public class OrderCouponRepositoryImpl extends QuerydslRepositorySupport impleme
             .innerJoin(orderCoupon.coupon, coupon)
             .leftJoin(type).on(coupon.couponType.id.eq(type.id))
             .innerJoin(orderCoupon.member, member)
-            .select(Projections.constructor(MemberCouponRetrieveResponse.class,
+            .select(Projections.constructor(MemberOrderCouponRetrieveResponse.class,
                 coupon.name,
                 coupon.amount,
                 type.name,
@@ -41,7 +42,8 @@ public class OrderCouponRepositoryImpl extends QuerydslRepositorySupport impleme
                 coupon.minimumUseAmount,
                 coupon.maximumDiscountAmount,
                 orderCoupon.expiredAt,
-                coupon.isDuplicatable))
+                coupon.isDuplicatable,
+                orderCoupon.isUsed))
             .fetch();
     }
 
