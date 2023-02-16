@@ -21,6 +21,7 @@ public class CouponZoneCreateRequest {
     @NotNull
     private String description;
 
+    @NotNull
     private String grade;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
