@@ -17,6 +17,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueReques
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
@@ -282,14 +283,16 @@ class CouponAdminControllerTest {
     void testRetrieveCouponUsageHistory() throws Exception {
 
         // given
+        PageRequest pageRequest = PageRequest.of(0,10);
+        PageImpl<CouponUsedHistoryResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
 
         // when
+        when(couponAdminService.retrieveUsedCoupon(any())).thenReturn(response);
 
         // then
         mockMvc.perform(get(URI_PREFIX + "/history"))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();
-
     }
 }

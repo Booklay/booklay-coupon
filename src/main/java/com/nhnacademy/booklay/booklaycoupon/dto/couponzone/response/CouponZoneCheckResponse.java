@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CouponZoneTimeResponse {
+public class CouponZoneCheckResponse {
     private final LocalDateTime openedAt;
     private final LocalDateTime issuanceDeadlineAt;
+    private final String grade;
 }
