@@ -23,4 +23,5 @@ public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Long>,
     List<OrderCoupon> findByCodeIn(List<String> couponCodeList);
 
     List<OrderCoupon> findByOrderNo(Long orderNo);
+    OrderCoupon findByMemberNoAndIdIs(Long memberNo, Long id);
 }

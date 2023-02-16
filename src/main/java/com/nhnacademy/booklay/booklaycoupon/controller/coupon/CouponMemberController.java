@@ -71,6 +71,9 @@ public class CouponMemberController {
      */
     @PostMapping("/point/{couponId}")
     public ResponseEntity<Void> usePointCoupon(@PathVariable Long memberNo, @PathVariable Long couponId) {
-        return null;
+        couponMemberService.usePointCoupon(memberNo, couponId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .build();
     }
 }

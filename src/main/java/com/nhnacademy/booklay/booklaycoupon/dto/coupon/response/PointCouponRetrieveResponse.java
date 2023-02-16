@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PointCouponRetrieveResponse {
     private Long couponId;
+    private Long orderCouponId;
     private String name;
     private int amount;
 }

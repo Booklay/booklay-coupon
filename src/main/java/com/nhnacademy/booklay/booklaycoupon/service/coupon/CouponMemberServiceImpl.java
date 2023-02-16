@@ -2,6 +2,7 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
@@ -52,6 +53,18 @@ public class CouponMemberServiceImpl implements CouponMemberService {
             couponList.stream().filter(c -> !c.getIsUsed()).collect(Collectors.toList());
 
         return usuableList.size();
+    }
+
+    /**
+     * 사용자의 포인트 쿠폰 사용
+     */
+    @Override
+    public void usePointCoupon(Long memberNo, Long orderCouponId) {
+        OrderCoupon orderCoupon =
+            orderCouponRepository.findByMemberNoAndIdIs(memberNo, orderCouponId);
+        orderCoupon.setIsUsed(true);
+
+        orderCouponRepository.save(orderCoupon);
     }
 
     public List<MemberCouponRetrieveResponse> retrieveCouponList(Long memberNo) {
