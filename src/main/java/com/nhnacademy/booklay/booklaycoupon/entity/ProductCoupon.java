@@ -36,6 +36,7 @@ public class ProductCoupon {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_no")
+    @Setter
     private Member member;
     @Setter
     @Column(name = "member_no", insertable = false, updatable = false)

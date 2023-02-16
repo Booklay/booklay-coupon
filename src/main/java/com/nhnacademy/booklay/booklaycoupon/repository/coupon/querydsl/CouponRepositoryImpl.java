@@ -3,6 +3,7 @@ package com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCoupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.QMember;
 import com.nhnacademy.booklay.booklaycoupon.entity.QOrderCoupon;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -27,7 +28,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
             .where(orderCoupon.member.memberNo.eq(memberNo))
             .where(orderCoupon.coupon.couponType.name.eq("포인트"))
             .where(orderCoupon.isUsed.eq(false))
-            .where(orderCoupon.expiredAt.before(LocalDateTime.now()))
+            .where(orderCoupon.expiredAt.after(LocalDateTime.now()))
             .select(Projections.constructor(PointCouponRetrieveResponse.class,
                 coupon.id,
                 orderCoupon.id,
