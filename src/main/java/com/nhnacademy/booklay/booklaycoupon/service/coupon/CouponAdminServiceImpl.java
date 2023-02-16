@@ -160,10 +160,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     @Override
     public void deleteCouponImage(Long couponId) {
         Coupon coupon = couponService.checkCouponExist(couponId);
-        ObjectFile file = coupon.getFile();
-
         coupon.setFile(null);
-        fileRepository.delete(file);
     }
 
     /**

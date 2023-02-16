@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,10 +41,10 @@ public class CouponMemberController {
     }
 
     /**
-     * 회원이 소유한 쿠폰을 조회합니다.
+     * 회원이 소유한 쿠폰의 개수를 조회합니다.
      */
-    @GetMapping
-    public ResponseEntity<Void> retrieveCouponsByMember(@PathVariable Long memberNo) {
+    @GetMapping("/count")
+    public ResponseEntity<Void> retrieveCouponCountByMember(@PathVariable Long memberNo) {
         couponMemberService.retrieveCouponCount(memberNo);
         return ResponseEntity.status(HttpStatus.OK)
             .build();
@@ -60,5 +61,10 @@ public class CouponMemberController {
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
             .body(response);
+    }
+
+    @PostMapping("/point/{couponId}")
+    public ResponseEntity<Void> usePointCoupon(@PathVariable Long memberNo, @PathVariable Long couponId) {
+        return null;
     }
 }

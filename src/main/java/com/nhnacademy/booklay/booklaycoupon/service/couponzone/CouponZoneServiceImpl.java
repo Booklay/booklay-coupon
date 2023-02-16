@@ -4,16 +4,15 @@ import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NO
 
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneTimeResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
 import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
-import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.couponzone.CouponZoneRepository;
-import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -29,43 +28,53 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CouponZoneServiceImpl implements CouponZoneService{
 
-    private final CouponRepository couponRepository;
     private final CouponZoneRepository couponZoneRepository;
     private final GetCouponService couponService;
-    private final ObjectFileRepository fileRepository;
-
+    private static final String targetGrade = Grade.ANY.getKorGrade();
+    /**
+     * 관리자의 이달의 쿠폰 조회.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndGradeNull(true, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(true, pageable, targetGrade);
     }
 
+    /**
+     * 관리자의 무제한 쿠폰 조회
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndGradeNull(false, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(false, pageable, targetGrade);
     }
 
+    /**
+     * 관리자의 등급별 쿠폰 조회.
+     */
     @Override
     public Page<CouponZoneResponse> retrieveAdminCouponZoneGraded(Pageable pageable) {
-        return couponZoneRepository.findAllByGradeNotNull(pageable);
+        return couponZoneRepository.findAllByGradeIsNot(pageable, Grade.ANY.getKorGrade());
     }
 
+    /**
+     * 사용자의 이달의 쿠폰 조회.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeNull(true, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(true, pageable, targetGrade);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeNull(false, pageable);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(false, pageable, targetGrade);
     }
 
     @Override
     public Page<CouponZoneResponse> retrieveCouponZoneGraded(Pageable pageable) {
-        return couponZoneRepository.findAllByGradeNotNullAndIsBlindIsFalse(pageable);
+        return couponZoneRepository.findAllByGradeIsNotAndIsBlindIsFalse(pageable, targetGrade);
     }
 
     @Override
@@ -110,8 +119,11 @@ public class CouponZoneServiceImpl implements CouponZoneService{
         couponZone.setIsBlind(request.getIsBlind());
     }
 
+    /**
+     *
+     */
     @Override
-    public CouponZoneTimeResponse retrieveCouponZoneTime(Long couponId) {
+    public CouponZoneCheckResponse retrieveCouponZoneInform(Long couponId) {
         // 쿠폰존에 등록된 쿠폰인지 확인.
         CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
             .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));

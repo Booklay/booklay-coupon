@@ -4,8 +4,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCre
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneTimeResponse;
-import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,5 +23,5 @@ public interface CouponZoneService {
     CouponZoneIsBlindResponse retrieveCouponZoneIsBlind(Long couponZoneId);
     void updateIsBlind(Long couponZoneId, CouponZoneIsBlindRequest request);
 
-    CouponZoneTimeResponse retrieveCouponZoneTime(Long couponId);
+    CouponZoneCheckResponse retrieveCouponZoneInform(Long couponId);
 }
