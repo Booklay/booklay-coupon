@@ -24,4 +24,5 @@ public interface CouponZoneService {
     void updateIsBlind(Long couponZoneId, CouponZoneIsBlindRequest request);
 
     CouponZoneCheckResponse retrieveCouponZoneInform(Long couponId);
+    String issueNoLimitCoupon(Long couponId, Long memberNo);
 }
