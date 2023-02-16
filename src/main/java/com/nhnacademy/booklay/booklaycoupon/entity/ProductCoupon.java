@@ -41,10 +41,10 @@ public class ProductCoupon {
     @Column(name = "member_no", insertable = false, updatable = false)
     private Long memberNo;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_product_no")
+    @JoinColumn(name = "order_product_no", insertable = false, updatable = false)
     private OrderProduct orderProduct;
     @Setter
-    @Column(name = "order_product_no", insertable = false, updatable = false)
+    @Column(name = "order_product_no")
     private Long orderProductNo;
     @Column(name = "coupon_code")
     private String code;
