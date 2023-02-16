@@ -44,7 +44,6 @@ public class CouponAdminController {
 
     /**
      * 쿠폰 조회
-     *
      */
     @GetMapping()
     public ResponseEntity<PageResponse<CouponRetrieveResponse>> retrieveAllCoupons(@PageableDefault Pageable pageable) {
