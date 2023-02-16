@@ -1,9 +1,14 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.PageResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIssueToMemberRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.couponzone.CouponZoneService;
+import java.util.Collections;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -77,5 +84,14 @@ public class CouponZoneController {
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
             .body(couponZoneTimeResponse);
+    }
+
+    @PostMapping("/no-limit")
+    public ResponseEntity<Map> issueNoLimitCoupon(@RequestBody CouponZoneIssueToMemberRequest request) {
+        String message =
+            couponZoneService.issueNoLimitCoupon(request.getCouponId(), request.getMemberId());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(Collections.singletonMap("message", message));
     }
 }
