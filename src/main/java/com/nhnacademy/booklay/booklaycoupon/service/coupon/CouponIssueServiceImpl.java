@@ -3,17 +3,14 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.Member;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
-import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponJdbcRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
-import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
+import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,14 +43,14 @@ public class CouponIssueServiceImpl implements CouponIssueService{
         Coupon coupon = getCouponService.checkCouponExist(couponId);
 
         if(Objects.nonNull(coupon.getCategory()) || Objects.equals(coupon.getCouponType().getId(), POINT_COUPON_CODE)) {
-            OrderCoupon orderCoupon = new OrderCoupon(coupon, getCode(), false);
+            OrderCoupon orderCoupon = new OrderCoupon(coupon, CodeUtils.getOrderCouponCode(),false);
             orderCoupon.setMemberNo(memberId);
             orderCoupon.setIssuedAt(LocalDateTime.now());
             orderCoupon.setExpiredAt(request.getExpiredAt());
 
             orderCouponRepository.save(orderCoupon);
         } else if (Objects.nonNull(coupon.getProduct())){
-            ProductCoupon productCoupon = new ProductCoupon(coupon, getCode());
+            ProductCoupon productCoupon = new ProductCoupon(coupon, CodeUtils.getProductCouponCode());
             productCoupon.setMemberNo(memberId);
             productCoupon.setIssuedAt(LocalDateTime.now());
             productCoupon.setExpiredAt(request.getExpiredAt());
@@ -79,9 +76,5 @@ public class CouponIssueServiceImpl implements CouponIssueService{
         } else {
             throw new IllegalArgumentException();
         }
-    }
-
-    private String getCode() {
-        return UUID.randomUUID().toString().substring(0, 30);
     }
 }

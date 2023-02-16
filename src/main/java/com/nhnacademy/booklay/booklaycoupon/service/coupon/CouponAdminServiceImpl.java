@@ -5,12 +5,12 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
-import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.CategoryRepository;
@@ -20,7 +20,6 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponTypeReposito
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.objectfile.ObjectFileRepository;
-import com.nhnacademy.booklay.booklaycoupon.service.RestService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,8 +48,6 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
 
-    private final RestService restService;
-    private static final int PAGE_SIZE = 20;
 
     /**
      * 쿠폰을 생성합니다.
@@ -159,10 +156,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     @Override
     public void deleteCouponImage(Long couponId) {
         Coupon coupon = couponService.checkCouponExist(couponId);
-        ObjectFile file = coupon.getFile();
-
         coupon.setFile(null);
-        fileRepository.delete(file);
     }
 
     /**
@@ -170,15 +164,11 @@ public class CouponAdminServiceImpl implements CouponAdminService{
      */
     @Override
     public void deleteCoupon(Long couponId) {
-        if(!couponRepository.existsById(couponId)) {
-            throw new NotFoundException(Coupon.class.toString(), couponId);
-        }
         couponRepository.deleteById(couponId);
     }
 
     /**
      * 발급된 쿠폰을 조회하기 위해, 상품 쿠폰과 주문 쿠폰을 조회하고 Page로 반환합니다.
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -197,8 +187,27 @@ public class CouponAdminServiceImpl implements CouponAdminService{
     }
 
     /**
+     * 관리자의 쿠폰 사용 내역을 조회합니다.
+     */
+    @Override
+    public Page<CouponUsedHistoryResponse> retrieveUsedCoupon(Pageable pageable) {
+        List<CouponUsedHistoryResponse> usedList = new ArrayList<>();
+
+        List<CouponUsedHistoryResponse> usedOrderCoupon = orderCouponRepository.getUsedOrderCoupon();
+        List<CouponUsedHistoryResponse> usedProductCoupon = productCouponRepository.getUsedProductCoupon();
+
+        usedList.addAll(usedProductCoupon);
+        usedList.addAll(usedOrderCoupon);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), usedList.size());
+
+        return new PageImpl<>(usedList.subList(start, end), pageable, usedList.size());
+
+    }
+
+    /**
      * List를 Page로 바꿈.
-     *
      */
     private static Page<CouponHistoryRetrieveResponse> getHistoryPage(Pageable pageable,
                                                                       List<CouponHistoryRetrieveResponse> couponHistoryList) {
