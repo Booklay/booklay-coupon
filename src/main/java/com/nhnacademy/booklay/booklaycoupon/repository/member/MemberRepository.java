@@ -9,8 +9,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
     Page<MemberRetrieveResponse> findAllBy(Pageable pageable);
-
-    Optional<Member> findByMemberNo(Long memberNo);
-
-    boolean existsByMemberId(String memberId);
 }

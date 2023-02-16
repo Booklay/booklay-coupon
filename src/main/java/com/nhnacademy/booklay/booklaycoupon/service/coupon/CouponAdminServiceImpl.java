@@ -164,6 +164,7 @@ public class CouponAdminServiceImpl implements CouponAdminService{
      */
     @Override
     public void deleteCoupon(Long couponId) {
+        // TODO 예외 처리 필요함
         couponRepository.deleteById(couponId);
     }
 
