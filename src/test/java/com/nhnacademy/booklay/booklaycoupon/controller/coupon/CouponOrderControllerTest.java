@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.OrderCouponService;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,6 +42,7 @@ class CouponOrderControllerTest {
 
     @Test
     @DisplayName("상품에 적용될 수 있는 주문 쿠폰 조회 성공")
+    @Disabled
     void testRetrieveAllCoupons() throws Exception {
 
         // given

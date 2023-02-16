@@ -3,12 +3,15 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CouponGeneralServiceImpl implements CouponGeneralService{
     private final ProductCouponService productCouponService;
     private final OrderCouponService orderCouponService;
@@ -29,10 +32,10 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
 
     @Override
     public List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
-        List<String> couponCodeList) {
-        List<CouponRetrieveResponseFromProduct> result = productCouponService.retrieveCouponByCouponCodeList(couponCodeList);
+            List<String> couponCodeList, Long memberNo) {
+        List<CouponRetrieveResponseFromProduct> result = productCouponService.retrieveCouponByCouponCodeList(couponCodeList, memberNo);
 
-        result.addAll(orderCouponService.retrieveCouponByCouponCodeList(couponCodeList));
+        result.addAll(orderCouponService.retrieveCouponByCouponCodeList(couponCodeList, memberNo));
 
         return result;
     }
