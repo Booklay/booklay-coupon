@@ -8,6 +8,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemb
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
 import javax.validation.Valid;
@@ -168,8 +169,10 @@ public class CouponAdminController {
      * 사용된 쿠폰을 조회합니다.
      */
     @GetMapping("/history")
-    public ResponseEntity<Void> retrieveCouponUsageHistory(@PageableDefault Pageable pageable) {
-        couponAdminService.retrieveUsedCoupon(pageable);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<PageResponse<CouponUsedHistoryResponse>> retrieveCouponUsageHistory(@PageableDefault Pageable pageable) {
+        Page<CouponUsedHistoryResponse> pages = couponAdminService.retrieveUsedCoupon(pageable);
+        PageResponse<CouponUsedHistoryResponse> response = new PageResponse<>(pages);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
