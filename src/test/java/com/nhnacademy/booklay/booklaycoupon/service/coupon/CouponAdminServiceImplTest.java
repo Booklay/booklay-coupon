@@ -136,7 +136,6 @@ class CouponAdminServiceImplTest {
 
         // given
         Long targetId = 1L;
-        given(couponRepository.existsById(targetId)).willReturn(true);
 
         // when
         couponAdminService.deleteCoupon(targetId);
