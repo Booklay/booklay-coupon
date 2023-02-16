@@ -80,13 +80,13 @@ public class CouponZoneIssueService {
         }
     }
 
-    private void checkAlreadyIssuedAtOrderCoupon(Long couponId, Long memberNo) {
+    public void checkAlreadyIssuedAtOrderCoupon(Long couponId, Long memberNo) {
         if(orderCouponRepository.existsByCouponIdAndMemberNoIs(couponId, memberNo)) {
             throw new IllegalArgumentException(ALREADY_ISSUED);
         }
     }
 
-    private void checkAlreadyIssuedAtProductCoupon(Long couponId, Long memberNo) {
+    public void checkAlreadyIssuedAtProductCoupon(Long couponId, Long memberNo) {
         if(productCouponRepository.existsByCouponIdAndMemberNoIs(couponId, memberNo)) {
             throw new IllegalArgumentException(ALREADY_ISSUED);
         }
@@ -114,8 +114,10 @@ public class CouponZoneIssueService {
             .findFirstByMemberIsNullAndCouponId(couponId)
             .orElseThrow(() -> new IllegalArgumentException(NO_STORAGE));
 
+        Member member = memberRepository.findById(memberNo)
+            .orElseThrow(() -> new NotFoundException("member", memberNo));
         coupon.setIssuedAt(LocalDateTime.now());
-        coupon.setMemberNo(memberNo);
+        coupon.setMember(member);
         coupon.setExpiredAt(expiredAt);
 
         productCouponRepository.save(coupon);
