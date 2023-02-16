@@ -9,5 +9,5 @@ public interface CouponMemberService {
     Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberNo, Pageable pageable);
     Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberNo, Pageable pageable);
 
-    void retrieveCouponCount(Long memberNo);
+    int retrieveCouponCount(Long memberNo);
 }

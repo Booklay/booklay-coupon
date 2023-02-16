@@ -11,8 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Long>,
-    OrderCouponCustomRepository {
+public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Long>, OrderCouponCustomRepository {
     Page<CouponRetrieveResponseFromProduct> findAllByMember_MemberNoAndCoupon_IsDuplicatableAndCoupon_CategoryNoNotNull(Long memberNo, Boolean isDuplicatable, Pageable pageable);
     Optional<OrderCoupon> findFirstByMemberIsNullAndCouponId(Long couponId);
     CouponRetrieveResponseFromProduct findByCode(String code);
