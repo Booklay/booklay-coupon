@@ -1,20 +1,17 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponMemberService;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -108,18 +105,17 @@ class CouponMemberControllerTest {
 
     @Test
     @DisplayName("회원의 포인트 쿠폰 사용")
-    @Disabled
     void testUsePointCoupon() throws Exception {
         // given
 
         // when
 
         // then
-        mockMvc.perform(get(URI_PREFIX + "/point/1"))
+        mockMvc.perform(post(URI_PREFIX + "/point/1"))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponMemberService).usePointCoupon(1L, 1L);
+        Mockito.verify(couponMemberService).usePointCoupon(any(), any());
     }
 }
