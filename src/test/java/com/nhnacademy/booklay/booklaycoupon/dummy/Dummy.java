@@ -2,12 +2,15 @@ package com.nhnacademy.booklay.booklaycoupon.dummy;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIssueToMemberRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
@@ -359,5 +362,17 @@ public class Dummy {
         paramMap.put("email",stringArray);
 
         return new MemberInfo(paramMap);
+    }
+
+    public static CouponUseRequest getDummyCouponUseRequest() {
+        return new CouponUseRequest();
+    }
+
+    public static CouponRefundRequest getDummyCouponRefundRequest() {
+        return new CouponRefundRequest();
+    }
+
+    public static CouponZoneIssueToMemberRequest getDummyCouponZoneIssueToMemberRequest() {
+        return new CouponZoneIssueToMemberRequest(1L, 1L);
     }
 }
