@@ -8,9 +8,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
+import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.OrderCouponService;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +42,7 @@ class CouponOrderControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    ObjectMapper objectMapper = new ObjectMapper();
     String URI_PREFIX = "/admin/coupons/order";
     Long targetId = 1L;
 
@@ -46,6 +52,7 @@ class CouponOrderControllerTest {
     void testRetrieveAllCoupons() throws Exception {
 
         // given
+        MemberInfo memberInfo = Dummy.getDummyMemberInfo();
         PageRequest pageRequest = PageRequest.of(0,10);
         PageImpl<CouponRetrieveResponseFromProduct>
             response = new PageImpl<>(List.of(), pageRequest, 1);
@@ -55,9 +62,9 @@ class CouponOrderControllerTest {
 
         // then
         mockMvc.perform(get(URI_PREFIX)
-                .param("memberNo", String.valueOf(targetId))
-                .param("isDuplicable", "true")
-                .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(memberInfo))
+                .contentType(MediaType.APPLICATION_JSON)
+                .queryParam("isDuplicable", "true"))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();

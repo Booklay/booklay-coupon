@@ -19,8 +19,7 @@ public class CouponOrderController {
     private final OrderCouponService orderCouponService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<CouponRetrieveResponseFromProduct>> retrieveAllCoupons(@PageableDefault Pageable pageable,
-                                                                                              MemberInfo memberInfo,
+    public ResponseEntity<PageResponse<CouponRetrieveResponseFromProduct>> retrieveAllCoupons(@PageableDefault Pageable pageable, MemberInfo memberInfo,
                                                                                               @RequestParam Boolean isDuplicable) {
         Page<CouponRetrieveResponseFromProduct> couponPage = orderCouponService.retrieveCouponPageByMemberNo(memberInfo.getMemberNo(), isDuplicable, pageable);
         PageResponse<CouponRetrieveResponseFromProduct> couponPageResponse = new PageResponse<>(couponPage);
