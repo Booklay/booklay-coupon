@@ -50,7 +50,6 @@ public class OrderCouponServiceImpl implements OrderCouponService{
                 orderCoupon.setOrderNo(orderNo.get());
                 orderCoupon.setIsUsed(true);
             });
-            orderCouponRepository.flush();
         }
     }
 
@@ -61,7 +60,6 @@ public class OrderCouponServiceImpl implements OrderCouponService{
             orderCoupon.setOrderNo(null);
             orderCoupon.setIsUsed(false);
         });
-        orderCouponRepository.flush();
     }
 
 }

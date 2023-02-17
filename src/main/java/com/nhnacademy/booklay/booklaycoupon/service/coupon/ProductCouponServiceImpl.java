@@ -54,7 +54,6 @@ public class ProductCouponServiceImpl implements ProductCouponService{
                 productCoupon.setOrderProductNo(usingDtoMap.get(productCoupon.getId()).getUsedTargetNo());
                 productCouponRepository.save(productCoupon);
             });
-            productCouponRepository.flush();
         }
     }
 
@@ -63,7 +62,6 @@ public class ProductCouponServiceImpl implements ProductCouponService{
     public void refundCoupon(List<Long> orderProductNoList) {
         List<ProductCoupon> couponList = productCouponRepository.findAllByOrderProductNoIn(orderProductNoList);
         couponList.forEach(productCoupon -> productCoupon.setOrderProductNo(null));
-        productCouponRepository.flush();
     }
 
 }
