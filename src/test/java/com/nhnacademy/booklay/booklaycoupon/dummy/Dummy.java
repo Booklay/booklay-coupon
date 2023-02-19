@@ -5,6 +5,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
@@ -426,5 +427,9 @@ public class Dummy {
         ReflectionTestUtils.setField(objectFile, "id", 1L);
 
         return objectFile;
+    }
+
+    public static MemberCouponRetrieveResponse getDummyMemberCouponRetrieveResponse() {
+        return new MemberCouponRetrieveResponse("test", 5, "정률", 1L, 5000, 5000, LocalDateTime.now(), true);
     }
 }

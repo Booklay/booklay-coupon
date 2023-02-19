@@ -1,12 +1,10 @@
 package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -42,14 +40,28 @@ class CouponGeneralServiceImplTest {
     }
 
     @Test
-    void retrieveCouponByCouponCodeList() {
+    void testCouponUsing() {
+        // given
+        CouponUseRequest request = Dummy.getDummyCouponUseRequest();
+
+        // when
+        couponGeneralService.couponUsing(request);
+
+        // then
+        BDDMockito.then(productCouponService).should().usingCoupon(request.getProductCouponList());
+        BDDMockito.then(orderCouponService).should().usingCoupon(request.getCategoryCouponList());
     }
 
     @Test
-    void couponUsing() {
-    }
+    void testCouponRefund() {
+        // given
+        CouponRefundRequest request = Dummy.getDummyCouponRefundRequest();
 
-    @Test
-    void couponRefund() {
+        // when
+        couponGeneralService.couponRefund(request);
+
+        // then
+        BDDMockito.then(productCouponService).should().refundCoupon(request.getOrderProductNoList());
+        BDDMockito.then(orderCouponService).should().refundCoupon(request.getOrderNo());
     }
 }
