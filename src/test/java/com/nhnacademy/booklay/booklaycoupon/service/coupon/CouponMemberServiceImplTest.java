@@ -3,10 +3,12 @@ package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberOrderCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
+import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
@@ -89,5 +91,21 @@ class CouponMemberServiceImplTest {
         // then
         BDDMockito.then(orderCouponRepository).should().getCouponsByMember(targetId);
         BDDMockito.then(productCouponRepository).should().getCouponsByMember(targetId);
+    }
+
+    @Test
+    @DisplayName("사용자의 포인트 쿠폰 사용 성공")
+    void testUsePointCoupon() {
+        // given
+        Long targetId = 1L;
+        OrderCoupon orderCoupon = Dummy.getDummyOrderCoupon();
+        given(orderCouponRepository.findByMemberNoAndIdIs(targetId, targetId)).willReturn(
+            orderCoupon);
+
+        // when
+        couponMemberService.usePointCoupon(targetId, targetId);
+
+        // then
+        BDDMockito.then(orderCouponRepository).should().save(any());
     }
 }

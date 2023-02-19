@@ -432,4 +432,19 @@ public class Dummy {
     public static MemberCouponRetrieveResponse getDummyMemberCouponRetrieveResponse() {
         return new MemberCouponRetrieveResponse("test", 5, "정률", 1L, 5000, 5000, LocalDateTime.now(), true);
     }
+
+    public static Coupon getDummyInvalidCoupon() {
+        Coupon coupon = Coupon.builder()
+            .couponType(Dummy.getDummyCouponType())
+            .name("이달의 쿠폰")
+            .amount(5)
+            .minimumUseAmount(1000)
+            .maximumDiscountAmount(3000)
+            .isDuplicatable(false)
+            .isLimited(true)
+            .build();
+        ReflectionTestUtils.setField(coupon, "id", 1L);
+
+        return coupon;
+    }
 }
