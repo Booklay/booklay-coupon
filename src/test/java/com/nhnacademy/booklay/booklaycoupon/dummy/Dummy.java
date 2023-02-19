@@ -14,19 +14,17 @@ import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIss
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
-import com.nhnacademy.booklay.booklaycoupon.entity.Authority;
 import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
-import com.nhnacademy.booklay.booklaycoupon.entity.DeliveryDetail;
 import com.nhnacademy.booklay.booklaycoupon.entity.DeliveryStatusCode;
 import com.nhnacademy.booklay.booklaycoupon.entity.Gender;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import com.nhnacademy.booklay.booklaycoupon.entity.Member;
-import com.nhnacademy.booklay.booklaycoupon.entity.MemberAuthority;
 import com.nhnacademy.booklay.booklaycoupon.entity.MemberGrade;
+import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
 import com.nhnacademy.booklay.booklaycoupon.entity.Order;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderProduct;
@@ -37,9 +35,7 @@ import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -84,6 +80,54 @@ public class Dummy {
         return coupon;
     }
 
+    public static Coupon getDummyCoupon_Point() {
+        Coupon coupon = Coupon.builder()
+            .couponType(Dummy.getDummyCouponType_Point())
+            .name("이달의 쿠폰")
+            .amount(5)
+            .minimumUseAmount(1000)
+            .maximumDiscountAmount(3000)
+            .isDuplicatable(false)
+            .isLimited(true)
+            .build();
+        ReflectionTestUtils.setField(coupon, "id", 1L);
+
+        return coupon;
+    }
+
+    public static Coupon getDummyCoupon_Order() {
+        Coupon coupon = Coupon.builder()
+            .couponType(Dummy.getDummyCouponType())
+            .name("이달의 쿠폰")
+            .amount(5)
+            .minimumUseAmount(1000)
+            .maximumDiscountAmount(3000)
+            .isDuplicatable(false)
+            .isLimited(true)
+            .build();
+        ReflectionTestUtils.setField(coupon, "id", 1L);
+        coupon.setCategory(Dummy.getDummyCategory());
+
+        return coupon;
+    }
+
+    public static Coupon getDummyCoupon_Product() {
+        Coupon coupon = Coupon.builder()
+            .couponType(Dummy.getDummyCouponType())
+            .name("이달의 쿠폰")
+            .amount(5)
+            .minimumUseAmount(1000)
+            .maximumDiscountAmount(3000)
+            .isDuplicatable(false)
+            .isLimited(true)
+            .build();
+        ReflectionTestUtils.setField(coupon, "id", 1L);
+        coupon.setProduct(Dummy.getDummyProduct());
+
+        return coupon;
+    }
+
+
     public static OrderProduct getDummyOrderProduct() {
         OrderProduct orderProduct = OrderProduct.builder()
             .order(null)
@@ -95,34 +139,6 @@ public class Dummy {
         ReflectionTestUtils.setField(orderProduct, "id", 1L);
 
         return orderProduct;
-
-    }
-
-    public static Authority getDummyAuthorityAsMember() {
-
-        return Authority.builder()
-            .id(1L)
-            .name("member")
-            .build();
-    }
-
-    public static Authority getDummyAuthorityAsAdmin() {
-
-        return Authority.builder()
-            .id(1L)
-            .name("admin")
-            .build();
-    }
-
-    public static MemberAuthority getDummyMemberAuthority() {
-        Member member = getDummyMember();
-        Authority authority = getDummyAuthorityAsAdmin();
-
-        return MemberAuthority.builder()
-            .pk(new MemberAuthority.Pk(member.getMemberNo(), authority.getId()))
-            .member(member)
-            .authority(authority)
-            .build();
     }
 
     public static MemberGrade getDummyMemberGrade() {
@@ -197,6 +213,13 @@ public class Dummy {
             .build();
     }
 
+    public static CouponType getDummyCouponType_Point() {
+        return CouponType.builder()
+            .id(1L)
+            .name("포인트")
+            .build();
+    }
+
     public static CouponCURequest getDummyOrderCouponCURequest() {
         CouponCURequest couponRequest = new CouponCURequest();
 
@@ -204,6 +227,37 @@ public class Dummy {
         ReflectionTestUtils.setField(couponRequest, "typeCode", 1L);
         ReflectionTestUtils.setField(couponRequest, "amount", 5);
         ReflectionTestUtils.setField(couponRequest, "isOrderCoupon", true);
+        ReflectionTestUtils.setField(couponRequest, "applyItemId", Dummy.getDummyCategory().getId());
+        ReflectionTestUtils.setField(couponRequest, "minimumUseAmount", 1000);
+        ReflectionTestUtils.setField(couponRequest, "maximumDiscountAmount", 5000);
+        ReflectionTestUtils.setField(couponRequest, "isDuplicatable", true);
+        ReflectionTestUtils.setField(couponRequest, "isLimited", true);
+
+        return couponRequest;
+    }
+
+    public static CouponCURequest getDummyOrderCouponCURequest_NoApplyItem() {
+        CouponCURequest couponRequest = new CouponCURequest();
+
+        ReflectionTestUtils.setField(couponRequest, "name", "이달의 쿠폰");
+        ReflectionTestUtils.setField(couponRequest, "typeCode", 1L);
+        ReflectionTestUtils.setField(couponRequest, "amount", 5);
+        ReflectionTestUtils.setField(couponRequest, "isOrderCoupon", true);
+        ReflectionTestUtils.setField(couponRequest, "minimumUseAmount", 1000);
+        ReflectionTestUtils.setField(couponRequest, "maximumDiscountAmount", 5000);
+        ReflectionTestUtils.setField(couponRequest, "isDuplicatable", true);
+        ReflectionTestUtils.setField(couponRequest, "isLimited", true);
+
+        return couponRequest;
+    }
+
+    public static CouponCURequest getDummyOrderCouponCURequest_NotOrderCoupon() {
+        CouponCURequest couponRequest = new CouponCURequest();
+
+        ReflectionTestUtils.setField(couponRequest, "name", "이달의 쿠폰");
+        ReflectionTestUtils.setField(couponRequest, "typeCode", 1L);
+        ReflectionTestUtils.setField(couponRequest, "amount", 5);
+        ReflectionTestUtils.setField(couponRequest, "isOrderCoupon", false);
         ReflectionTestUtils.setField(couponRequest, "applyItemId", Dummy.getDummyCategory().getId());
         ReflectionTestUtils.setField(couponRequest, "minimumUseAmount", 1000);
         ReflectionTestUtils.setField(couponRequest, "maximumDiscountAmount", 5000);
@@ -255,7 +309,7 @@ public class Dummy {
     public static OrderCoupon getDummyOrderCoupon() {
         OrderCoupon orderCoupon = OrderCoupon.builder()
             .coupon(getDummyCoupon())
-            .code(UUID.randomUUID().toString().substring(0, 30))
+            .code(CodeUtils.getOrderCouponCode())
             .isUsed(false)
             .build();
 
@@ -274,15 +328,6 @@ public class Dummy {
             .longDescription("test long description")
             .isSelling(true)
             .build();
-    }
-
-    public static Image getDummyImage() {
-        Image image = Image.builder()
-            .id(1L)
-            .ext("dummy")
-            .address("dummy address")
-            .build();
-        return image;
     }
 
     public static CouponSetting getCouponSetting(){
@@ -374,5 +419,12 @@ public class Dummy {
 
     public static CouponZoneIssueToMemberRequest getDummyCouponZoneIssueToMemberRequest() {
         return new CouponZoneIssueToMemberRequest(1L, 1L);
+    }
+
+    public static ObjectFile getDummyObjectFile() {
+        ObjectFile objectFile = new ObjectFile("test", "test");
+        ReflectionTestUtils.setField(objectFile, "id", 1L);
+
+        return objectFile;
     }
 }
