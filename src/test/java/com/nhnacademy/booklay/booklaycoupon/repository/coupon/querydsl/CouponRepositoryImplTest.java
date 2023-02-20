@@ -1,8 +1,5 @@
 package com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
@@ -14,7 +11,6 @@ import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")

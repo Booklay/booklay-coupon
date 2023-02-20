@@ -84,7 +84,7 @@ class CouponRestControllerTest {
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponGeneralService).couponUsing(any());
+        Mockito.verify(couponGeneralService).couponUsing(any(), any());
     }
 
     @Test
@@ -102,6 +102,6 @@ class CouponRestControllerTest {
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponGeneralService).couponRefund(any());
+        Mockito.verify(couponGeneralService).couponRefund(any(), any());
     }
 }

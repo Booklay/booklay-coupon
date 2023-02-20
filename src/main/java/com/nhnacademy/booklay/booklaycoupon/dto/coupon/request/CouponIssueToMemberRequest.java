@@ -1,15 +1,15 @@
 package com.nhnacademy.booklay.booklaycoupon.dto.coupon.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import java.time.LocalDateTime;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 /**
  * 사용자에게 쿠폰을 발급하기 위한 객체입니다.

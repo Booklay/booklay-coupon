@@ -53,7 +53,7 @@ public class CouponZoneIssueService {
                 .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
 
             // isBlind = true 라면, 발급되지 않음.
-            if (couponAtZone.getIsBlind())
+            if (Boolean.TRUE.equals(couponAtZone.getIsBlind()))
                 throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
 
             // 쿠폰이 주문쿠폰에 있는지, 상품쿠폰에 있는지 확인.
