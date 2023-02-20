@@ -20,17 +20,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class WebControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({NotFoundException.class})
-    public ResponseEntity<Object> handleNotFoundException(Exception ex) {
-        ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
-
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(Exception ex) {
+        ErrorCode errorCode = CommonErrorCode.ILLEGAL_ARGUMENT_ERROR;
         return handleWithMessage(errorCode, ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Object> handleIllegalArgumentException(Exception ex) {
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<Object> handleNotFoundException(Exception ex) {
         ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
-
         return handleWithMessage(errorCode, ex.getMessage());
     }
 
