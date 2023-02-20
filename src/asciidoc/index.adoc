@@ -1,0 +1,5 @@
+ifndef::snippets[]
+:snippets: ../../target/generated-snippets
+endif::[]
+
+include::{docdir}/coupon.adoc[]

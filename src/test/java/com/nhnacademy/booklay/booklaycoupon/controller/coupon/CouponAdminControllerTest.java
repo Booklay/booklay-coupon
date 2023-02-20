@@ -4,6 +4,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,21 +35,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 /**
  *
  * @author 김승혜
  */
 
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
 @WebMvcTest(CouponAdminController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class CouponAdminControllerTest {
@@ -52,9 +66,6 @@ class CouponAdminControllerTest {
 
     @MockBean
     CouponIssueService couponIssueService;
-
-    @Autowired
-    CouponAdminController couponAdminController;
 
     @Autowired
     MockMvc mockMvc;
@@ -74,13 +85,19 @@ class CouponAdminControllerTest {
         // when
         when(couponAdminService.retrieveAllCoupons(any())).thenReturn(response);
 
+
         // then
         mockMvc.perform(get(URI_PREFIX)
                 .queryParam("page", "0")
                 .queryParam("size", "10")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(print())
+            .andDo(document("get",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data").description("현재 페이지의 데이터"))))
             .andReturn();
 
         Mockito.verify(couponAdminService).retrieveAllCoupons(any());
