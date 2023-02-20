@@ -28,6 +28,9 @@ public class CouponMemberServiceImpl implements CouponMemberService {
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
 
+    /**
+     * 사용자가 소유한 쿠폰 조회
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<MemberCouponRetrieveResponse> retrieveCoupons(Long memberNo, Pageable pageable) {
@@ -37,6 +40,9 @@ public class CouponMemberServiceImpl implements CouponMemberService {
         return getPage(pageable, couponList);
     }
 
+    /**
+     * 사용자의 포인트 쿠폰 조회
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<PointCouponRetrieveResponse> retrievePointCoupons(Long memberNo,
