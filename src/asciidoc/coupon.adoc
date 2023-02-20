@@ -1,0 +1,13 @@
+= RESTful Notes API Guide
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+==== Response 응답
+include::{snippets}/get/http-response.adoc[]
+include::{snippets}/get/response-body.adoc[]
+include::{snippets}/get/response-fields.adoc[]
+
