@@ -159,6 +159,20 @@
             <version>23.1.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Rest Docs Start -->
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-asciidoctor</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- Rest Docs End -->
     </dependencies>
 
     <build>
@@ -214,6 +228,68 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Rest Docs Plugin Start -->
+                <!-- asciidoctor 플러그인 추가 -->
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                            <!-- 생성 된 Snippet 과 연결된 .adoc 을 빌드 했을 때 만들어지는 HTML 파일의 위치 설정 -->
+<!--                            <sourceDirectory>src/main/resources/static/docs/asciidoc</sourceDirectory>-->
+<!--                            <outputDirectory>src/main/resources/static/html</outputDirectory>-->
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.restdocs</groupId>
+                        <artifactId>spring-restdocs-asciidoctor</artifactId>
+                        <version>2.0.2.RELEASE</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+                <!-- 생성된 API 문서를 jar 또는 war 에 패키징하기 위한 설정 -->
+                <!-- 문서가 패키지로 복사되기 전에 생성되야 하므로 위에 Asciidoctor 플러그인 뒤에 선언 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 생성된 문서를 static/docs 에 복사 -->
+                            <outputDirectory>
+                                ${project.build.outputDirectory}/target/generated-docs
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>
+                                        src/main/resources/static/docs/html
+                                    </directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Rest Docs Plugin End -->
         </plugins>
     </build>
 
