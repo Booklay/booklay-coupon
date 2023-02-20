@@ -38,14 +38,14 @@ public class CouponRestController {
 
 
     @PostMapping("using")
-    public ResponseEntity<Void> useCoupons(@RequestBody CouponUseRequest couponUseRequest){
-        couponGeneralService.couponUsing(couponUseRequest);
+    public ResponseEntity<Void> useCoupons(@RequestBody CouponUseRequest couponUseRequest, MemberInfo memberInfo){
+        couponGeneralService.couponUsing(couponUseRequest, memberInfo.getMemberNo());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("refund")
-    public ResponseEntity<Void> refundCoupons(@RequestBody CouponRefundRequest couponRefundRequest){
-        couponGeneralService.couponRefund(couponRefundRequest);
+    public ResponseEntity<Void> refundCoupons(@RequestBody CouponRefundRequest couponRefundRequest, MemberInfo memberInfo){
+        couponGeneralService.couponRefund(couponRefundRequest, memberInfo.getMemberNo());
         return ResponseEntity.ok().build();
     }
 }

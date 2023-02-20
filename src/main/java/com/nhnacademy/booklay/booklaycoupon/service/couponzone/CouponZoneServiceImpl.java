@@ -1,20 +1,12 @@
 package com.nhnacademy.booklay.booklaycoupon.service.couponzone;
 
-import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.ALREADY_ISSUED;
-import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
-
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
-import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
-import com.nhnacademy.booklay.booklaycoupon.entity.Member;
-import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
-import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.*;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
@@ -23,14 +15,17 @@ import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
 import com.nhnacademy.booklay.booklaycoupon.service.kafka.CouponZoneIssueService;
 import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
-import java.time.LocalDateTime;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
 
 @Service
 @Transactional
@@ -143,8 +138,9 @@ public class CouponZoneServiceImpl implements CouponZoneService{
             .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
 
         // isBlind = true 라면, 발급되지 않음.
-        if (couponAtZone.getIsBlind())
+        if (Boolean.TRUE.equals(couponAtZone.getIsBlind())) {
             throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
+        }
 
         return couponZoneRepository.getByCouponId(couponId);
     }
@@ -156,7 +152,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
             .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
 
         // isBlind = true 라면, 발급되지 않음.
-        if (couponAtZone.getIsBlind())
+        if (Boolean.TRUE.equals(couponAtZone.getIsBlind()))
             throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
 
         // 쿠폰이 주문쿠폰에 있는지, 상품쿠폰에 있는지 확인.

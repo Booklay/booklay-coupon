@@ -3,15 +3,15 @@ package com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.QCoupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.QMember;
 import com.nhnacademy.booklay.booklaycoupon.entity.QOrderCoupon;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
-import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+
+import java.time.LocalDateTime;
 
 public class CouponRepositoryImpl extends QuerydslRepositorySupport implements CouponCustomRepository {
 
