@@ -12,4 +12,6 @@ public interface CouponMemberService {
     int retrieveCouponCount(Long memberNo);
 
     void usePointCoupon(Long memberNo, Long couponId);
+
+    boolean checkUsedPointCoupon(Long memberNo, Long couponId);
 }

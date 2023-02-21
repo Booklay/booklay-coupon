@@ -7,6 +7,7 @@ import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponMemberService;
 import java.util.Collections;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/members/{memberNo}/coupons")
 @RequiredArgsConstructor
+@Slf4j
 public class CouponMemberController {
 
     private final CouponMemberService couponMemberService;
@@ -75,5 +77,20 @@ public class CouponMemberController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .build();
+    }
+
+    /**
+     * 포인트 쿠폰이 사용되었는지 체크
+     * @param memberNo
+     * @param couponId
+     * @return
+     */
+    @GetMapping("/point/used/{couponId}")
+    public ResponseEntity<Boolean> checkUsedPointCoupon(@PathVariable Long memberNo, @PathVariable Long couponId) {
+         boolean response = couponMemberService.checkUsedPointCoupon(memberNo, couponId);
+        log.info("Here");
+        return ResponseEntity.status(HttpStatus.OK)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response);
     }
 }
