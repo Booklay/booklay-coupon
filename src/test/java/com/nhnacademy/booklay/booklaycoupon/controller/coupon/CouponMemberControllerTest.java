@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponMemberService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -60,7 +61,8 @@ class CouponMemberControllerTest {
     void testRetrieveCouponsByMember() throws Exception {
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<MemberCouponRetrieveResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<MemberCouponRetrieveResponse> response = new PageImpl<>(List.of(
+            Dummy.getDummyMemberCouponRetrieveResponse()), pageRequest, 1);
 
         // when
         when(couponMemberService.retrieveCoupons(targetId, pageRequest)).thenReturn(response);
@@ -76,9 +78,18 @@ class CouponMemberControllerTest {
                     fieldWithPath("pageNumber").description("현재 페이지"),
                     fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
                     fieldWithPath("totalPages").description("총 페이지"),
-                    fieldWithPath("data").description("현재 페이지의 데이터")),
+                    fieldWithPath("data.[].name").description("쿠폰 이름"),
+                    fieldWithPath("data.[].amount").description("쿠폰 할인량"),
+                    fieldWithPath("data.[].couponType").description("쿠폰 타입 이름"),
+                    fieldWithPath("data.[].itemId").description("쿠폰 적용 상품 ID"),
+                    fieldWithPath("data.[].minimumUseAmount").description("최소 사용 금액"),
+                    fieldWithPath("data.[].maximumDiscountAmount").description("최대 할인 금액"),
+                    fieldWithPath("data.[].expiredAt").description("쿠폰 만료 날짜"),
+                    fieldWithPath("data.[].isDuplicatable").description("중복 사용 가능 여부"),
+                    fieldWithPath("data.[].isUsed").description("사용 여부"),
+                    fieldWithPath("data.[].reason").description("쿠폰 상태(사용 가능, 사용 완료, 기간 만료)")),
                 pathParameters(
-                    parameterWithName("memberNo").description("회원의 No"))
+                    parameterWithName("memberNo").description("회원 No"))
             ))
             .andReturn();
 
@@ -91,13 +102,20 @@ class CouponMemberControllerTest {
         // given
 
         // when
-        when(couponMemberService.retrieveCouponCount(1L)).thenReturn(1);
+        when(couponMemberService.retrieveCouponCount(targetId)).thenReturn(1);
 
         // then
-        mockMvc.perform(get(URI_PREFIX + "/count")
+        mockMvc.perform(RestDocumentationRequestBuilders.get(URI_PREFIX + "/count", targetId)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("couponCount").description("회원이 소유한 쿠폰 개수")),
+                pathParameters(
+                    parameterWithName("memberNo").description("회원 No"))
+            ))
             .andReturn();
 
         Mockito.verify(couponMemberService).retrieveCouponCount(1L);
