@@ -33,15 +33,17 @@ import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NO
 @Slf4j
 public class CouponZoneServiceImpl implements CouponZoneService{
 
+    private final GetCouponZoneService couponZoneService;
+    private final GetCouponService couponService;
     private final CouponZoneIssueService issueService;
+
     private final MemberRepository memberRepository;
     private final CouponZoneRepository couponZoneRepository;
-    private final GetCouponService couponService;
 
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
 
-    private static final String targetGrade = Grade.ANY.getKorGrade();
+    private static final String TARGET_GRADE = Grade.ANY.getKorGrade();
 
     /**
      * 관리자의 이달의 쿠폰 조회.
@@ -49,7 +51,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(true, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(true, pageable, TARGET_GRADE);
     }
 
     /**
@@ -58,7 +60,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(false, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(false, pageable, TARGET_GRADE);
     }
 
     /**
@@ -75,18 +77,20 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(true, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(true, pageable,
+            TARGET_GRADE);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(false, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(false, pageable,
+            TARGET_GRADE);
     }
 
     @Override
     public Page<CouponZoneResponse> retrieveCouponZoneGraded(Pageable pageable) {
-        return couponZoneRepository.findAllByGradeIsNotAndIsBlindIsFalse(pageable, targetGrade);
+        return couponZoneRepository.findAllByGradeIsNotAndIsBlindIsFalse(pageable, TARGET_GRADE);
     }
 
     @Override
@@ -117,16 +121,14 @@ public class CouponZoneServiceImpl implements CouponZoneService{
 
     @Override
     public CouponZoneIsBlindResponse retrieveCouponZoneIsBlind(Long couponZoneId) {
-        CouponZone couponZone = couponZoneRepository.findById(couponZoneId)
-            .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
+        CouponZone couponZone = couponZoneService.checkCouponExistAtZone(couponZoneId);
 
         return new CouponZoneIsBlindResponse(couponZone.getIsBlind());
     }
 
     @Override
     public void updateIsBlind(Long couponZoneId, CouponZoneIsBlindRequest request) {
-        CouponZone couponZone = couponZoneRepository.findById(couponZoneId)
-            .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
+        CouponZone couponZone = couponZoneService.checkCouponExistAtZone(couponZoneId);
 
         couponZone.setIsBlind(request.getIsBlind());
     }
@@ -134,8 +136,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     public CouponZoneCheckResponse retrieveCouponZoneInform(Long couponId) {
         // 쿠폰존에 등록된 쿠폰인지 확인.
-        CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
-            .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
+        CouponZone couponAtZone = couponZoneService.checkCouponExistAtZoneByCouponId(couponId);
 
         // isBlind = true 라면, 발급되지 않음.
         if (Boolean.TRUE.equals(couponAtZone.getIsBlind())) {
@@ -148,8 +149,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     public String issueNoLimitCoupon(Long couponId, Long memberNo) {
         // 쿠폰존에 등록된 쿠폰인지 확인.
-        CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
-            .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
+        CouponZone couponAtZone = couponZoneService.checkCouponExistAtZoneByCouponId(couponId);
 
         // isBlind = true 라면, 발급되지 않음.
         if (Boolean.TRUE.equals(couponAtZone.getIsBlind()))
