@@ -68,6 +68,11 @@ public class CouponMemberServiceImpl implements CouponMemberService {
         orderCouponRepository.save(orderCoupon);
     }
 
+    @Override
+    public boolean checkUsedPointCoupon(Long memberNo, Long orderCouponId) {
+        return orderCouponRepository.existsByIsUsedAndIdAndMemberNo(false, orderCouponId, memberNo);
+    }
+
     public List<MemberCouponRetrieveResponse> retrieveCouponList(Long memberNo) {
         List<MemberCouponRetrieveResponse> couponList = new ArrayList<>();
 
