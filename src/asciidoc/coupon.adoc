@@ -1,13 +1,21 @@
-= RESTful Notes API Guide
-:doctype: book
-:icons: font
-:source-highlighter: highlightjs
-:toc: left
-:toclevels: 4
-:sectlinks:
+:coupons: {snippets}/admin/coupons
 
-==== Response 응답
-include::{snippets}/get/http-response.adoc[]
-include::{snippets}/get/response-body.adoc[]
-include::{snippets}/get/response-fields.adoc[]
+=== 모든 쿠폰 조회
+:adoc: {coupons}/testRetrieveAllCoupons
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-parameters.adoc[]
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
 
+=== 쿠폰 생성
+:adoc: {coupons}/testCreateCoupon
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-fields.adoc[]
+
+=== 쿠폰 단건 조회
+:adoc: {coupons}/testRetrieveCouponDetail
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]

@@ -18,6 +18,8 @@ import com.nhnacademy.booklay.booklaycoupon.repository.couponzone.CouponZoneRepo
 import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,22 +75,60 @@ public class CouponZoneIssueService {
             responseIssueCoupon(request.getUuid(), "발급 완료되었습니다!");
 
         } catch (IllegalArgumentException ex){
-            // 에러 메시지 전송.
             responseIssueCoupon(request.getUuid(), ex.getMessage());
         } finally {
             log.info("메세지 넣어졌음..");
         }
     }
 
+    /**
+     * 주문쿠폰 저장소에서, 사용자가 특정 쿠폰을 발급 받았는지 확인합니다.
+     */
     public void checkAlreadyIssuedAtOrderCoupon(Long couponId, Long memberNo) {
         if(orderCouponRepository.existsByCouponIdAndMemberNoIs(couponId, memberNo)) {
-            throw new IllegalArgumentException(ALREADY_ISSUED);
+            YearMonth nowTime = YearMonth.now();
+
+            List<OrderCoupon> couponList =
+                orderCouponRepository.findAllByCouponIdAndMemberNoIs(couponId, memberNo);
+
+            couponList.forEach(
+                c -> {
+                    LocalDateTime target = c.getIssuedAt();
+                    YearMonth targetTime = YearMonth.of(target.getYear(), target.getMonth());
+
+                    if (nowTime.isAfter(targetTime)) {
+                        return;
+                    } else {
+                        throw new IllegalArgumentException(ALREADY_ISSUED);
+                    }
+                }
+            );
         }
     }
 
+    /**
+     * 상품쿠폰 저장소에서, 사용자가 특정 쿠폰을 발급 받았는지 확인합니다.
+     * 이번 달에 받지 않았다면 받습니다.
+     */
     public void checkAlreadyIssuedAtProductCoupon(Long couponId, Long memberNo) {
         if(productCouponRepository.existsByCouponIdAndMemberNoIs(couponId, memberNo)) {
-            throw new IllegalArgumentException(ALREADY_ISSUED);
+            YearMonth nowTime = YearMonth.now();
+
+            List<ProductCoupon> couponList =
+                productCouponRepository.findAllByCouponIdAndMemberNoIs(couponId, memberNo);
+
+            couponList.forEach(
+                c -> {
+                    LocalDateTime target = c.getIssuedAt();
+                    YearMonth targetTime = YearMonth.of(target.getYear(), target.getMonth());
+
+                    if (nowTime.isAfter(targetTime)) {
+                        return;
+                    } else {
+                        throw new IllegalArgumentException(ALREADY_ISSUED);
+                    }
+                }
+            );
         }
     }
 
@@ -97,6 +137,9 @@ public class CouponZoneIssueService {
         kafkaTemplate.send(responseTopic, response);
     }
 
+    /**
+     * 주문 쿠폰 저장소에 사용자를 저장합니다.
+     */
     public void issueAtOrderCoupon(Long couponId, Long memberNo, LocalDateTime expiredAt) {
         OrderCoupon coupon = orderCouponRepository
             .findFirstByMemberIsNullAndCouponId(couponId)
@@ -109,6 +152,9 @@ public class CouponZoneIssueService {
         orderCouponRepository.save(coupon);
     }
 
+    /**
+     * 상품 쿠폰 저장소에 사용자를 저장합니다.
+     */
     public void issueAtProductCoupon(Long couponId, Long memberNo, LocalDateTime expiredAt) {
         ProductCoupon coupon = productCouponRepository
             .findFirstByMemberIsNullAndCouponId(couponId)
@@ -116,6 +162,7 @@ public class CouponZoneIssueService {
 
         Member member = memberRepository.findById(memberNo)
             .orElseThrow(() -> new NotFoundException("member", memberNo));
+
         coupon.setIssuedAt(LocalDateTime.now());
         coupon.setMember(member);
         coupon.setExpiredAt(expiredAt);
