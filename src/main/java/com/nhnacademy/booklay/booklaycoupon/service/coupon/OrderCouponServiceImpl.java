@@ -47,5 +47,4 @@ public class OrderCouponServiceImpl implements OrderCouponService{
     public void refundCoupon(Long orderNo, Long memberNo) {
         couponJdbcRepository.refundOrderCoupons(orderNo, memberNo);
     }
-
 }
