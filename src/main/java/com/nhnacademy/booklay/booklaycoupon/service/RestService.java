@@ -19,7 +19,6 @@ public class RestService {
 
     private final RestTemplate restTemplate;
 
-
     public <T> ApiEntity<T> post(String url, Map<String, Object> requestBody,
                                  Class<T> responseType) {
 
