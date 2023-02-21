@@ -134,7 +134,7 @@ class CouponMemberControllerTest {
         when(couponMemberService.retrievePointCoupons(1L, pageRequest)).thenReturn(couponRetrieveResponses);
 
         // then
-        mockMvc.perform(get(URI_PREFIX + "/point")
+        mockMvc.perform(RestDocumentationRequestBuilders.get(URI_PREFIX + "/point", targetId)
                 .queryParam("page", "0")
                 .queryParam("size", "10")
                 .accept(MediaType.APPLICATION_JSON))
@@ -153,7 +153,7 @@ class CouponMemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(post(URI_PREFIX + "/point/1"))
+        mockMvc.perform(RestDocumentationRequestBuilders.post(URI_PREFIX + "/point/1", targetId))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();
