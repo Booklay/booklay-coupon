@@ -1,7 +1,6 @@
 package com.nhnacademy.booklay.booklaycoupon.dto.coupon.response;
 
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
