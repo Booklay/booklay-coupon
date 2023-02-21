@@ -155,6 +155,9 @@ public class CouponZoneServiceImpl implements CouponZoneService{
         return couponZoneRepository.getByCouponId(couponId);
     }
 
+    /**
+     * 수량 무제한 쿠폰 발급.
+     */
     @Override
     public String issueNoLimitCoupon(Long couponId, Long memberNo) {
         // 쿠폰존에 등록된 쿠폰인지 확인.
@@ -171,6 +174,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
         // 이번 달에 받았는지 확인하고, 발급.
         if (orderOrProduct.equals("product")) {
             issueService.checkAlreadyIssuedAtProductCoupon(couponId, memberNo);
+
             Member member = memberRepository.findById(memberNo)
                 .orElseThrow(() -> new NotFoundException("member", memberNo));
 
