@@ -5,8 +5,9 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
-import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
@@ -39,7 +40,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class Dummy {
@@ -465,5 +465,13 @@ public class Dummy {
             .objectFileId(1L)
             .isOrderCoupon(false)
             .build();
+    }
+
+    public static CouponHistoryRetrieveResponse getDummyCouponHistoryRetrieveResponse() {
+        return new CouponHistoryRetrieveResponse(1L, "code", "이달의 쿠폰", "memberID", LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public static CouponUsedHistoryResponse getDummyCouponUsedHistoryResponse() {
+        return new CouponUsedHistoryResponse("memberId", "이달의 쿠폰", 3000L, LocalDateTime.now(), LocalDateTime.now());
     }
 }

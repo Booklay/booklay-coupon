@@ -77,7 +77,7 @@ class CouponAdminControllerTest {
 
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<CouponRetrieveResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<CouponRetrieveResponse> response = new PageImpl<>(List.of(Dummy.getDummyCouponRetrieveResponse()), pageRequest, 1);
 
         // when
         when(couponAdminService.retrieveAllCoupons(any())).thenReturn(response);
@@ -95,7 +95,13 @@ class CouponAdminControllerTest {
                     fieldWithPath("pageNumber").description("현재 페이지"),
                     fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
                     fieldWithPath("totalPages").description("총 페이지"),
-                    fieldWithPath("data").description("현재 페이지의 데이터")),
+                    fieldWithPath("data.[].id").description("쿠폰 ID"),
+                    fieldWithPath("data.[].name").description("쿠폰 이름"),
+                    fieldWithPath("data.[].typeName").description("쿠폰 타입 이름"),
+                    fieldWithPath("data.[].amount").description("할인량"),
+                    fieldWithPath("data.[].minimumUseAmount").description("최소 사용 금액"),
+                    fieldWithPath("data.[].maximumDiscountAmount").description("최대 할인 금액"),
+                    fieldWithPath("data.[].isLimited").description("수량 제한 여부")),
                 requestParameters(
                     parameterWithName("page").description("조회하려는 페이지"),
                     parameterWithName("size").description("페이지 크기"))
@@ -132,8 +138,8 @@ class CouponAdminControllerTest {
                     fieldWithPath("minimumUseAmount").description("최소 사용 금액"),
                     fieldWithPath("maximumDiscountAmount").description("최대 할인 금액"),
                     fieldWithPath("isDuplicatable").description("중복 사용 가능 여부"),
-                    fieldWithPath("isLimited").description("수량 제한 여부")
-            )))
+                    fieldWithPath("isLimited").description("수량 제한 여부"))
+            ))
             .andReturn();
 
         Mockito.verify(couponAdminService).createCoupon(any());
@@ -367,7 +373,7 @@ class CouponAdminControllerTest {
 
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<CouponHistoryRetrieveResponse> couponRetrieveResponses = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<CouponHistoryRetrieveResponse> couponRetrieveResponses = new PageImpl<>(List.of(Dummy.getDummyCouponHistoryRetrieveResponse()), pageRequest, 1);
 
         // when
         when(couponAdminService.retrieveIssuedCoupons(any())).thenReturn(couponRetrieveResponses);
@@ -383,7 +389,12 @@ class CouponAdminControllerTest {
                     fieldWithPath("pageNumber").description("현재 페이지"),
                     fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
                     fieldWithPath("totalPages").description("총 페이지"),
-                    fieldWithPath("data").description("현재 페이지의 데이터"))
+                    fieldWithPath("data.[].id").description("쿠폰 ID"),
+                    fieldWithPath("data.[].code").description("쿠폰 코드"),
+                    fieldWithPath("data.[].couponName").description("쿠폰 이름"),
+                    fieldWithPath("data.[].memberMemberId").description("쿠폰 소유 회원 ID"),
+                    fieldWithPath("data.[].issuedAt").description("쿠폰 발급 날짜"),
+                    fieldWithPath("data.[].expiredAt").description("쿠폰 만료 날짜"))
             ))
             .andReturn();
 
@@ -396,7 +407,7 @@ class CouponAdminControllerTest {
 
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<CouponUsedHistoryResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<CouponUsedHistoryResponse> response = new PageImpl<>(List.of(Dummy.getDummyCouponUsedHistoryResponse()), pageRequest, 1);
 
         // when
         when(couponAdminService.retrieveUsedCoupon(any())).thenReturn(response);
@@ -411,7 +422,11 @@ class CouponAdminControllerTest {
                     fieldWithPath("pageNumber").description("현재 페이지"),
                     fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
                     fieldWithPath("totalPages").description("총 페이지"),
-                    fieldWithPath("data").description("현재 페이지의 데이터"))
+                    fieldWithPath("data.[].memberId").description("쿠폰 사용 회원 ID"),
+                    fieldWithPath("data.[].couponName").description("쿠폰 이름"),
+                    fieldWithPath("data.[].discountPrice").description("할인량"),
+                    fieldWithPath("data.[].orderedAt").description("쿠폰을 사용한 주문의 주문 날짜"),
+                    fieldWithPath("data.[].issuedAt").description("쿠폰 발급 날짜"))
             ))
             .andReturn();
     }
