@@ -81,6 +81,9 @@ public class CouponZoneServiceImpl implements CouponZoneService{
             TARGET_GRADE);
     }
 
+    /**
+     * 사용자의 무제한 쿠폰 조회
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
@@ -88,11 +91,17 @@ public class CouponZoneServiceImpl implements CouponZoneService{
             TARGET_GRADE);
     }
 
+    /**
+     * 사용자의 등급별 쿠폰 조회
+     */
     @Override
     public Page<CouponZoneResponse> retrieveCouponZoneGraded(Pageable pageable) {
         return couponZoneRepository.findAllByGradeIsNotAndIsBlindIsFalse(pageable, TARGET_GRADE);
     }
 
+    /**
+     * 관리자의 쿠폰존에 쿠폰 등록.
+     */
     @Override
     public void createAtCouponZone(CouponZoneCreateRequest couponRequest) {
         Long couponId = couponRequest.getCouponId();

@@ -5,6 +5,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
