@@ -11,17 +11,20 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
@@ -31,15 +34,12 @@ import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponAdminService;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.CouponIssueService;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
@@ -47,16 +47,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-
-/**
- *
- * @author 김승혜
- */
 
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
+@ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(CouponAdminController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class CouponAdminControllerTest {
@@ -71,7 +67,8 @@ class CouponAdminControllerTest {
     MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
-    String URI_PREFIX = "/admin/coupons";
+    String DOC_PREFIX = "admin/coupons";
+    String URI_PREFIX = "/" + DOC_PREFIX;
     Long targetId = 1L;
 
     @Test
@@ -85,19 +82,24 @@ class CouponAdminControllerTest {
         // when
         when(couponAdminService.retrieveAllCoupons(any())).thenReturn(response);
 
-
         // then
         mockMvc.perform(get(URI_PREFIX)
                 .queryParam("page", "0")
                 .queryParam("size", "10")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(document("get",
-                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                responseFields(fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+            .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                    preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
                     fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
                     fieldWithPath("totalPages").description("총 페이지"),
-                    fieldWithPath("data").description("현재 페이지의 데이터"))))
+                    fieldWithPath("data").description("현재 페이지의 데이터")),
+                requestParameters(
+                    parameterWithName("page").description("조회하려는 페이지"),
+                    parameterWithName("size").description("페이지 크기"))
+                ))
             .andReturn();
 
         Mockito.verify(couponAdminService).retrieveAllCoupons(any());
@@ -118,6 +120,20 @@ class CouponAdminControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("name").type(JsonFieldType.STRING).description("쿠폰 이름"),
+                    fieldWithPath("fileId").description("쿠폰 이미지 ID"),
+                    fieldWithPath("typeCode").description("쿠폰 타입 코드"),
+                    fieldWithPath("amount").description("할인량"),
+                    fieldWithPath("isOrderCoupon").description("주문 쿠폰 여부"),
+                    fieldWithPath("applyItemId").description("적용 상품 혹은 카테고리의 ID"),
+                    fieldWithPath("minimumUseAmount").description("최소 사용 금액"),
+                    fieldWithPath("maximumDiscountAmount").description("최대 할인 금액"),
+                    fieldWithPath("isDuplicatable").description("중복 사용 가능 여부"),
+                    fieldWithPath("isLimited").description("수량 제한 여부")
+            )))
             .andReturn();
 
         Mockito.verify(couponAdminService).createCoupon(any());
@@ -128,14 +144,36 @@ class CouponAdminControllerTest {
     void testRetrieveCouponDetail() throws Exception {
 
         // given
+        CouponDetailRetrieveResponse response = Dummy.getDummyCouponDetailRetrieveResponse();
 
         // when
+        when(couponAdminService.retrieveCoupon(targetId)).thenReturn(response);
 
         // then
-        mockMvc.perform(get(URI_PREFIX + "/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.get(URI_PREFIX + "/{couponId}", targetId)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("id").type(JsonFieldType.NUMBER).description("쿠폰 ID"),
+                    fieldWithPath("name").description("쿠폰 이름"),
+                    fieldWithPath("typeName").description("쿠폰 타입 이름"),
+                    fieldWithPath("amount").description("할인량"),
+                    fieldWithPath("applyItemId").description("적용 상품 혹은 카테고리의 ID"),
+                    fieldWithPath("itemName").description("상품 혹은 카테고리 이름"),
+                    fieldWithPath("minimumUseAmount").description("최소 사용 금액"),
+                    fieldWithPath("maximumDiscountAmount").description("최대 할인 금액"),
+                    fieldWithPath("isDuplicatable").description("중복 사용 가능 여부"),
+                    fieldWithPath("isLimited").description("수량 제한 여부"),
+                    fieldWithPath("objectFileId").description("쿠폰 이미지 파일의 ID"),
+                    fieldWithPath("isOrderCoupon").description("주문 쿠폰 여부")),
+                pathParameters(
+                    parameterWithName("couponId").description("단건 조회하려는 쿠폰의 ID")
+                )
+            ))
             .andReturn();
 
         Mockito.verify(couponAdminService).retrieveCoupon(targetId);
@@ -171,11 +209,28 @@ class CouponAdminControllerTest {
 
 
         // then
-        mockMvc.perform(put(URI_PREFIX + "/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.put(URI_PREFIX + "/{couponId}", targetId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(couponRequest)))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponId").description("수정 대상 쿠폰의 ID")
+                    ),
+                requestFields(
+                    fieldWithPath("name").type(JsonFieldType.STRING).description("쿠폰 이름"),
+                    fieldWithPath("fileId").description("쿠폰 이미지 ID"),
+                    fieldWithPath("typeCode").description("쿠폰 타입 코드"),
+                    fieldWithPath("amount").description("할인량"),
+                    fieldWithPath("isOrderCoupon").description("주문 쿠폰 여부"),
+                    fieldWithPath("applyItemId").description("적용 상품 혹은 카테고리의 ID"),
+                    fieldWithPath("minimumUseAmount").description("최소 사용 금액"),
+                    fieldWithPath("maximumDiscountAmount").description("최대 할인 금액"),
+                    fieldWithPath("isDuplicatable").description("중복 사용 가능 여부"),
+                    fieldWithPath("isLimited").description("수량 제한 여부"))
+            ))
             .andReturn();
 
         Mockito.verify(couponAdminService, times(1)).updateCoupon(eq(targetId), any());
@@ -190,10 +245,17 @@ class CouponAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(put(URI_PREFIX + "/image/" + targetId + "/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.put(URI_PREFIX + "/image/{couponId}/{objectFileId}", targetId ,targetId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponId").description("이미지 수정 대상 쿠폰의 ID"),
+                    parameterWithName("objectFileId").description("수정하려는 이미지의 ID")
+                )
+                ))
             .andReturn();
 
         Mockito.verify(couponAdminService, times(1)).updateCouponImage(targetId, targetId);
@@ -208,10 +270,16 @@ class CouponAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(put(URI_PREFIX + "/image/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.put(URI_PREFIX + "/image/{couponId}", targetId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponId").description("이미지를 삭제 대상 쿠폰의 ID")
+                )
+            ))
             .andReturn();
 
         Mockito.verify(couponAdminService, times(1)).deleteCouponImage(targetId);
@@ -226,9 +294,15 @@ class CouponAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(delete(URI_PREFIX + "/1"))
+        mockMvc.perform(RestDocumentationRequestBuilders.delete(URI_PREFIX + "/{couponId}", targetId))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponId").description("삭제 대상 쿠폰의 ID")
+                )
+            ))
             .andReturn();
 
         Mockito.verify(couponAdminService).deleteCoupon(1L);
@@ -249,6 +323,13 @@ class CouponAdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("couponId").description("발급 대상 쿠폰 ID"),
+                    fieldWithPath("memberId").description("발급 대상 회원 No"),
+                    fieldWithPath("expiredAt").description("쿠폰 만료 날짜"))
+            ))
             .andReturn();
 
         Mockito.verify(couponIssueService).issueCouponToMember(any());
@@ -269,6 +350,12 @@ class CouponAdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("couponId").type(JsonFieldType.NUMBER).description("발급 대상 쿠폰 ID"),
+                    fieldWithPath("quantity").description("발급 수량"))
+            ))
             .andReturn();
 
         Mockito.verify(couponIssueService).issueCoupon(any());
@@ -290,6 +377,14 @@ class CouponAdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data").description("현재 페이지의 데이터"))
+            ))
             .andReturn();
 
         Mockito.verify(couponAdminService).retrieveIssuedCoupons(any());
@@ -310,6 +405,14 @@ class CouponAdminControllerTest {
         mockMvc.perform(get(URI_PREFIX + "/history"))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data").description("현재 페이지의 데이터"))
+            ))
             .andReturn();
     }
 }
