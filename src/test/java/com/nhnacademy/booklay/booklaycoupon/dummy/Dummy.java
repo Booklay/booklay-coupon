@@ -4,6 +4,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
@@ -447,5 +448,22 @@ public class Dummy {
         ReflectionTestUtils.setField(coupon, "id", 1L);
 
         return coupon;
+    }
+
+    public static CouponDetailRetrieveResponse getDummyCouponDetailRetrieveResponse() {
+        return CouponDetailRetrieveResponse.builder()
+            .id(1L)
+            .name("이달의 쿠폰")
+            .typeName("정액")
+            .amount(5)
+            .applyItemId(1L)
+            .itemName("불편한 편의점")
+            .minimumUseAmount(5000)
+            .maximumDiscountAmount(10000)
+            .isDuplicatable(false)
+            .isLimited(true)
+            .objectFileId(1L)
+            .isOrderCoupon(false)
+            .build();
     }
 }
