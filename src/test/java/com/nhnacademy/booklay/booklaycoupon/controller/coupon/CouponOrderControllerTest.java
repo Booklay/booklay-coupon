@@ -80,9 +80,7 @@ class CouponOrderControllerTest {
 
         // then
         mockMvc.perform(get(URI_PREFIX)
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("memberNo", targetId.toString())
-                .queryParam("isDuplicable", "true"))
+                .param("isDuplicable", "true"))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();
