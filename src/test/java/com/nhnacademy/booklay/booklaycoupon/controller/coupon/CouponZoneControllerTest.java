@@ -206,7 +206,7 @@ class CouponZoneControllerTest {
         mockMvc.perform(post(URI_PREFIX + "/no-limit")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isForbidden())
+            .andExpect(status().isNotAcceptable())
             .andDo(print())
             .andDo(document(DOC_PREFIX + "/{methodName}",
                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
