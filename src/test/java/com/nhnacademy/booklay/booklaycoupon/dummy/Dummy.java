@@ -15,6 +15,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetri
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.response.CouponTypeRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIssueToMemberRequest;
@@ -502,5 +503,9 @@ public class Dummy {
 
     public static CouponRetrieveResponseFromProduct getDummyCouponRetrieveResponseFromProduct() {
         return new CouponRetrieveResponseFromProduct("code", Dummy.getDummyCoupon());
+    }
+
+    public static CouponTypeRetrieveResponse getDummyCouponTypeRetrieveResponse() {
+        return new CouponTypeRetrieveResponse(1L, "정률");
     }
 }
