@@ -4,17 +4,23 @@ import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUsingDto;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.response.CouponTypeRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
@@ -39,6 +45,7 @@ import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -412,12 +419,29 @@ public class Dummy {
         return new MemberInfo(paramMap);
     }
 
+    public static CouponUsingDto getDummyCouponUsingDto() {
+        CouponUsingDto couponUsingDto = new CouponUsingDto();
+        ReflectionTestUtils.setField(couponUsingDto, "couponCode", "code");
+        ReflectionTestUtils.setField(couponUsingDto, "specifiedCouponNo", 1L);
+        ReflectionTestUtils.setField(couponUsingDto, "usedTargetNo", 1L);
+
+        return couponUsingDto;
+    }
+
     public static CouponUseRequest getDummyCouponUseRequest() {
-        return new CouponUseRequest();
+        CouponUseRequest request = new CouponUseRequest();
+        ReflectionTestUtils.setField(request, "productCouponList", List.of(Dummy.getDummyCouponUsingDto()));
+        ReflectionTestUtils.setField(request, "categoryCouponList", List.of(Dummy.getDummyCouponUsingDto()));
+
+        return request;
     }
 
     public static CouponRefundRequest getDummyCouponRefundRequest() {
-        return new CouponRefundRequest();
+        CouponRefundRequest request = new CouponRefundRequest();
+        ReflectionTestUtils.setField(request, "orderProductNoList", List.of(1L, 2L));
+        ReflectionTestUtils.setField(request, "orderNo", 1L);
+
+        return request;
     }
 
     public static CouponZoneIssueToMemberRequest getDummyCouponZoneIssueToMemberRequest() {
@@ -473,5 +497,25 @@ public class Dummy {
 
     public static CouponUsedHistoryResponse getDummyCouponUsedHistoryResponse() {
         return new CouponUsedHistoryResponse("memberId", "이달의 쿠폰", 3000L, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public static PointCouponRetrieveResponse getDummyPointCouponRetrieveResponse() {
+        return new PointCouponRetrieveResponse(1L, 1L, "이달의 포인트 쿠폰", 1000);
+    }
+
+    public static CouponRetrieveResponseFromProduct getDummyCouponRetrieveResponseFromProduct() {
+        return new CouponRetrieveResponseFromProduct("code", Dummy.getDummyCoupon());
+    }
+
+    public static CouponTypeRetrieveResponse getDummyCouponTypeRetrieveResponse() {
+        return new CouponTypeRetrieveResponse(1L, "정률");
+    }
+
+    public static CouponZoneResponse getDummyCouponZoneResponse() {
+        return new CouponZoneResponse(1L, 1L, 1L, "이달의 쿠폰", "선착순 300명!", "화이트", LocalDateTime.of(2023, 1, 1, 12, 0), LocalDateTime.of(2023, 1, 25, 12, 0), LocalDateTime.of(2023, 1, 28, 12, 0), false);
+    }
+
+    public static CouponZoneCheckResponse getDummyCouponZoneCheckResponse() {
+        return new CouponZoneCheckResponse(LocalDateTime.of(2023, 1, 1, 12, 0), LocalDateTime.of(2023, 1, 25, 12, 0), "화이트");
     }
 }

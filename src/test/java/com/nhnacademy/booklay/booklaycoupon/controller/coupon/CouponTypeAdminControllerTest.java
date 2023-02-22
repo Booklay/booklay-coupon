@@ -4,6 +4,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,14 +29,19 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -36,6 +50,8 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author 김승혜
  */
 
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
+@ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(CouponTypeAdminController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class CouponTypeAdminControllerTest {
@@ -49,7 +65,8 @@ class CouponTypeAdminControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    private static final String URI_PREFIX = "/admin/couponTypes";
+    String DOC_PREFIX = "admin/couponTypes";
+    String URI_PREFIX = "/" + DOC_PREFIX;
     ObjectMapper objectMapper;
 
     @BeforeEach
@@ -64,7 +81,7 @@ class CouponTypeAdminControllerTest {
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
         PageImpl<CouponTypeRetrieveResponse>
-            couponTypePage = new PageImpl<>(List.of(), pageRequest, 1);
+            couponTypePage = new PageImpl<>(List.of(Dummy.getDummyCouponTypeRetrieveResponse()), pageRequest, 1);
 
         // when
         when(couponTypeService.retrieveAllCouponTypes(any())).thenReturn(couponTypePage);
@@ -76,6 +93,15 @@ class CouponTypeAdminControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data.[].id").description("쿠폰 타입 ID"),
+                    fieldWithPath("data.[].name").description("쿠폰 타입명"))
+            ))
             .andReturn();
 
         Mockito.verify(couponTypeService).retrieveAllCouponTypes(any());
@@ -96,6 +122,12 @@ class CouponTypeAdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("id").description("쿠폰 타입 ID"),
+                    fieldWithPath("name").description("쿠폰 타입명"))
+            ))
             .andReturn();
 
         Mockito.verify(couponTypeService).createCouponType(any());
@@ -110,11 +142,19 @@ class CouponTypeAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(put(URI_PREFIX + "/1")
+        mockMvc.perform(RestDocumentationRequestBuilders.put(URI_PREFIX + "/{couponTypeId}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(couponRequest)))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("id").description("쿠폰 타입 ID"),
+                    fieldWithPath("name").description("쿠폰 타입명")),
+                pathParameters(
+                    parameterWithName("couponTypeId").description("변경 대상 쿠폰 타입 ID"))
+            ))
             .andReturn();
 
         Mockito.verify(couponTypeService, times(1)).updateCouponType(eq(1L), any());
@@ -128,9 +168,14 @@ class CouponTypeAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(delete(URI_PREFIX + "/1"))
+        mockMvc.perform(RestDocumentationRequestBuilders.delete(URI_PREFIX + "/{couponTypeId}", 1))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponTypeId").description("변경 대상 쿠폰 타입 ID"))
+            ))
             .andReturn();
 
         Mockito.verify(couponTypeService).deleteCouponType(1L);

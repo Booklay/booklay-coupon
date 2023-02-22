@@ -36,7 +36,6 @@ public class CouponRestController {
         return ResponseEntity.ok(couponRetrieveResponseFromProductList);
     }
 
-
     @PostMapping("using")
     public ResponseEntity<Void> useCoupons(@RequestBody CouponUseRequest couponUseRequest, MemberInfo memberInfo){
         couponGeneralService.couponUsing(couponUseRequest, memberInfo.getMemberNo());
