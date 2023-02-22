@@ -61,7 +61,8 @@ class CouponRestControllerTest {
 
         // then
         mockMvc.perform(get(URI_PREFIX + "/codes")
-                .queryParam("couponCodeList", "list"))
+                        .queryParam("couponCodeList", "list")
+                        .queryParam("member_info_memberNo", "1"))
             .andExpect(status().isOk())
             .andDo(print())
             .andReturn();
@@ -84,7 +85,7 @@ class CouponRestControllerTest {
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponGeneralService).couponUsing(any(), any());
+        Mockito.verify(couponGeneralService).couponUsing(any());
     }
 
     @Test
@@ -102,6 +103,6 @@ class CouponRestControllerTest {
             .andDo(print())
             .andReturn();
 
-        Mockito.verify(couponGeneralService).couponRefund(any(), any());
+        Mockito.verify(couponGeneralService).couponRefund(any());
     }
 }

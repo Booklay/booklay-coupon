@@ -45,11 +45,11 @@ class CouponGeneralServiceImplTest {
         CouponUseRequest request = Dummy.getDummyCouponUseRequest();
 
         // when
-        couponGeneralService.couponUsing(request, 1L);
+        couponGeneralService.couponUsing(request);
 
         // then
-        BDDMockito.then(productCouponService).should().usingCoupon(request.getProductCouponList(), 1L);
-        BDDMockito.then(orderCouponService).should().usingCoupon(request.getCategoryCouponList(), 1L);
+        BDDMockito.then(productCouponService).should().usingCoupon(request.getProductCouponList());
+        BDDMockito.then(orderCouponService).should().usingCoupon(request.getCategoryCouponList());
     }
 
     @Test
@@ -58,10 +58,10 @@ class CouponGeneralServiceImplTest {
         CouponRefundRequest request = Dummy.getDummyCouponRefundRequest();
 
         // when
-        couponGeneralService.couponRefund(request, 1L);
+        couponGeneralService.couponRefund(request);
 
         // then
-        BDDMockito.then(productCouponService).should().refundCoupon(request.getOrderProductNoList(), 1L);
-        BDDMockito.then(orderCouponService).should().refundCoupon(request.getOrderNo(), 1L);
+        BDDMockito.then(productCouponService).should().refundCoupon(request.getOrderProductNoList());
+        BDDMockito.then(orderCouponService).should().refundCoupon(request.getOrderNo());
     }
 }

@@ -36,16 +36,16 @@ public class OrderCouponServiceImpl implements OrderCouponService{
     }
 
     @Override
-    public void usingCoupon(List<CouponUsingDto> categoryCouponList, Long memberNo) {
+    public void usingCoupon(List<CouponUsingDto> categoryCouponList) {
         if (categoryCouponList!=null){
             List<Long> usedCouponNoList = categoryCouponList.stream().map(CouponUsingDto::getSpecifiedCouponNo).collect(Collectors.toList());
-            couponJdbcRepository.useOrderCoupons(usedCouponNoList, categoryCouponList.get(0).getUsedTargetNo(), memberNo);
+            couponJdbcRepository.useOrderCoupons(usedCouponNoList, categoryCouponList.get(0).getUsedTargetNo());
         }
     }
 
     @Override
-    public void refundCoupon(Long orderNo, Long memberNo) {
-        couponJdbcRepository.refundOrderCoupons(orderNo, memberNo);
+    public void refundCoupon(Long orderNo) {
+        couponJdbcRepository.refundOrderCoupons(orderNo);
     }
 
 }

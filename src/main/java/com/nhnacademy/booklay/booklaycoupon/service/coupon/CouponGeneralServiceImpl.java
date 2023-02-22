@@ -47,14 +47,19 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
     }
 
     @Override
-    public void couponUsing(CouponUseRequest couponUseRequest, Long memberNo) {
-        productCouponService.usingCoupon(couponUseRequest.getProductCouponList(), memberNo);
-        orderCouponService.usingCoupon(couponUseRequest.getCategoryCouponList(), memberNo);
+    @Transactional
+    public void couponUsing(CouponUseRequest couponUseRequest) {
+        if (couponUseRequest.getProductCouponList()!=null){
+            productCouponService.usingCoupon(couponUseRequest.getProductCouponList());
+        }
+        if (couponUseRequest.getCategoryCouponList()!=null){
+            orderCouponService.usingCoupon(couponUseRequest.getCategoryCouponList());
+        }
     }
 
     @Override
-    public void couponRefund(CouponRefundRequest couponRefundRequest, Long memberNo) {
-        productCouponService.refundCoupon(couponRefundRequest.getOrderProductNoList(), memberNo);
-        orderCouponService.refundCoupon(couponRefundRequest.getOrderNo(), memberNo);
+    public void couponRefund(CouponRefundRequest couponRefundRequest) {
+        productCouponService.refundCoupon(couponRefundRequest.getOrderProductNoList());
+        orderCouponService.refundCoupon(couponRefundRequest.getOrderNo());
     }
 }
