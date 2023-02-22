@@ -14,7 +14,7 @@ public interface ProductCouponService {
 
     List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(List<String> couponCodeList, Long memberNo);
 
-    void usingCoupon(List<CouponUsingDto> productCouponList, Long memberNo);
+    void usingCoupon(List<CouponUsingDto> productCouponList);
 
-    void refundCoupon(List<Long> orderProductNoList, Long memberNo);
+    void refundCoupon(List<Long> orderProductNoList);
 }

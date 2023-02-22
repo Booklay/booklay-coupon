@@ -12,7 +12,7 @@ public interface CouponGeneralService {
     List<CouponRetrieveResponseFromProduct> retrieveCouponByCouponCodeList(
             List<String> couponCodeList, Long memberNo);
 
-    void couponUsing(CouponUseRequest couponUseRequest, Long memberNo);
+    void couponUsing(CouponUseRequest couponUseRequest);
 
-    void couponRefund(CouponRefundRequest couponRefundRequest, Long memberNo);
+    void couponRefund(CouponRefundRequest couponRefundRequest);
 }
