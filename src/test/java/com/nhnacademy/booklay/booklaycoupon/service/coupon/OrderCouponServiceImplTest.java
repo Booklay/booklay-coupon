@@ -50,10 +50,10 @@ class OrderCouponServiceImplTest {
         Long targetId = 1L;
 
         // when
-        orderCouponService.usingCoupon(categoryCouponList, targetId);
+        orderCouponService.usingCoupon(categoryCouponList);
 
         // then
-        BDDMockito.then(couponJdbcRepository).should().useOrderCoupons(anyList(), any(), any());
+        BDDMockito.then(couponJdbcRepository).should().useOrderCoupons(anyList(), any());
     }
 
     @Test
@@ -62,9 +62,9 @@ class OrderCouponServiceImplTest {
         Long targetId = 1L;
 
         // when
-        orderCouponService.refundCoupon(targetId, targetId);
+        orderCouponService.refundCoupon(targetId);
 
         // then
-        BDDMockito.then(couponJdbcRepository).should().refundOrderCoupons(any(), any());
+        BDDMockito.then(couponJdbcRepository).should().refundOrderCoupons(any());
     }
 }
