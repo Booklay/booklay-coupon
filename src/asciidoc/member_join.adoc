@@ -1,0 +1,9 @@
+:coupons: {snippets}/welcome/memberNo
+
+=== 포인트 쿠폰 사용 여부 조회
+:adoc: {coupons}/issueWelcomeCouponToMember
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
