@@ -1,0 +1,71 @@
+:coupons: {snippets}/admin/couponSettings
+
+=== 쿠폰 발급 정보 셋팅
+:adoc: {coupons}/createCouponSetting
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 쿠폰 발급 정보 삭제
+:adoc: {coupons}/deleteCouponSetting
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 쿠폰 발급 정보 페이지로 조회
+:adoc: {coupons}/retrieveAllCouponSetting_byPage
+==== Request
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 쿠폰 발급 정보 조회
+:adoc: {coupons}/retrieveAllCouponSettings
+==== Request
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 쿠폰 발급 정보와 발급 종류를 페이지로 조회
+:adoc: {coupons}/retrieveAllCouponSettings_byPageAndSettingType
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 쿠폰 발급 정보와 발급 종류 조회
+:adoc: {coupons}/retrieveAllCouponSettings_bySettingType
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 쿠폰 발급 정보 단건 조회
+:adoc: {coupons}/retrieveCouponSettingDetail
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 쿠폰 발급 정보 수정
+:adoc: {coupons}/updateCouponSetting
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
