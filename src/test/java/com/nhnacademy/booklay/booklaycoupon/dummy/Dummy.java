@@ -19,6 +19,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.response.CouponTypeRe
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIssueToMemberRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
 import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
@@ -512,5 +513,9 @@ public class Dummy {
 
     public static CouponZoneResponse getDummyCouponZoneResponse() {
         return new CouponZoneResponse(1L, 1L, 1L, "이달의 쿠폰", "선착순 300명!", "화이트", LocalDateTime.of(2023, 1, 1, 12, 0), LocalDateTime.of(2023, 1, 25, 12, 0), LocalDateTime.of(2023, 1, 28, 12, 0), false);
+    }
+
+    public static CouponZoneCheckResponse getDummyCouponZoneCheckResponse() {
+        return new CouponZoneCheckResponse(LocalDateTime.of(2023, 1, 1, 12, 0), LocalDateTime.of(2023, 1, 25, 12, 0), "화이트");
     }
 }
