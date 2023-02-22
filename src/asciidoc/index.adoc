@@ -9,4 +9,20 @@ endif::[]
 :sectlinks:
 
 = Admin Api
-include::{docdir}/coupon.adoc[]
+
+== Coupon
+include::{docdir}/coupon_admin.adoc[]
+
+== Coupon Type
+include::{docdir}/couponType_admin.adoc[]
+
+== Coupon Zone
+include::{docdir}/couponZone_admin.adoc[]
+
+== Coupon Setting
+include::{docdir}/couponSetting_admin.adoc[]
+
+= Member Service Api
+
+== Coupon Zone
+include::{docdir}/member_couponzone.adoc[]
