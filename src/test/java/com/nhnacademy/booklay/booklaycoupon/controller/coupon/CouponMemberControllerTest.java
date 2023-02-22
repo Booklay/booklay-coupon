@@ -10,8 +10,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -128,7 +127,7 @@ class CouponMemberControllerTest {
     void testRetrievePointCoupons() throws Exception {
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<PointCouponRetrieveResponse> couponRetrieveResponses = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<PointCouponRetrieveResponse> couponRetrieveResponses = new PageImpl<>(List.of(Dummy.getDummyPointCouponRetrieveResponse()), pageRequest, 1);
 
         // when
         when(couponMemberService.retrievePointCoupons(1L, pageRequest)).thenReturn(couponRetrieveResponses);
@@ -140,6 +139,22 @@ class CouponMemberControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("page").description("조회하려는 페이지"),
+                    parameterWithName("size").description("페이지 크기")),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data.[].couponId").description("쿠폰 ID"),
+                    fieldWithPath("data.[].orderCouponId").description("포인트 쿠폰 ID. 포인트 쿠폰은 주문 쿠폰에 속함."),
+                    fieldWithPath("data.[].name").description("쿠폰 이름"),
+                    fieldWithPath("data.[].amount").description("포인트로 전환가능한 금액")),
+                pathParameters(
+                    parameterWithName("memberNo").description("회원 No"))
+            ))
             .andReturn();
 
         Mockito.verify(couponMemberService).retrievePointCoupons(any(), any());
@@ -153,11 +168,40 @@ class CouponMemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(RestDocumentationRequestBuilders.post(URI_PREFIX + "/point/1", targetId))
+        mockMvc.perform(RestDocumentationRequestBuilders.post(URI_PREFIX + "/point/{orderCouponId}", targetId, targetId))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("memberNo").description("회원 No"),
+                    parameterWithName("orderCouponId").description("사용자가 소유한 주문 쿠폰(포인트 쿠폰) ID"))
+            ))
             .andReturn();
 
         Mockito.verify(couponMemberService).usePointCoupon(any(), any());
+    }
+
+    @Test
+    @DisplayName("포인트 쿠폰이 사용되었는지 확인 성공")
+    void testCheckUsedPointCoupon() throws Exception {
+        // given
+
+        // when
+        when(couponMemberService.checkUsedPointCoupon(targetId, targetId)).thenReturn(true);
+
+        // then
+        mockMvc.perform(RestDocumentationRequestBuilders.get(URI_PREFIX + "/point/used/{orderCouponId}", targetId, targetId))
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("memberNo").description("회원 No"),
+                    parameterWithName("orderCouponId").description("사용자가 소유한 주문 쿠폰(포인트 쿠폰) ID"))
+            ))
+            .andReturn();
+
+        Mockito.verify(couponMemberService).checkUsedPointCoupon(targetId, targetId);
     }
 }

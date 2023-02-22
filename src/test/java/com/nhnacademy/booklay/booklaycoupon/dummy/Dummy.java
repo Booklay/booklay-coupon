@@ -9,6 +9,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRet
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontemplate.CouponTemplateCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupontype.request.CouponTypeCURequest;
@@ -473,5 +474,9 @@ public class Dummy {
 
     public static CouponUsedHistoryResponse getDummyCouponUsedHistoryResponse() {
         return new CouponUsedHistoryResponse("memberId", "이달의 쿠폰", 3000L, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public static PointCouponRetrieveResponse getDummyPointCouponRetrieveResponse() {
+        return new PointCouponRetrieveResponse(1L, 1L, "이달의 포인트 쿠폰", 1000);
     }
 }
