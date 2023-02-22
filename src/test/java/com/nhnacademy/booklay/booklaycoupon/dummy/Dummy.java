@@ -4,6 +4,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUsingDto;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponsetting.CouponSettingCURequest;
@@ -36,6 +37,7 @@ import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.test.util.ReflectionTestUtils;
@@ -392,26 +394,28 @@ public class Dummy {
     }
 
     public static MemberInfo getDummyMemberInfo() {
-        Map<String, String[]> paramMap =  new HashMap<>();
         String[] longStringArray = new String[] {"1"};
         String[] stringArray = new String[] {"test"};
         String[] dateArray = new String[] {"2000, 01, 01"};
+        MemberInfo memberInfo= new MemberInfo();
 
+        ReflectionTestUtils.setField(memberInfo, "memberNo",longStringArray);
+        ReflectionTestUtils.setField(memberInfo, "gender",stringArray);
+        ReflectionTestUtils.setField(memberInfo, "memberId",longStringArray);
+        ReflectionTestUtils.setField(memberInfo, "nickname",stringArray);
+        ReflectionTestUtils.setField(memberInfo, "name",stringArray);
+        ReflectionTestUtils.setField(memberInfo, "birthday",dateArray);
+        ReflectionTestUtils.setField(memberInfo, "phoneNo",stringArray);
+        ReflectionTestUtils.setField(memberInfo, "email",stringArray);
 
-        paramMap.put("memberNo",longStringArray);
-        paramMap.put("gender",stringArray);
-        paramMap.put("memberId",longStringArray);
-        paramMap.put("nickname",stringArray);
-        paramMap.put("name",stringArray);
-        paramMap.put("birthday",dateArray);
-        paramMap.put("phoneNo",stringArray);
-        paramMap.put("email",stringArray);
-
-        return new MemberInfo(paramMap);
+        return memberInfo;
     }
 
     public static CouponUseRequest getDummyCouponUseRequest() {
-        return new CouponUseRequest();
+        CouponUseRequest couponUseRequest = new CouponUseRequest();
+        ReflectionTestUtils.setField(couponUseRequest, "productCouponList", List.of(new CouponUsingDto()));
+        ReflectionTestUtils.setField(couponUseRequest, "categoryCouponList", List.of(new CouponUsingDto()));
+        return couponUseRequest;
     }
 
     public static CouponRefundRequest getDummyCouponRefundRequest() {

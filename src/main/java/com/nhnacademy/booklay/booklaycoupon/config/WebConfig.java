@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -47,7 +48,11 @@ public class WebConfig {
 
     @Value("${booklay.secure.db_url}")
     private String dbUrl;
-
+    @Bean
+    @Primary
+    public String gatewayIp(@Value("${booklay.gateway-origin}") String ip) {
+        return ip;
+    }
     /**
      * NHN Secure Manager를 통해 민감정보를 받습니다.
      * booklay.p12인증서를 통해 HTTPS 요청을 보냅니다.

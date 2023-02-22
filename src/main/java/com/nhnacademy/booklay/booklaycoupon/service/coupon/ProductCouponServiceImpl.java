@@ -36,15 +36,15 @@ public class ProductCouponServiceImpl implements ProductCouponService{
     }
 
     @Override
-    public void usingCoupon(List<CouponUsingDto> productCouponList, Long memberNo) {
+    public void usingCoupon(List<CouponUsingDto> productCouponList) {
         if(productCouponList!= null){
-            couponJdbcRepository.useProductCoupons(productCouponList, memberNo);
+            couponJdbcRepository.useProductCoupons(productCouponList);
         }
     }
 
     @Override
-    public void refundCoupon(List<Long> orderProductNoList, Long memberNo) {
-        couponJdbcRepository.refundProductCoupons(orderProductNoList, memberNo);
+    public void refundCoupon(List<Long> orderProductNoList) {
+        couponJdbcRepository.refundProductCoupons(orderProductNoList);
     }
 
 }
