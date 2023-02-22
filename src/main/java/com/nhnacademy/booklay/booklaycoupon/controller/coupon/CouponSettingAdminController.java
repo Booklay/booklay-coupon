@@ -36,7 +36,6 @@ public class CouponSettingAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
     @GetMapping("/pages")
     public ResponseEntity<PageResponse<CouponSetting>> retrieveAllCouponSettingByPage(@PageableDefault
                                                                                                Pageable pageable) {
