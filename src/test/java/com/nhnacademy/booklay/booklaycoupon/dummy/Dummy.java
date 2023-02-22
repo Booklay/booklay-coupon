@@ -4,6 +4,7 @@ import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUsingDto;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
@@ -41,6 +42,7 @@ import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -414,12 +416,29 @@ public class Dummy {
         return new MemberInfo(paramMap);
     }
 
+    public static CouponUsingDto getDummyCouponUsingDto() {
+        CouponUsingDto couponUsingDto = new CouponUsingDto();
+        ReflectionTestUtils.setField(couponUsingDto, "couponCode", "code");
+        ReflectionTestUtils.setField(couponUsingDto, "specifiedCouponNo", 1L);
+        ReflectionTestUtils.setField(couponUsingDto, "usedTargetNo", 1L);
+
+        return couponUsingDto;
+    }
+
     public static CouponUseRequest getDummyCouponUseRequest() {
-        return new CouponUseRequest();
+        CouponUseRequest request = new CouponUseRequest();
+        ReflectionTestUtils.setField(request, "productCouponList", List.of(Dummy.getDummyCouponUsingDto()));
+        ReflectionTestUtils.setField(request, "categoryCouponList", List.of(Dummy.getDummyCouponUsingDto()));
+
+        return request;
     }
 
     public static CouponRefundRequest getDummyCouponRefundRequest() {
-        return new CouponRefundRequest();
+        CouponRefundRequest request = new CouponRefundRequest();
+        ReflectionTestUtils.setField(request, "orderProductNoList", List.of(1L, 2L));
+        ReflectionTestUtils.setField(request, "orderNo", 1L);
+
+        return request;
     }
 
     public static CouponZoneIssueToMemberRequest getDummyCouponZoneIssueToMemberRequest() {
