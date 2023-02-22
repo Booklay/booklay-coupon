@@ -22,7 +22,10 @@ include::{docdir}/couponZone_admin.adoc[]
 == Coupon Setting
 include::{docdir}/couponSetting_admin.adoc[]
 
-= Member Service Api
+= Service Api
 
 == Coupon Zone
 include::{docdir}/member_couponzone.adoc[]
+
+== Order Usage
+include::{docdir}/member_order_usage.adoc[]

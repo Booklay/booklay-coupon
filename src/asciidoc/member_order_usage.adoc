@@ -1,0 +1,21 @@
+:coupons: {snippets}/coupons
+
+=== 결제 취소 시 쿠폰 환불
+:adoc: {coupons}/testRefundCoupons
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 쿠폰 코드로 쿠폰 조회
+:adoc: {coupons}/testRetrieveCouponByCouponCode
+
+
+=== 쿠폰 코드 리스트로 쿠폰 조회
+:adoc: {coupons}/testRetrieveCouponByCouponCodeList
+
+=== 쿠폰 사용
+:adoc: {coupons}/testUseCoupons
