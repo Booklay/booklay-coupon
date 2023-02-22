@@ -1,23 +1,24 @@
 package com.nhnacademy.booklay.booklaycoupon.aspect;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.booklay.booklaycoupon.dto.ApiEntity;
 import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
-import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfoPostGetter;
+import com.nhnacademy.booklay.booklaycoupon.dto.member.response.MemberRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.service.RestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.util.ContentCachingRequestWrapper;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * 로그인한 멤버의 정보를 받아오기 위한 AOP.
@@ -27,75 +28,39 @@ import java.util.Map;
  */
 @Slf4j
 @Aspect
+@Order(value = 100)
 @Component
 @RequiredArgsConstructor
 public class MemberAspect {
-    private final ObjectMapper objectMapper;
 
-    /**
-     * GetMapping 에 MemberInfo 추가
-     */
-    @Around("(@annotation(org.springframework.web.bind.annotation.DeleteMapping)||" +
-            "@annotation(org.springframework.web.bind.annotation.GetMapping)) " +
-            "&& execution(* *.*(.., com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo, ..))")
-    public Object injectMemberToGetMapping(ProceedingJoinPoint pjp) throws Throwable {
+    private final TokenUtils tokenUtils;
+    private final RestService restService;
+    @Around("@within(restController) && execution(* *.*(.., com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo, ..))")
+    public Object injectMember(ProceedingJoinPoint pjp, RestController restController) throws Throwable {
         log.info("Method: {}", pjp.getSignature().getName());
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        Map<String, String[]> paramMap = request.getParameterMap();
-        MemberInfo memberInfo = new MemberInfo(paramMap);
-        Object[] args = Arrays.stream(pjp.getArgs())
-                              .map(arg -> {
-                                  if (arg instanceof MemberInfo) {
-                                      arg = memberInfo;
-                                  }
-                                  return arg;
-                              }).toArray();
-        return pjp.proceed(args);
-    }
+        request.getHeader(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getEmail(request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length()));
 
-    /**
-     * PostMapping 에 MemberInfo 추가
-     */
-    @Around("(@annotation(org.springframework.web.bind.annotation.PostMapping)||" +
-            "@annotation(org.springframework.web.bind.annotation.PutMapping)||" +
-            "@annotation(org.springframework.web.bind.annotation.PatchMapping)) " +
-            "&& execution(* *.*(.., com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo, ..))")
-    public Object injectMemberToPostMapping(ProceedingJoinPoint pjp) throws Throwable {
-        log.info("Method: {}", pjp.getSignature().getName());
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        ContentCachingRequestWrapper requestWrapper = getRequestWrapper(request);
-        String requestBody = getRequestBody(requestWrapper);
-        MemberInfo memberInfo = new MemberInfo(objectMapper.readValue(requestBody, MemberInfoPostGetter.class));
-        Object[] args = Arrays.stream(pjp.getArgs())
-                .map(arg -> {
-                    if (arg instanceof MemberInfo) {
-                        arg = memberInfo;
-                    }
-                    return arg;
-                }).toArray();
-        return pjp.proceed(args);
-    }
-    private String getRequestBody(ContentCachingRequestWrapper request) {
-        ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
-        if (wrapper != null) {
-            byte[] buf = wrapper.getContentAsByteArray();
-            if (buf.length > 0) {
-                try {
-                    return new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
-                } catch (UnsupportedEncodingException e) {
-                    return "{}";
-                }
+        String url = tokenUtils.getShopUrl() + email;
+
+
+        ApiEntity<MemberRetrieveResponse> memberRetrieveResponse =
+                restService.get(url, null, new ParameterizedTypeReference<>() {
+                });
+
+        MemberInfo memberInfo = new MemberInfo(memberRetrieveResponse.getBody());
+
+        Object[] args = Arrays.stream(pjp.getArgs()).map(arg -> {
+            if (arg instanceof MemberInfo) {
+                arg = memberInfo;
             }
-        }
-        return "{}";
+            return arg;
+        }).toArray();
+
+
+        return pjp.proceed(args);
     }
 
-    private ContentCachingRequestWrapper getRequestWrapper(HttpServletRequest request) {
-        if (request instanceof ContentCachingRequestWrapper) {
-            return (ContentCachingRequestWrapper)request;
-        }
-        return new ContentCachingRequestWrapper(request);
-    }
 }

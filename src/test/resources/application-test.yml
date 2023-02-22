@@ -43,7 +43,12 @@ booklay:
     url: https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/500rMJPT021TnyNl/secrets/
     p12_password: 1234
   pool_size: 2
+  jwt:
+    secret: test
 
+  gateway-origin: http://localhost:8080
+  domain-origin: http://localhost:6060
+  gw-url: http://127.0.0.1
 message:
   topic:
     coupon:
