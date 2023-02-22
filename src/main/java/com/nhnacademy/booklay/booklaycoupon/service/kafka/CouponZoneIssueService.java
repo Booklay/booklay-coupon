@@ -95,6 +95,7 @@ public class CouponZoneIssueService {
                 c -> {
                     LocalDateTime target = c.getIssuedAt();
                     YearMonth targetTime = YearMonth.of(target.getYear(), target.getMonth());
+                    log.debug("사용자가 받은 쿠폰의 발급 달 : {} ** 사용자의 발급하려는 달 {}", targetTime, nowTime);
 
                     if (nowTime.isAfter(targetTime)) {
                         return;
@@ -121,6 +122,7 @@ public class CouponZoneIssueService {
                 c -> {
                     LocalDateTime target = c.getIssuedAt();
                     YearMonth targetTime = YearMonth.of(target.getYear(), target.getMonth());
+                    log.debug("사용자가 받은 쿠폰의 발급 달 : {} ** 사용자의 발급하려는 달 {}", targetTime, nowTime);
 
                     if (nowTime.isAfter(targetTime)) {
                         return;
