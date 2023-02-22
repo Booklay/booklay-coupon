@@ -1,0 +1,99 @@
+:coupons: {snippets}/admin/coupons
+
+=== 모든 쿠폰 조회
+:adoc: {coupons}/testRetrieveAllCoupons
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+
+=== 쿠폰 생성
+:adoc: {coupons}/testCreateCoupon
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 쿠폰 이미지 삭제
+:adoc: {coupons}/testDeleteCouponImage
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 쿠폰 수량 발급
+:adoc: {coupons}/testIssueCoupon
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 쿠폰 수량 발급
+:adoc: {coupons}/testIssueCouponToMember
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 쿠폰 단건 조회
+:adoc: {coupons}/testRetrieveCouponDetail
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+
+=== 쿠폰 발급 기록 조회
+:adoc: {coupons}/testRetrieveCouponIssueHistory
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+
+=== 쿠폰 사용 기록 조회
+:adoc: {coupons}/testRetrieveCouponUsageHistory
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+
+=== 쿠폰 정보 수정
+:adoc: {coupons}/testUpdateCoupon
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 쿠폰 이미지 수정
+:adoc: {coupons}/testUpdateCouponImage
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 사용자의 상품에 적용 가능한 쿠폰 조회
+:adoc: {coupons}/product/retrieveAllCoupons
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+include::{adoc}/response-fields.adoc[]

@@ -71,9 +71,9 @@ public class CouponMemberController {
     /**
      * 사용자의 포인트 쿠폰 사용
      */
-    @PostMapping("/point/{couponId}")
-    public ResponseEntity<Void> usePointCoupon(@PathVariable Long memberNo, @PathVariable Long couponId) {
-        couponMemberService.usePointCoupon(memberNo, couponId);
+    @PostMapping("/point/{orderCouponId}")
+    public ResponseEntity<Void> usePointCoupon(@PathVariable Long memberNo, @PathVariable Long orderCouponId) {
+        couponMemberService.usePointCoupon(memberNo, orderCouponId);
 
         return ResponseEntity.status(HttpStatus.OK)
             .build();
@@ -81,14 +81,11 @@ public class CouponMemberController {
 
     /**
      * 포인트 쿠폰이 사용되었는지 체크
-     * @param memberNo
-     * @param couponId
-     * @return
      */
-    @GetMapping("/point/used/{couponId}")
-    public ResponseEntity<Boolean> checkUsedPointCoupon(@PathVariable Long memberNo, @PathVariable Long couponId) {
-         boolean response = couponMemberService.checkUsedPointCoupon(memberNo, couponId);
-        log.info("Here");
+    @GetMapping("/point/used/{orderCouponId}")
+    public ResponseEntity<Boolean> checkUsedPointCoupon(@PathVariable Long memberNo, @PathVariable Long orderCouponId) {
+        boolean response = couponMemberService.checkUsedPointCoupon(memberNo, orderCouponId);
+
         return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
             .body(response);

@@ -1,0 +1,38 @@
+:coupons: {snippets}/admin/couponTypes
+
+=== 쿠폰 타입 생성
+:adoc: {coupons}/createCouponType
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 쿠폰 타입 삭제
+:adoc: {coupons}/deleteCouponType
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 쿠폰 타입 다건 조회
+:adoc: {coupons}/retrieveAllCouponTypes
+==== Request
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+
+=== 쿠폰 타입 수정
+:adoc: {coupons}/updateCouponType
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]

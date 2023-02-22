@@ -4,6 +4,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -19,16 +28,23 @@ import com.nhnacademy.booklay.booklaycoupon.service.couponzone.CouponZoneService
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
+@ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(CouponZoneAdminController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class CouponZoneAdminControllerTest {
@@ -43,7 +59,8 @@ class CouponZoneAdminControllerTest {
     MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
-    String URI_PREFIX = "/admin/coupon-zone";
+    String DOC_PREFIX = "admin/coupon-zone";
+    String URI_PREFIX = "/" + DOC_PREFIX;
     Long targetId = 1L;
 
     @Test
@@ -52,7 +69,7 @@ class CouponZoneAdminControllerTest {
 
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<CouponZoneResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<CouponZoneResponse> response = new PageImpl<>(List.of(Dummy.getDummyCouponZoneResponse()), pageRequest, 1);
 
         // when
         when(couponZoneService.retrieveAdminLimited(any())).thenReturn(response);
@@ -64,6 +81,23 @@ class CouponZoneAdminControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data.[].id").description("쿠폰존 ID"),
+                    fieldWithPath("data.[].couponId").description("쿠폰 ID"),
+                    fieldWithPath("data.[].fileId").description("쿠폰 이미지 파일 ID"),
+                    fieldWithPath("data.[].name").description("쿠폰 이름"),
+                    fieldWithPath("data.[].description").description("쿠폰존에 등록될 설명"),
+                    fieldWithPath("data.[].grade").description("쿠폰을 발급받을 수 있는 등급"),
+                    fieldWithPath("data.[].openedAt").description("쿠폰 발급 가능 시간"),
+                    fieldWithPath("data.[].issuanceDeadlineAt").description("쿠폰 발급 종료 시간"),
+                    fieldWithPath("data.[].expiredAt").description("쿠폰 사용 만료 날짜"),
+                    fieldWithPath("data.[].isBlind").description("쿠폰존에서 쿠폰의 숨김 여부"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).retrieveAdminLimited(any());
@@ -75,7 +109,7 @@ class CouponZoneAdminControllerTest {
 
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<CouponZoneResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<CouponZoneResponse> response = new PageImpl<>(List.of(Dummy.getDummyCouponZoneResponse()), pageRequest, 1);
 
         // when
         when(couponZoneService.retrieveAdminUnlimited(any())).thenReturn(response);
@@ -87,6 +121,23 @@ class CouponZoneAdminControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data.[].id").description("쿠폰존 ID"),
+                    fieldWithPath("data.[].couponId").description("쿠폰 ID"),
+                    fieldWithPath("data.[].fileId").description("쿠폰 이미지 파일 ID"),
+                    fieldWithPath("data.[].name").description("쿠폰 이름"),
+                    fieldWithPath("data.[].description").description("쿠폰존에 등록될 설명"),
+                    fieldWithPath("data.[].grade").description("쿠폰을 발급받을 수 있는 등급"),
+                    fieldWithPath("data.[].openedAt").description("쿠폰 발급 가능 시간"),
+                    fieldWithPath("data.[].issuanceDeadlineAt").description("쿠폰 발급 종료 시간"),
+                    fieldWithPath("data.[].expiredAt").description("쿠폰 사용 만료 날짜"),
+                    fieldWithPath("data.[].isBlind").description("쿠폰존에서 쿠폰의 숨김 여부"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).retrieveAdminUnlimited(any());
@@ -98,7 +149,7 @@ class CouponZoneAdminControllerTest {
 
         // given
         PageRequest pageRequest = PageRequest.of(0,10);
-        PageImpl<CouponZoneResponse> response = new PageImpl<>(List.of(), pageRequest, 1);
+        PageImpl<CouponZoneResponse> response = new PageImpl<>(List.of(Dummy.getDummyCouponZoneResponse()), pageRequest, 1);
 
         // when
         when(couponZoneService.retrieveAdminCouponZoneGraded(any())).thenReturn(response);
@@ -108,6 +159,23 @@ class CouponZoneAdminControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("pageNumber").description("현재 페이지"),
+                    fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                    fieldWithPath("totalPages").description("총 페이지"),
+                    fieldWithPath("data.[].id").description("쿠폰존 ID"),
+                    fieldWithPath("data.[].couponId").description("쿠폰 ID"),
+                    fieldWithPath("data.[].fileId").description("쿠폰 이미지 파일 ID"),
+                    fieldWithPath("data.[].name").description("쿠폰 이름"),
+                    fieldWithPath("data.[].description").description("쿠폰존에 등록될 설명"),
+                    fieldWithPath("data.[].grade").description("쿠폰을 발급받을 수 있는 등급"),
+                    fieldWithPath("data.[].openedAt").description("쿠폰 발급 가능 시간"),
+                    fieldWithPath("data.[].issuanceDeadlineAt").description("쿠폰 발급 종료 시간"),
+                    fieldWithPath("data.[].expiredAt").description("쿠폰 사용 만료 날짜"),
+                    fieldWithPath("data.[].isBlind").description("쿠폰존에서 쿠폰의 숨김 여부"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).retrieveAdminCouponZoneGraded(any());
@@ -129,6 +197,17 @@ class CouponZoneAdminControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("couponId").description("쿠폰 ID"),
+                    fieldWithPath("description").description("쿠폰존에 등록될 설명"),
+                    fieldWithPath("grade").description("쿠폰을 발급받을 수 있는 등급"),
+                    fieldWithPath("openedAt").description("쿠폰 발급 가능 시간"),
+                    fieldWithPath("issuanceDeadlineAt").description("쿠폰 발급 종료 시간"),
+                    fieldWithPath("expiredAt").description("쿠폰 사용 만료 날짜"),
+                    fieldWithPath("isBlind").description("쿠폰존에서 쿠폰의 숨김 여부"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).createAtCouponZone(any());
@@ -143,10 +222,15 @@ class CouponZoneAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(get(URI_PREFIX + "/blind/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.get(URI_PREFIX + "/blind/{couponZoneId}", targetId)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponZoneId").description("쿠폰존 ID"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).retrieveCouponZoneIsBlind(targetId);
@@ -162,12 +246,19 @@ class CouponZoneAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(post(URI_PREFIX + "/blind/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.post(URI_PREFIX + "/blind/{couponZoneId}", targetId)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("isBlind").description("쿠폰존에서 쿠폰의 숨김 여부")),
+                pathParameters(
+                    parameterWithName("couponZoneId").description("쿠폰존 ID"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).updateIsBlind(eq(targetId), any());
@@ -182,10 +273,15 @@ class CouponZoneAdminControllerTest {
         // when
 
         // then
-        mockMvc.perform(delete(URI_PREFIX + "/" + targetId)
+        mockMvc.perform(RestDocumentationRequestBuilders.delete(URI_PREFIX + "/{couponZoneId}", targetId)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print())
+            .andDo(document(DOC_PREFIX + "/{methodName}",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                pathParameters(
+                    parameterWithName("couponZoneId").description("쿠폰존 ID"))
+            ))
             .andReturn();
 
         Mockito.verify(couponZoneService, times(1)).deleteAtCouponZone(targetId);
