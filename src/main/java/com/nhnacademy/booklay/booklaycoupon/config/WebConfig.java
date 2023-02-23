@@ -70,9 +70,9 @@ public class WebConfig {
         var clientStore = KeyStore.getInstance("PKCS12");
 
         try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream("booklay.p12")) {
+            FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
 
-            Path
-                tempFile = Files.createTempFile(String.valueOf(inputStream.hashCode()), ".tmp"); // Compliant, created with explicit attributes.
+            Path tempFile = Files.createTempFile(String.valueOf(inputStream.hashCode()), ".tmp", attr); // Compliant, created with explicit attributes.
 
             tempFile.toFile().deleteOnExit();
 
