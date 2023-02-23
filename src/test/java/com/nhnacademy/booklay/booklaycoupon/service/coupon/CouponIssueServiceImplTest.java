@@ -8,12 +8,12 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponIssueToMemb
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponJdbcRepository;
-import com.nhnacademy.booklay.booklaycoupon.repository.coupon.CouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,9 +31,6 @@ class CouponIssueServiceImplTest {
 
     @InjectMocks
     private CouponIssueServiceImpl couponIssueService;
-
-    @Mock
-    private CouponRepository couponRepository;
 
     @Mock
     private MemberRepository memberRepository;
@@ -98,6 +95,23 @@ class CouponIssueServiceImplTest {
     }
 
     @Test
+    @DisplayName("사용자에게 유효하지 않은 쿠폰 발급시 실패")
+    void testInvalidCouponToMember() {
+        // given
+        CouponIssueToMemberRequest request = new CouponIssueToMemberRequest(1L, 1L, LocalDateTime.now());
+
+        given(couponService.checkCouponExist(1L)).willReturn(Dummy.getDummyCoupon());
+        given(memberRepository.findById(request.getMemberId())).willReturn(
+            Optional.ofNullable(Dummy.getDummyMember()));
+
+
+        // then
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            couponIssueService.issueCouponToMember(request);
+        });
+    }
+
+    @Test
     @DisplayName("수량만큼의 주문쿠폰 발급 테스트")
     void testIssueOrderCoupon() {
         // given
@@ -123,5 +137,18 @@ class CouponIssueServiceImplTest {
 
         // then
         BDDMockito.then(couponJdbcRepository).should().saveProductCoupons(1L, 50);
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 쿠폰 발급시 실패")
+    void testIssueInvalidCoupon() {
+        // given
+        CouponIssueRequest request = new CouponIssueRequest(1L, 50);
+        given(couponService.checkCouponExist(request.getCouponId())).willReturn(Dummy.getDummyCoupon());
+
+        // then
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            couponIssueService.issueCoupon(request);
+        });
     }
 }

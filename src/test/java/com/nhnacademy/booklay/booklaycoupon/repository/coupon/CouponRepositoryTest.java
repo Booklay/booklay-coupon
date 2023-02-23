@@ -3,8 +3,12 @@ package com.nhnacademy.booklay.booklaycoupon.repository.coupon;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.PointCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
+import com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl.CouponRepositoryImpl;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +17,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -28,6 +32,12 @@ class CouponRepositoryTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private CouponRepositoryImpl couponRepositoryImpl;
+
+    @Autowired
+    private OrderCouponRepository orderCouponRepository;
 
     Coupon coupon;
 
@@ -120,4 +130,25 @@ class CouponRepositoryTest {
         // then
         assertThat(couponPage).isNotNull();
     }
+
+    @Test
+    @DisplayName("getPointCouponByMember - 사용자의 포인트 쿠폰 조회 성공 (queryDsl).")
+    void testGetPointCouponByMember() {
+
+        // given
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Coupon dummyCouponPoint = Dummy.getDummyCoupon_Point();
+
+        OrderCoupon orderCoupon = new OrderCoupon(dummyCouponPoint, "code", false);
+        orderCoupon.setExpiredAt(LocalDateTime.now().plusDays(1));
+        ReflectionTestUtils.setField(orderCoupon, "member", Dummy.getDummyMember());
+        orderCouponRepository.save(orderCoupon);
+
+        // when
+        Page<PointCouponRetrieveResponse> couponPage = couponRepositoryImpl.getPointCouponByMember(1L, pageRequest);
+
+        // then
+        assertThat(couponPage).isNotNull();
+    }
+
 }

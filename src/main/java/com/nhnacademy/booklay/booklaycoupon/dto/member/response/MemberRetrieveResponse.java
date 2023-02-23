@@ -1,23 +1,22 @@
 package com.nhnacademy.booklay.booklaycoupon.dto.member.response;
 
-import com.nhnacademy.booklay.booklaycoupon.entity.Gender;
 import com.nhnacademy.booklay.booklaycoupon.entity.Member;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MemberRetrieveResponse {
-    private Long memberId;
+    private Long memberNo;
     private String gender;
-    private String id;
+    private String memberId;
     private String nickname;
     private String name;
     private LocalDate birthday;
@@ -27,19 +26,33 @@ public class MemberRetrieveResponse {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private Boolean isBlocked;
+    private String memberGrade;
+    private String authority;
 
-    /**
-     * dto projection을 위한 생성자
-     *
-     * @author 양승아
-     */
-    public MemberRetrieveResponse(Long memberId, Gender gender, String id,
-                                  String nickname, String name, LocalDate birthday, String phoneNo,
-                                  String email, LocalDateTime createdAt, LocalDateTime updatedAt,
+    public static MemberRetrieveResponse fromEntity(Member member) {
+        return MemberRetrieveResponse.builder()
+                                     .memberNo(member.getMemberNo())
+                                     .memberId(member.getMemberId())
+                                     .name(member.getName())
+                                     .nickname(member.getNickname())
+                                     .birthday(member.getBirthday())
+                                     .email(member.getEmail())
+                                     .createdAt(member.getCreatedAt())
+                                     .updatedAt(member.getUpdatedAt())
+                                     .deletedAt(member.getDeletedAt())
+                                     .gender(member.getGender().getName())
+                                     .phoneNo(member.getPhoneNo())
+                                     .isBlocked(member.getIsBlocked())
+                                     .build();
+    }
+
+    public MemberRetrieveResponse(Long memberNo, String gender, String memberId, String nickname,
+                                  String name, LocalDate birthday, String phoneNo, String email,
+                                  LocalDateTime createdAt, LocalDateTime updatedAt,
                                   LocalDateTime deletedAt, Boolean isBlocked) {
+        this.memberNo = memberNo;
+        this.gender = gender;
         this.memberId = memberId;
-        this.gender = gender.getName();
-        this.id = id;
         this.nickname = nickname;
         this.name = name;
         this.birthday = birthday;
@@ -49,22 +62,5 @@ public class MemberRetrieveResponse {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isBlocked = isBlocked;
-    }
-
-    public static MemberRetrieveResponse fromEntity(Member member) {
-        return MemberRetrieveResponse.builder()
-            .memberId(member.getMemberNo())
-            .id(member.getMemberId())
-            .name(member.getName())
-            .nickname(member.getNickname())
-            .birthday(member.getBirthday())
-            .email(member.getEmail())
-            .createdAt(member.getCreatedAt())
-            .updatedAt(member.getUpdatedAt())
-            .deletedAt(member.getDeletedAt())
-            .gender(member.getGender().getName())
-            .phoneNo(member.getPhoneNo())
-            .isBlocked(member.getIsBlocked())
-            .build();
     }
 }

@@ -1,6 +1,5 @@
 package com.nhnacademy.booklay.booklaycoupon.service.coupon;
 
-
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponCURequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponDetailRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRetrieveResponse;
@@ -164,7 +163,6 @@ public class CouponAdminServiceImpl implements CouponAdminService{
      */
     @Override
     public void deleteCoupon(Long couponId) {
-        // TODO 예외 처리 필요함
         couponRepository.deleteById(couponId);
     }
 

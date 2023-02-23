@@ -1,20 +1,12 @@
 package com.nhnacademy.booklay.booklaycoupon.service.couponzone;
 
-import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.ALREADY_ISSUED;
-import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
-
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneCreateRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIsBlindRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneIsBlindResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
-import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.CouponZone;
-import com.nhnacademy.booklay.booklaycoupon.entity.Member;
-import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
-import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
+import com.nhnacademy.booklay.booklaycoupon.entity.*;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.OrderCouponRepository;
 import com.nhnacademy.booklay.booklaycoupon.repository.coupon.ProductCouponRepository;
@@ -23,8 +15,6 @@ import com.nhnacademy.booklay.booklaycoupon.repository.member.MemberRepository;
 import com.nhnacademy.booklay.booklaycoupon.service.coupon.GetCouponService;
 import com.nhnacademy.booklay.booklaycoupon.service.kafka.CouponZoneIssueService;
 import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
-import java.time.LocalDateTime;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,21 +22,28 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static com.nhnacademy.booklay.booklaycoupon.exception.ExceptionStrings.NOT_REGISTERED_COUPON;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class CouponZoneServiceImpl implements CouponZoneService{
 
+    private final GetCouponZoneService couponZoneService;
+    private final GetCouponService couponService;
     private final CouponZoneIssueService issueService;
+
     private final MemberRepository memberRepository;
     private final CouponZoneRepository couponZoneRepository;
-    private final GetCouponService couponService;
 
     private final OrderCouponRepository orderCouponRepository;
     private final ProductCouponRepository productCouponRepository;
 
-    private static final String targetGrade = Grade.ANY.getKorGrade();
+    private static final String TARGET_GRADE = Grade.ANY.getKorGrade();
 
     /**
      * 관리자의 이달의 쿠폰 조회.
@@ -54,7 +51,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(true, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(true, pageable, TARGET_GRADE);
     }
 
     /**
@@ -63,7 +60,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveAdminUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(false, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndGradeIs(false, pageable, TARGET_GRADE);
     }
 
     /**
@@ -80,20 +77,31 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneLimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(true, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(true, pageable,
+            TARGET_GRADE);
     }
 
+    /**
+     * 사용자의 무제한 쿠폰 조회
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<CouponZoneResponse> retrieveCouponZoneUnlimited(Pageable pageable) {
-        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(false, pageable, targetGrade);
+        return couponZoneRepository.findAllByIsLimitedIsAndIsBlindIsFalseAndGradeIs(false, pageable,
+            TARGET_GRADE);
     }
 
+    /**
+     * 사용자의 등급별 쿠폰 조회
+     */
     @Override
     public Page<CouponZoneResponse> retrieveCouponZoneGraded(Pageable pageable) {
-        return couponZoneRepository.findAllByGradeIsNotAndIsBlindIsFalse(pageable, targetGrade);
+        return couponZoneRepository.findAllByGradeIsNotAndIsBlindIsFalse(pageable, TARGET_GRADE);
     }
 
+    /**
+     * 관리자의 쿠폰존에 쿠폰 등록.
+     */
     @Override
     public void createAtCouponZone(CouponZoneCreateRequest couponRequest) {
         Long couponId = couponRequest.getCouponId();
@@ -122,16 +130,14 @@ public class CouponZoneServiceImpl implements CouponZoneService{
 
     @Override
     public CouponZoneIsBlindResponse retrieveCouponZoneIsBlind(Long couponZoneId) {
-        CouponZone couponZone = couponZoneRepository.findById(couponZoneId)
-            .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
+        CouponZone couponZone = couponZoneService.checkCouponExistAtZone(couponZoneId);
 
         return new CouponZoneIsBlindResponse(couponZone.getIsBlind());
     }
 
     @Override
     public void updateIsBlind(Long couponZoneId, CouponZoneIsBlindRequest request) {
-        CouponZone couponZone = couponZoneRepository.findById(couponZoneId)
-            .orElseThrow(() -> new NotFoundException("couponZone", couponZoneId));
+        CouponZone couponZone = couponZoneService.checkCouponExistAtZone(couponZoneId);
 
         couponZone.setIsBlind(request.getIsBlind());
     }
@@ -139,24 +145,26 @@ public class CouponZoneServiceImpl implements CouponZoneService{
     @Override
     public CouponZoneCheckResponse retrieveCouponZoneInform(Long couponId) {
         // 쿠폰존에 등록된 쿠폰인지 확인.
-        CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
-            .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
+        CouponZone couponAtZone = couponZoneService.checkCouponExistAtZoneByCouponId(couponId);
 
         // isBlind = true 라면, 발급되지 않음.
-        if (couponAtZone.getIsBlind())
+        if (Boolean.TRUE.equals(couponAtZone.getIsBlind())) {
             throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
+        }
 
         return couponZoneRepository.getByCouponId(couponId);
     }
 
+    /**
+     * 수량 무제한 쿠폰 발급.
+     */
     @Override
     public String issueNoLimitCoupon(Long couponId, Long memberNo) {
         // 쿠폰존에 등록된 쿠폰인지 확인.
-        CouponZone couponAtZone = couponZoneRepository.findByCouponId(couponId)
-            .orElseThrow(() -> new IllegalArgumentException(NOT_REGISTERED_COUPON));
+        CouponZone couponAtZone = couponZoneService.checkCouponExistAtZoneByCouponId(couponId);
 
         // isBlind = true 라면, 발급되지 않음.
-        if (couponAtZone.getIsBlind())
+        if (Boolean.TRUE.equals(couponAtZone.getIsBlind()))
             throw new IllegalArgumentException(NOT_REGISTERED_COUPON);
 
         // 쿠폰이 주문쿠폰에 있는지, 상품쿠폰에 있는지 확인.
@@ -166,6 +174,7 @@ public class CouponZoneServiceImpl implements CouponZoneService{
         // 이번 달에 받았는지 확인하고, 발급.
         if (orderOrProduct.equals("product")) {
             issueService.checkAlreadyIssuedAtProductCoupon(couponId, memberNo);
+
             Member member = memberRepository.findById(memberNo)
                 .orElseThrow(() -> new NotFoundException("member", memberNo));
 

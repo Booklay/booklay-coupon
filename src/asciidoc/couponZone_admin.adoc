@@ -1,0 +1,60 @@
+:coupons: {snippets}/admin/coupon-zone
+
+=== 쿠폰존에 쿠폰 등록
+:adoc: {coupons}/testCreateAtCoupon
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 쿠폰존에서 쿠폰 삭제
+:adoc: {coupons}/testDeleteAtCouponZone
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 숨김 여부 조회
+:adoc: {coupons}/testGetIsBlind
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+=== 등급별 쿠폰 조회
+:adoc: {coupons}/testRetrieveCouponZoneGraded
+==== Request
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 이달의 쿠폰(수량 제한) 조회
+:adoc: {coupons}/testRetrieveCouponZoneLimited
+==== Request
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 수량 제한 없는 쿠폰 조회
+:adoc: {coupons}/testRetrieveCouponZoneUnlimited
+==== Request
+include::{adoc}/http-request.adoc[]
+==== Response
+include::{adoc}/response-body.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 숨김 여부 수정
+:adoc: {coupons}/testUpdateIsBlind
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+include::{adoc}/request-body.adoc[]
+include::{adoc}/request-fields.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]

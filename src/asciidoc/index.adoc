@@ -1,0 +1,37 @@
+ifndef::snippets[]
+:snippets: ../../target/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+= Admin Api
+
+== Coupon
+include::{docdir}/coupon_admin.adoc[]
+
+== Coupon Type
+include::{docdir}/couponType_admin.adoc[]
+
+== Coupon Zone
+include::{docdir}/couponZone_admin.adoc[]
+
+== Coupon Setting
+include::{docdir}/couponSetting_admin.adoc[]
+
+= Service Api
+
+== Coupon Zone
+include::{docdir}/member_couponzone.adoc[]
+
+== Order Usage
+include::{docdir}/member_order_usage.adoc[]
+
+== Member Page
+include::{docdir}/member_page_usage.adoc[]
+
+== Member Join
+include::{docdir}/member_join.adoc[]
