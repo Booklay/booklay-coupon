@@ -2,10 +2,14 @@ package com.nhnacademy.booklay.booklaycoupon.repository.coupon;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
+import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.MemberOrderCouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dummy.Dummy;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
 import com.nhnacademy.booklay.booklaycoupon.exception.NotFoundException;
+import com.nhnacademy.booklay.booklaycoupon.repository.coupon.querydsl.OrderCouponRepositoryImpl;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
@@ -27,7 +30,7 @@ class OrderCouponRepositoryTest {
     private OrderCouponRepository orderCouponRepository;
 
     @Autowired
-    private CouponRepository couponRepository;
+    private OrderCouponRepositoryImpl orderCouponRepositoryImpl;
 
     private Coupon coupon;
     private OrderCoupon orderCoupon;
@@ -84,6 +87,33 @@ class OrderCouponRepositoryTest {
 
         // then
         assertThat(expected.getId()).isEqualTo(orderCoupon.getId());
+    }
 
+    @Test
+    @DisplayName("사용자가 소유한 쿠폰 조회 테스트")
+    void testGetCouponsByMember() {
+
+        // given
+
+        // when
+        List<CouponUsedHistoryResponse> list =
+            orderCouponRepositoryImpl.getUsedOrderCoupon();
+
+        // then
+        assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("사용자가 사용한 주푼 쿠폰 조회 테스트")
+    void testGetUsedOrderCoupon() {
+
+        // given
+
+        // when
+        List<MemberOrderCouponRetrieveResponse> list =
+            orderCouponRepositoryImpl.getCouponsByMember(1L);
+
+        // then
+        assertThat(list).isNotNull();
     }
 }
