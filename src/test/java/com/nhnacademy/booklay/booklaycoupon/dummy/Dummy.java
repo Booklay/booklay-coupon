@@ -22,31 +22,22 @@ import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.request.CouponZoneIss
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneCheckResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.couponzone.response.CouponZoneResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.grade.Grade;
-import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberCreateRequest;
-import com.nhnacademy.booklay.booklaycoupon.dto.member.request.MemberUpdateRequest;
 import com.nhnacademy.booklay.booklaycoupon.entity.Category;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponSetting;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponTemplate;
 import com.nhnacademy.booklay.booklaycoupon.entity.CouponType;
-import com.nhnacademy.booklay.booklaycoupon.entity.DeliveryStatusCode;
 import com.nhnacademy.booklay.booklaycoupon.entity.Gender;
 import com.nhnacademy.booklay.booklaycoupon.entity.Image;
 import com.nhnacademy.booklay.booklaycoupon.entity.Member;
-import com.nhnacademy.booklay.booklaycoupon.entity.MemberGrade;
 import com.nhnacademy.booklay.booklaycoupon.entity.ObjectFile;
-import com.nhnacademy.booklay.booklaycoupon.entity.Order;
 import com.nhnacademy.booklay.booklaycoupon.entity.OrderCoupon;
-import com.nhnacademy.booklay.booklaycoupon.entity.OrderProduct;
-import com.nhnacademy.booklay.booklaycoupon.entity.OrderStatusCode;
 import com.nhnacademy.booklay.booklaycoupon.entity.Product;
 import com.nhnacademy.booklay.booklaycoupon.entity.ProductCoupon;
 import com.nhnacademy.booklay.booklaycoupon.util.CodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class Dummy {
@@ -137,32 +128,6 @@ public class Dummy {
         return coupon;
     }
 
-
-    public static OrderProduct getDummyOrderProduct() {
-        OrderProduct orderProduct = OrderProduct.builder()
-            .order(null)
-            .product(null)
-            .count(1)
-            .price(10000)
-            .build();
-
-        ReflectionTestUtils.setField(orderProduct, "id", 1L);
-
-        return orderProduct;
-    }
-
-    public static MemberGrade getDummyMemberGrade() {
-
-        MemberGrade memberGrade = MemberGrade.builder()
-            .member(getDummyMember())
-            .name("white")
-            .build();
-
-        ReflectionTestUtils.setField(memberGrade, "id", 1L);
-
-        return memberGrade;
-    }
-
     public static Category getDummyCategory() {
 
         Category allProduct = Category.builder()
@@ -179,40 +144,6 @@ public class Dummy {
             .name("국내도서")
             .depth(allProduct.getDepth() + 1)
             .isExposure(true)
-            .build();
-    }
-
-    public static DeliveryStatusCode getDummyDeliveryStatusCode() {
-        return DeliveryStatusCode.builder()
-            .id(1)
-            .name("배송중")
-            .build();
-    }
-
-    public static Order getDummyOrder() {
-        Order order = Order.builder()
-            .member(Dummy.getDummyMember())
-            .orderStatusCode(getDummyOrderStatusCode())
-            .productPriceSum(30000L)
-            .deliveryPrice(1000L)
-            .discountPrice(0L)
-            .pointUsePrice(2000L)
-            .paymentPrice(31000L)
-            .paymentMethod(3L)
-            .giftWrappingPrice(4500L)
-            .isBlinded(false)
-            .build();
-
-        ReflectionTestUtils.setField(order, "id", 1L);
-        ReflectionTestUtils.setField(order, "orderedAt", LocalDateTime.now());
-
-        return order;
-    }
-
-    public static OrderStatusCode getDummyOrderStatusCode() {
-        return OrderStatusCode.builder()
-            .id(1L)
-            .name("입금대기중")
             .build();
     }
 
@@ -283,33 +214,6 @@ public class Dummy {
         ReflectionTestUtils.setField(couponTypeRequest, "name", "정율");
 
         return couponTypeRequest;
-    }
-
-    public static MemberCreateRequest getDummyMemberCreateRequest() {
-        MemberCreateRequest memberRequest = new MemberCreateRequest();
-        ReflectionTestUtils.setField(memberRequest, "gender", "M");
-        ReflectionTestUtils.setField(memberRequest, "memberId", "HoDong");
-        ReflectionTestUtils.setField(memberRequest, "password", "$2a$12$5KoVJnK1WF2h4h4T3FmifeO3ZLtAjiayJ783EfvTs7zSIz2GUhnMu");
-        ReflectionTestUtils.setField(memberRequest, "nickname", "천하장사");
-        ReflectionTestUtils.setField(memberRequest, "name", "강호동");
-        ReflectionTestUtils.setField(memberRequest, "birthday", LocalDate.now());
-        ReflectionTestUtils.setField(memberRequest, "phoneNo", "01012341234");
-        ReflectionTestUtils.setField(memberRequest, "email", "aaaa@gmail.com");
-
-        return memberRequest;
-    }
-
-    public static MemberUpdateRequest getDummyMemberUpdateRequest() {
-        MemberUpdateRequest memberRequest = new MemberUpdateRequest();
-        ReflectionTestUtils.setField(memberRequest, "gender", "M");
-        ReflectionTestUtils.setField(memberRequest, "password", "$2a$12$5KoVJnK1WF2h4h4T3FmifeO3ZLtAjiayJ783EfvTs7zSIz2GUhnMu");
-        ReflectionTestUtils.setField(memberRequest, "nickname", "천하장사123");
-        ReflectionTestUtils.setField(memberRequest, "name", "강호동123");
-        ReflectionTestUtils.setField(memberRequest, "birthday", LocalDate.now());
-        ReflectionTestUtils.setField(memberRequest, "phoneNo", "01033333333");
-        ReflectionTestUtils.setField(memberRequest, "email", "bbbb@gmail.com");
-
-        return memberRequest;
     }
 
     public static CouponRetrieveResponse getDummyCouponRetrieveResponse() {
@@ -456,21 +360,6 @@ public class Dummy {
 
     public static MemberCouponRetrieveResponse getDummyMemberCouponRetrieveResponse() {
         return new MemberCouponRetrieveResponse("test", 5, "정률", 1L, 5000, 5000, LocalDateTime.now(), true);
-    }
-
-    public static Coupon getDummyInvalidCoupon() {
-        Coupon coupon = Coupon.builder()
-            .couponType(Dummy.getDummyCouponType())
-            .name("이달의 쿠폰")
-            .amount(5)
-            .minimumUseAmount(1000)
-            .maximumDiscountAmount(3000)
-            .isDuplicatable(false)
-            .isLimited(true)
-            .build();
-        ReflectionTestUtils.setField(coupon, "id", 1L);
-
-        return coupon;
     }
 
     public static CouponDetailRetrieveResponse getDummyCouponDetailRetrieveResponse() {

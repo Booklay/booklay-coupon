@@ -51,8 +51,8 @@ class CouponMemberControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    String DOC_PREFIX = "members/{memberNo}/coupons";
-    String URI_PREFIX = "/" + DOC_PREFIX;
+    String DOC_PREFIX = "members/memberNo/coupons";
+    String URI_PREFIX = "/members/{memberNo}/coupons";
     Long targetId = 1L;
 
     @Test

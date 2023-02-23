@@ -1,0 +1,45 @@
+:coupons: {snippets}/members/memberNo/coupons
+
+=== 포인트 쿠폰 사용 여부 조회
+:adoc: {coupons}/testCheckUsedPointCoupon
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+
+
+=== 사용자의 소유한 쿠폰 갯수 조회
+:adoc: {coupons}/testRetrieveCouponCountByMember
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 사용자의 소유 쿠폰 조회
+:adoc: {coupons}/testRetrieveCouponsByMember
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 사용자의 포인트 쿠폰 조회
+:adoc: {coupons}/testRetrievePointCoupons
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]
+include::{adoc}/response-fields.adoc[]
+
+=== 사용자의 포인트 쿠폰 사용
+:adoc: {coupons}/testUsePointCoupon
+==== Request
+include::{adoc}/http-request.adoc[]
+include::{adoc}/path-parameters.adoc[]
+==== Response
+include::{adoc}/http-response.adoc[]

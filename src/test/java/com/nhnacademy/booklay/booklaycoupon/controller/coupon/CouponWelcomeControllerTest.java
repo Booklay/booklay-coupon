@@ -42,8 +42,8 @@ class CouponWelcomeControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    String DOC_PREFIX = "welcome/{memberNo}";
-    String URI_PREFIX = "/" + DOC_PREFIX;
+    String DOC_PREFIX = "welcome/memberNo";
+    String URI_PREFIX = "/welcome/{memberNo}";
     Long targetId = 1L;
 
     @Test
