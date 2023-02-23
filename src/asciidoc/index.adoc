@@ -29,3 +29,9 @@ include::{docdir}/member_couponzone.adoc[]
 
 == Order Usage
 include::{docdir}/member_order_usage.adoc[]
+
+== Member Page
+include::{docdir}/member_page_usage.adoc[]
+
+== Member Join
+include::{docdir}/member_join.adoc[]

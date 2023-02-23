@@ -85,7 +85,7 @@ public class CouponZoneController {
         String message =
             couponZoneService.issueNoLimitCoupon(request.getCouponId(), request.getMemberId());
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(Collections.singletonMap("message", message));
     }
 }
