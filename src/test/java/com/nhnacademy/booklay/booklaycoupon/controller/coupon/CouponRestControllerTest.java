@@ -105,7 +105,8 @@ class CouponRestControllerTest {
             .andDo(document(DOC_PREFIX + "/{methodName}",
                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                 requestParameters(
-                    parameterWithName("couponCodeList").description("조회하려는 쿠폰의 코드 리스트")),
+                    parameterWithName("couponCodeList").description("조회하려는 쿠폰의 코드 리스트"),
+                    parameterWithName("member_info_memberNo").description("회원 No")),
                 responseFields(
                     fieldWithPath("[].id").description("쿠폰 ID"),
                     fieldWithPath("[].name").description("쿠폰 이름"),
