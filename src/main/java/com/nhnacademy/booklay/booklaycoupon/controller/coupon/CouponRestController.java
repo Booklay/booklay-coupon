@@ -1,6 +1,5 @@
 package com.nhnacademy.booklay.booklaycoupon.controller.coupon;
 
-import com.nhnacademy.booklay.booklaycoupon.dto.common.MemberInfo;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponRefundRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.request.CouponUseRequest;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponseFromProduct;
@@ -30,12 +29,11 @@ public class CouponRestController {
 
     @GetMapping("codes")
     public ResponseEntity<List<CouponRetrieveResponseFromProduct>> retrieveCouponByCouponCodeList(
-            @RequestParam(value = "couponCodeList") List<String> couponCodeList, MemberInfo memberInfo){
+            @RequestParam(value = "couponCodeList") List<String> couponCodeList,@RequestParam(value = "member_info_memberNo") Long memberNo){
         List<CouponRetrieveResponseFromProduct> couponRetrieveResponseFromProductList =
-            couponGeneralService.retrieveCouponByCouponCodeList(couponCodeList, memberInfo.getMemberNo());
+            couponGeneralService.retrieveCouponByCouponCodeList(couponCodeList, memberNo);
         return ResponseEntity.ok(couponRetrieveResponseFromProductList);
     }
-
 
     @PostMapping("using")
     public ResponseEntity<Void> useCoupons(@RequestBody CouponUseRequest couponUseRequest){

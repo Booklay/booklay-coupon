@@ -6,7 +6,6 @@ import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponHistoryRet
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponRetrieveResponse;
 import com.nhnacademy.booklay.booklaycoupon.dto.coupon.response.CouponUsedHistoryResponse;
 import com.nhnacademy.booklay.booklaycoupon.entity.Coupon;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

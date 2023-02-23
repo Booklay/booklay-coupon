@@ -17,15 +17,21 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
     private final OrderCouponService orderCouponService;
     /**
      * 코드 해독기능이 달려 각각의 쿠폰에 맞는서비스에서 쿠폰을 조회하여 반환
-     * //todo DTO가 쿠폰 3종류 모두를 지원하는 형태가 필요함 - 미확인
      * @param couponCode 쿠폰 코드
      *
      */
     @Override
     public CouponRetrieveResponseFromProduct retrieveCouponByCouponCode(String couponCode) {
-        CouponRetrieveResponseFromProduct result = productCouponService.retrieveCouponByCouponCode(couponCode);
-        if (result == null){
+        CouponRetrieveResponseFromProduct result;
+        if (couponCode.startsWith("O")){
             result = orderCouponService.retrieveCouponByCouponCode(couponCode);
+        }else if (couponCode.startsWith("P")){
+            result = productCouponService.retrieveCouponByCouponCode(couponCode);
+        }else {
+            result = orderCouponService.retrieveCouponByCouponCode(couponCode);
+            if (result == null){
+                result = productCouponService.retrieveCouponByCouponCode(couponCode);
+            }
         }
         return result;
     }
@@ -41,9 +47,14 @@ public class CouponGeneralServiceImpl implements CouponGeneralService{
     }
 
     @Override
+    @Transactional
     public void couponUsing(CouponUseRequest couponUseRequest) {
-        productCouponService.usingCoupon(couponUseRequest.getProductCouponList());
-        orderCouponService.usingCoupon(couponUseRequest.getCategoryCouponList());
+        if (couponUseRequest.getProductCouponList()!=null){
+            productCouponService.usingCoupon(couponUseRequest.getProductCouponList());
+        }
+        if (couponUseRequest.getCategoryCouponList()!=null){
+            orderCouponService.usingCoupon(couponUseRequest.getCategoryCouponList());
+        }
     }
 
     @Override

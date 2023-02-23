@@ -43,7 +43,7 @@ public class CouponAdminController {
     private final CouponIssueService couponIssueService;
 
     /**
-     * 쿠폰 조회
+     * 모든 쿠폰 조회
      */
     @GetMapping()
     public ResponseEntity<PageResponse<CouponRetrieveResponse>> retrieveAllCoupons(@PageableDefault Pageable pageable) {
@@ -68,7 +68,7 @@ public class CouponAdminController {
     }
 
     /**
-     * 쿠폰 상세 조회
+     * 쿠폰 상세/단건 조회
      * @param couponId 조회할 쿠폰의 id
      */
     @GetMapping("/{couponId}")
