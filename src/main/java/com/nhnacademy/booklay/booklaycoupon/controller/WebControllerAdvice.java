@@ -22,18 +22,21 @@ public class WebControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(Exception ex) {
+        printLoggingError(ex);
         ErrorCode errorCode = CommonErrorCode.ILLEGAL_ARGUMENT_ERROR;
         return handleWithMessage(errorCode, ex.getMessage());
     }
 
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(Exception ex) {
+        printLoggingError(ex);
         ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
         return handleWithMessage(errorCode, ex.getMessage());
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAllException(Exception ex) {
+        printLoggingError(ex);
         log.warn("handleAllException", ex);
         ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
         return handleExceptionInternal(errorCode);
@@ -66,5 +69,12 @@ public class WebControllerAdvice extends ResponseEntityExceptionHandler {
             .code(errorCode.name())
             .message(errorCode.getMessage())
             .build();
+    }
+
+    private void printLoggingError(Exception exception) {
+        log.error("\nError Occurred"
+                + "\nException  : {}"
+                + "\nMessage : {} ",
+            exception.getClass(), exception.getMessage());
     }
 }
