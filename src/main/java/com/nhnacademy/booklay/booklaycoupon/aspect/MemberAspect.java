@@ -40,21 +40,25 @@ public class MemberAspect {
         log.info("Method: {}", pjp.getSignature().getName());
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        request.getHeader(HttpHeaders.AUTHORIZATION);
-        String email = tokenUtils.getEmail(request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length()));
 
-        String url = tokenUtils.getShopUrl() + email;
+        MemberInfo memberInfo;
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authorization != null){
+            String email = tokenUtils.getEmail(authorization.substring("Bearer ".length()));
+            String url = tokenUtils.getShopUrl() + email;
+            ApiEntity<MemberRetrieveResponse> memberRetrieveResponse =
+                    restService.get(url, null, new ParameterizedTypeReference<>() {
+                    });
+            memberInfo = memberRetrieveResponse == null ? new MemberInfo() :
+                    new MemberInfo(memberRetrieveResponse.getBody());
+        }else {
+            memberInfo = new MemberInfo();
+        }
 
-
-        ApiEntity<MemberRetrieveResponse> memberRetrieveResponse =
-                restService.get(url, null, new ParameterizedTypeReference<>() {
-                });
-
-        MemberInfo memberInfo = new MemberInfo(memberRetrieveResponse.getBody());
-
+        MemberInfo finalMemberInfo = memberInfo;
         Object[] args = Arrays.stream(pjp.getArgs()).map(arg -> {
             if (arg instanceof MemberInfo) {
-                arg = memberInfo;
+                arg = finalMemberInfo;
             }
             return arg;
         }).toArray();
