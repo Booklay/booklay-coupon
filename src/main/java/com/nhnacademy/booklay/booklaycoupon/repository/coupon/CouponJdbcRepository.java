@@ -40,12 +40,12 @@ public class CouponJdbcRepository {
 
     public void useProductCoupons(List<CouponUsingDto> productCouponList) {
         jdbcTemplate.batchUpdate("update product_coupon set order_product_no = ? " +
-                        "where product_coupn_no = ?",
+                        "where coupon_code = ?",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, productCouponList.get(i).getSpecifiedCouponNo());
-                        ps.setLong(2, productCouponList.get(i).getUsedTargetNo());
+                        ps.setLong(1, productCouponList.get(i).getUsedTargetNo());
+                        ps.setString(2, productCouponList.get(i).getCouponCode());
                         log.info("using productCoupon \n {}", ps);
                     }
 
@@ -91,14 +91,14 @@ public class CouponJdbcRepository {
     }
 
 
-    public void useOrderCoupons(List<Long> usedCouponNoList, Long orderNo) {
+    public void useOrderCoupons(List<String> usedCouponNoList, Long orderNo) {
         jdbcTemplate.batchUpdate("update order_coupon set is_used = true, order_no = ? " +
-                        "where order_coupon_no = ?",
+                        "where coupon_code = ?",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         ps.setLong(1, orderNo);
-                        ps.setLong(2, usedCouponNoList.get(i));
+                        ps.setString(2, usedCouponNoList.get(i));
                         log.info("using orderCoupon \n {}", ps);
                     }
 

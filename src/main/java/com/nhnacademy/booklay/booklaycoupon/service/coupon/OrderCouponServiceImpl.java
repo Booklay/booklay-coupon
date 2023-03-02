@@ -38,7 +38,7 @@ public class OrderCouponServiceImpl implements OrderCouponService{
     @Override
     public void usingCoupon(List<CouponUsingDto> categoryCouponList) {
         if (categoryCouponList!=null){
-            List<Long> usedCouponNoList = categoryCouponList.stream().map(CouponUsingDto::getSpecifiedCouponNo).collect(Collectors.toList());
+            List<String> usedCouponNoList = categoryCouponList.stream().map(CouponUsingDto::getCouponCode).collect(Collectors.toList());
             couponJdbcRepository.useOrderCoupons(usedCouponNoList, categoryCouponList.get(0).getUsedTargetNo());
         }
     }
